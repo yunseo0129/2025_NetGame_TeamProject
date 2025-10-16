@@ -172,6 +172,9 @@
     <Image Include="image\player2_right_walk1.bmp" />
     <Image Include="image\player2_right_walk3.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="개발일지.md" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
