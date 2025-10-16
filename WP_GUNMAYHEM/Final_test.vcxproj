@@ -137,9 +137,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CBase.cpp" />
+    <ClCompile Include="CMap.cpp" />
     <ClCompile Include="WP_FINAL.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CBase.h" />
+    <ClInclude Include="CMap.h" />
+    <ClInclude Include="CObject.h" />
     <ClInclude Include="Default.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

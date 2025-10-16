@@ -13,10 +13,31 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="소스 파일\CObject">
+      <UniqueIdentifier>{5b7bbca5-2a2a-4f86-a5d5-35ca784bad82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\CObject\CPlayer">
+      <UniqueIdentifier>{00a84947-232d-4c9a-b728-423a4232c864}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\CObject\CMap">
+      <UniqueIdentifier>{2ae27cfe-e100-493d-a9de-957e9420be3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\CObject\CBullet">
+      <UniqueIdentifier>{b27f5656-110b-48dc-82f1-4a32a8af60fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\CBase">
+      <UniqueIdentifier>{0e793972-aad0-4935-b916-426583635403}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WP_FINAL.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CMap.cpp">
+      <Filter>소스 파일\CObject\CMap</Filter>
+    </ClCompile>
+    <ClCompile Include="CBase.cpp">
+      <Filter>소스 파일\CBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -25,6 +46,15 @@
     </ClInclude>
     <ClInclude Include="Default.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CMap.h">
+      <Filter>소스 파일\CObject\CMap</Filter>
+    </ClInclude>
+    <ClInclude Include="CObject.h">
+      <Filter>소스 파일\CObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CBase.h">
+      <Filter>소스 파일\CBase</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
