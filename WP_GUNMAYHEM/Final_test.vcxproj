@@ -140,6 +140,7 @@
     <ClCompile Include="WP_FINAL.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Default.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
