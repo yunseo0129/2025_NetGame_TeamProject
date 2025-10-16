@@ -47,13 +47,6 @@ FMOD::Channel* channel = 0;
 FMOD_RESULT result = FMOD_OK;
 void* extradriverdata = 0;
 
-//총알 =====================================================================
-// BULLET 구조체 정의는 Default.h에 있으므로 여기서는 변수만 정의
-BULLET bullet1[MAX_BULLET1 + 10] = {}; // {}로 모든 멤버를 0으로 초기화
-BULLET bullet2[MAX_BULLET1 + 10] = {}; // {}로 모든 멤버를 0으로 초기화
-int bullet1_count = 0;
-int bullet2_count = 0;
-
 // 아이템 =====================================================================
 // ITEMBOX 구조체 정의는 Default.h에 있음
 ITEMBOX item[MAX_ITEM] = {};

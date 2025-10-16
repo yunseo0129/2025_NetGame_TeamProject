@@ -4,182 +4,6 @@
 CPlayer player1;
 CPlayer player2;
 
-void reload1() {
-	bullet1_count = 0;
-	for (int i = 0; i < MAX_BULLET1; i++) {
-		if (bullet1[i].exist == FALSE)
-			bullet1[i].c = 0;
-	}
-}
-void gunFire1(int way, BULLET bullet[]) {
-	//불렛카운트 -> 불렛 카운트가 맥스불렛을 넘으면 발사가 안됨 (총알 없음)
-	//불렛 카운트가 탄약 갯수를 넘지 않음 -> 총을 쏨 (비활성화인 총알 하나를 활성화 시킴) -> 불렛 카운트 증가
-	if (bullet1_count < player1.maxBullet) {
-		for (int i = 0; i < MAX_BULLET1; i++) {
-			if (bullet[i].exist == FALSE && bullet[i].c == 0)
-			{
-				bullet[i].exist = TRUE;
-				bullet[i].x = player1.x + pWidth / 2;
-				bullet[i].y = player1.y + pHeight / 2;
-				bullet[i].travelDistance = 0; // 초기화
-
-				//총알 방향 계산
-				switch (way) {
-				case 0:
-					bullet[i].vx = -1;
-					bullet[i].vy = 0;
-					break;
-				case 1:
-					bullet[i].vx = 1;
-					bullet[i].vy = 0;
-					break;
-				}
-				bullet1_count++;
-
-				channel->stop();
-				switch (player1.gunType) {
-				case GUN_TYPE_PISTOL:
-					sound1->setMode(FMOD_LOOP_OFF);
-					ssystem->playSound(sound1, 0, false, &channel); //--- 1번 사운드 재생
-					break;
-				case GUN_TYPE_SNIPE:
-					sound2->setMode(FMOD_LOOP_OFF);
-					ssystem->playSound(sound2, 0, false, &channel); //--- 1번 사운드 재생
-					break;
-				}
-				break;	//한번 쏘면 반복문 정지
-			}
-		}
-	}
-}
-void update_bullet1() {
-	//1. 총알1 충돌체크
-	for (int i = 0; i < MAX_BULLET1; i++) {
-		if (bullet1[i].exist == TRUE) {
-			//사거리 도달시
-			if (bullet1[i].travelDistance > player1.range) {
-				bullet1[i].exist = FALSE;
-			}
-			else {
-				if (bullet1[i].x + BULLET_SIZE >= player2.x && bullet1[i].x - BULLET_SIZE <= player2.x + pWidth &&
-					bullet1[i].y + BULLET_SIZE >= player2.y && bullet1[i].y - BULLET_SIZE <= player2.y + pHeight) {
-
-					player2.combo++;
-					player2.comboTime = 0;
-					player2.speed = (7 * player2.combo) * bullet1[i].vx;
-					bullet1[i].exist = FALSE;
-				}
-			}
-		}
-	}
-	//2. 총알1 이동 -> 플레이어의 방향에 따라(looking)
-	for (int i = 0; i < MAX_BULLET1; i++) {
-		if (bullet1[i].exist == TRUE) {
-			bullet1[i].x += bullet1[i].vx * 13; // 총알 속도 조절
-			bullet1[i].travelDistance += 13;    // 이동 거리 추가
-			if (bullet1[i].c < 30) {
-				bullet1[i].c++;
-			}
-		}
-	}
-	//콤보초기화 -> 콤보가 1 이상이되면 시간을 검사한다
-	if (player2.combo > 0) {
-		player2. comboTime++;
-		//player2.combo++;
-
-		if (player2.comboTime > 200) {
-			player2.combo = 0;
-			player2.comboTime = 0;
-		}
-	}
-}
-
-void reload2() {
-	bullet2_count = 0;
-	for (int i = 0; i < MAX_BULLET1; i++) {
-		if (bullet2[i].exist == FALSE)
-			bullet2[i].c = 0;
-	}
-}
-void gunFire2(int way, BULLET bullet[]) {
-	if (bullet2_count < player2.maxBullet) {
-		for (int i = 0; i < MAX_BULLET1; i++) {
-			if (bullet[i].exist == FALSE && bullet[i].c == 0)
-			{
-				bullet[i].exist = TRUE;
-				bullet[i].x = player2.x + pWidth / 2;
-				bullet[i].y = player2.y + pHeight / 2;
-				bullet[i].travelDistance = 0; // 초기화
-
-				//총알 방향 계산
-				switch (way) {
-				case 0:
-					bullet[i].vx = -1;
-					bullet[i].vy = 0;
-					break;
-				case 1:
-					bullet[i].vx = 1;
-					bullet[i].vy = 0;
-					break;
-				}
-				bullet2_count++;
-
-				channel->stop();
-				switch (player2.gunType) {
-				case GUN_TYPE_PISTOL:
-					sound1->setMode(FMOD_LOOP_OFF);
-					ssystem->playSound(sound1, 0, false, &channel); //--- 1번 사운드 재생
-					break;
-				case GUN_TYPE_SNIPE:
-					sound2->setMode(FMOD_LOOP_OFF);
-					ssystem->playSound(sound2, 0, false, &channel); //--- 1번 사운드 재생
-					break;
-				}
-				break;	//한번 쏘면 반복문 정지
-			}
-		}
-	}
-}
-void update_bullet2() {
-	//1. 총알2 충돌체크
-	for (int i = 0; i < MAX_BULLET1; i++) {
-		if (bullet2[i].exist == TRUE) {
-			//사거리 도달 시
-			if (bullet2[i].travelDistance > player2.range) {
-				bullet2[i].exist = FALSE;
-			}
-			else {
-				if (bullet2[i].x + BULLET_SIZE >= player1.x && bullet2[i].x - BULLET_SIZE <= player1.x + pWidth &&
-					bullet2[i].y + BULLET_SIZE >= player1.y && bullet2[i].y - BULLET_SIZE <= player1.y + pHeight) {
-
-					player1.combo++;
-					player1.comboTime = 0;
-					player1.speed = (7 * player1.combo) * bullet2[i].vx;
-					bullet2[i].exist = FALSE;
-				}
-			}
-		}
-	}
-	//2. 총알 이동 -> 플레이어의 방향에 따라(looking)
-	for (int i = 0; i < MAX_BULLET1; i++) {
-		if (bullet2[i].exist == TRUE) {
-			bullet2[i].x += bullet2[i].vx * 13; //총알 속도 조절
-			bullet2[i].travelDistance += 13;    // 이동 거리 추가
-			if (bullet2[i].c < 30) {
-				bullet2[i].c++;
-			}
-		}
-	}
-	//콤보초기화 -> 콤보가 1 이상이되면 시간을 검사한다
-	if (player1.combo > 0) {
-		player1.comboTime++;
-		if (player1.comboTime > 200) {
-			player1.combo = 0;
-			player1.comboTime = 0;
-		}
-	}
-}
-
 void update_camera() {
 	int playerCenterX = (player1.x + player2.x) / 2;
 	int playerCenterY = (player1.y + player2.y) / 2;
@@ -326,7 +150,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			//player2 gunFire
 		case '[':
 		{
-			gunFire2(player2.looking, bullet2);
+			player2.gunFire();
 			break;
 		}
 		// player1 jump
@@ -386,7 +210,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		//player1 gunFire
 		case VK_SPACE:
 		{
-			gunFire1(player1.looking, bullet1);
+			player1.gunFire();
 			break;
 		}
 		//player2 이동
@@ -458,24 +282,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			mx = LOWORD(lParam);
 			my = HIWORD(lParam);
 			POINT pt = { mx, my };
+
+			// INITIALIZE
 			if (PtInRect(&startMenu, pt)) {	//시작버튼 클릭 -> 초기화 진행, 타이머 시작
 				start = TRUE;
 				//총알1 초기화
-				for (int i = 0; i < MAX_BULLET1; i++) {
-					bullet1[i].exist = FALSE;
-					bullet1[i].c = 0;
+				for (CBullet& b : player1.bullet) {
+					b.exist = FALSE;
+					b.c = 0;
 				}
-				bullet1_count = 0;
+				player1.bullet_count = 0;
 				player1.gunType = GUN_TYPE_PISTOL;
 				player1.range = 300;
 				player1.maxBullet = 20;
 
 				//총알2 초기화
-				for (int i = 0; i < MAX_BULLET1; i++) {
-					bullet2[i].exist = FALSE;
-					bullet2[i].c = 0;
+				for (CBullet& b : player2.bullet) {
+					b.exist = FALSE;
+					b.c = 0;
 				}
-				bullet2_count = 0;
+				player2.bullet_count = 0;
 				player2.gunType = GUN_TYPE_PISTOL;
 				player2.range = 300;
 				player2.maxBullet = 20;
@@ -682,12 +508,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			// check player1 out
 			if (player1.y > rt.bottom) {
 				player1.regen();
-				reload1();
 			}
 			// check player2 out
 			if (player2.y > rt.bottom) {
 				player2.regen();
-				reload2();
 			}
 			if (player1.life == 0 || player2.life == 0) {
 				end = TRUE;
@@ -700,8 +524,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			player2.update();
 
 			//update bullets crush & move
-			update_bullet1();
-			update_bullet2();
+			player1.update_bullet(&player2);
+			player2.update_bullet(&player1);
 
 			//update item create & move -> 하늘에서 떨어짐	
 			for (int i = 0; i < MAX_ITEM; i++) {
@@ -896,36 +720,36 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				TextOut(mDC, player2.x + 10 - cameraX, player2.y - 25  - cameraY, lpOut1, lstrlen(lpOut1));
 			}
 			// 총알1 ( 플레이어1 )
-			for (int i = 0; i < MAX_BULLET1; i++) {
+			for (int i = 0; i < MAX_BULLET; i++) {
 				//존재하는 총알만 출력
-				if (bullet1[i].exist == TRUE) {
+				if (player1.bullet[i].exist == TRUE) {
 					mPen = CreatePen(PS_SOLID, 0, RGB(0, 0, 0)); // GDI: 펜 만들기
 					oldPen = (HPEN)SelectObject(mDC, mPen); // 새로운 펜 선택하기
 					mBrush = CreateSolidBrush(RGB(0, 0, 0));
 					oldBrush = (HBRUSH)SelectObject(mDC, mBrush);
 
 					Rectangle(mDC, 
-						bullet1[i].x - BULLET_SIZE - cameraX, 
-						bullet1[i].y - BULLET_SIZE - cameraY, 
-						bullet1[i].x + BULLET_SIZE - cameraX, 
-						bullet1[i].y + BULLET_SIZE - cameraY);
+						player1.bullet[i].x - BULLET_SIZE - cameraX, 
+						player1.bullet[i].y - BULLET_SIZE - cameraY, 
+						player1.bullet[i].x + BULLET_SIZE - cameraX, 
+						player1.bullet[i].y + BULLET_SIZE - cameraY);
 
 					SelectObject(mDC, oldBrush);
 					DeleteObject(mBrush);
 					SelectObject(mDC, oldPen);
 					DeleteObject(mPen); // 만든 펜 객체 삭제하기
 
-					for (int j = 0; j < bullet1[i].c; j++) {
+					for (int j = 0; j < player1.bullet[i].c; j++) {
 						mPen = CreatePen(PS_SOLID, 0, RGB(7 * j, 7 * j, 7 * j)); // GDI: 펜 만들기
 						oldPen = (HPEN)SelectObject(mDC, mPen); // 새로운 펜 선택하기
 						mBrush = CreateSolidBrush(RGB(7 * j, 7 * j, 7 * j));
 						oldBrush = (HBRUSH)SelectObject(mDC, mBrush);
 
 						Rectangle(mDC, 
-							bullet1[i].x - bullet1[i].vx * BULLET_SIZE2 * (j + 1) - BULLET_SIZE - cameraX, 
-							bullet1[i].y - bullet1[i].vy * BULLET_SIZE2 * (j + 1) - BULLET_SIZE - cameraY, 
-							bullet1[i].x - bullet1[i].vx * BULLET_SIZE2 * (j + 1) + BULLET_SIZE - cameraX, 
-							bullet1[i].y - bullet1[i].vy * BULLET_SIZE2 * (j + 1) + BULLET_SIZE - cameraY);
+							player1.bullet[i].x - player1.bullet[i].vx * BULLET_SIZE2 * (j + 1) - BULLET_SIZE - cameraX, 
+							player1.bullet[i].y - player1.bullet[i].vy * BULLET_SIZE2 * (j + 1) - BULLET_SIZE - cameraY, 
+							player1.bullet[i].x - player1.bullet[i].vx * BULLET_SIZE2 * (j + 1) + BULLET_SIZE - cameraX, 
+							player1.bullet[i].y - player1.bullet[i].vy * BULLET_SIZE2 * (j + 1) + BULLET_SIZE - cameraY);
 
 						SelectObject(mDC, oldBrush);
 						DeleteObject(mBrush);
@@ -935,26 +759,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				}
 			}
 			// 총알2 ( 플레이어2 )
-			for (int i = 0; i < MAX_BULLET1; i++) {
+			for (int i = 0; i < MAX_BULLET; i++) {
 				//존재하는 총알만 출력
-				if (bullet2[i].exist == TRUE) {
+				if (player2.bullet[i].exist == TRUE) {
 					mPen = CreatePen(PS_SOLID, 0, RGB(0, 0, 0)); // GDI: 펜 만들기
 					oldPen = (HPEN)SelectObject(mDC, mPen); // 새로운 펜 선택하기
 					mBrush = CreateSolidBrush(RGB(0, 0, 0));
 					oldBrush = (HBRUSH)SelectObject(mDC, mBrush);
 
 					Rectangle(mDC, 
-						bullet2[i].x - BULLET_SIZE - cameraX, 
-						bullet2[i].y - BULLET_SIZE - cameraY,
-						bullet2[i].x + BULLET_SIZE - cameraX, 
-						bullet2[i].y + BULLET_SIZE - cameraY);
+						player2.bullet[i].x - BULLET_SIZE - cameraX, 
+						player2.bullet[i].y - BULLET_SIZE - cameraY,
+						player2.bullet[i].x + BULLET_SIZE - cameraX, 
+						player2.bullet[i].y + BULLET_SIZE - cameraY);
 
 					SelectObject(mDC, oldBrush);
 					DeleteObject(mBrush);
 					SelectObject(mDC, oldPen);
 					DeleteObject(mPen); // 만든 펜 객체 삭제하기
 
-					for (int j = 0; j < bullet2[i].c; j++) {
+					for (int j = 0; j < player2.bullet[i].c; j++) {
 						mPen = CreatePen(PS_SOLID, 0, RGB(7 * j, 7 * j, 7 * j)); // GDI: 펜 만들기
 						oldPen = (HPEN)SelectObject(mDC, mPen); // 새로운 펜 선택하기
 						mBrush = CreateSolidBrush(RGB(7 * j, 7 * j, 7 * j));
@@ -962,10 +786,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 
 						Rectangle(mDC, 
-							bullet2[i].x - bullet2[i].vx * BULLET_SIZE2 * (j + 1) - BULLET_SIZE - cameraX,
-							bullet2[i].y - bullet2[i].vy * BULLET_SIZE2 * (j + 1) - BULLET_SIZE - cameraY,
-							bullet2[i].x - bullet2[i].vx * BULLET_SIZE2 * (j + 1) + BULLET_SIZE - cameraX,
-							bullet2[i].y - bullet2[i].vy * BULLET_SIZE2 * (j + 1) + BULLET_SIZE - cameraY);
+							player2.bullet[i].x - player2.bullet[i].vx * BULLET_SIZE2 * (j + 1) - BULLET_SIZE - cameraX,
+							player2.bullet[i].y - player2.bullet[i].vy * BULLET_SIZE2 * (j + 1) - BULLET_SIZE - cameraY,
+							player2.bullet[i].x - player2.bullet[i].vx * BULLET_SIZE2 * (j + 1) + BULLET_SIZE - cameraX,
+							player2.bullet[i].y - player2.bullet[i].vy * BULLET_SIZE2 * (j + 1) + BULLET_SIZE - cameraY);
 
 						SelectObject(mDC, oldBrush);
 						DeleteObject(mBrush);
@@ -1056,7 +880,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			TextOut(mDC, 112 , 512 , lpOut1, lstrlen(lpOut1));
 			wsprintf(lpOut1, L"LIFE : %d", player1.life);
 			TextOut(mDC, 112 , 532 , lpOut1, lstrlen(lpOut1));
-			wsprintf(lpOut1, L"bullet : %d", player1.maxBullet - bullet1_count);
+			wsprintf(lpOut1, L"bullet : %d", player1.maxBullet - player1.bullet_count);
 			TextOut(mDC, 112 , 552 , lpOut1, lstrlen(lpOut1));
 			SelectObject(BMPmDC, BMP_player1_inform);
 			BitBlt(mDC, 240, 515, 45, 45, BMPmDC, 0, 0, SRCCOPY);
@@ -1068,7 +892,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			TextOut(mDC, 582 , 512 , lpOut2, lstrlen(lpOut2));
 			wsprintf(lpOut2, L"LIFE : %d", player2.life);
 			TextOut(mDC, 582 , 532 , lpOut2, lstrlen(lpOut2));
-			wsprintf(lpOut2, L"bullet : %d", player2.maxBullet - bullet2_count);
+			wsprintf(lpOut2, L"bullet : %d", player2.maxBullet - player2.bullet_count);
 			TextOut(mDC, 582 , 552 , lpOut2, lstrlen(lpOut2));
 			SelectObject(BMPmDC, BMP_player2_inform);
 			BitBlt(mDC, 710, 515, 45, 45, BMPmDC, 0, 0, SRCCOPY);

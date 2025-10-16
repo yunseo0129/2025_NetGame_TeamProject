@@ -64,30 +64,6 @@ extern FMOD::Channel* channel;
 extern FMOD_RESULT result;
 extern void* extradriverdata;
 
-//총알 =====================================================================
-#define BULLET_SIZE 2	// 권총
-#define BULLET_SIZE2 4	// 저격총
-#define MAX_BULLET1 20	// 총알 최대 개수
-
-typedef struct {
-	int exist;	// 존재여부 (TRUE/FALSE)
-	int x;		// 현재 x좌표 (픽셀 상)
-	int y;		// 현재 y좌표 (픽셀 상)
-
-	float vx;	// x좌표 이동방향
-	float vy;	// y좌표 이동방향 // 0으로 고정
-	int c;		// 그라데이션을 위한 카운트
-	float travelDistance;   // 이동한 거리
-}BULLET;
-extern BULLET bullet1[MAX_BULLET1 + 10];
-extern BULLET bullet2[MAX_BULLET1 + 10];
-extern int bullet1_count;
-extern int bullet2_count;
-
-//총 길이(이미지)
-#define gunWidth 80
-#define gunHeight 30
-
 
 // 아이템 =====================================================================
 #define iWidth 40

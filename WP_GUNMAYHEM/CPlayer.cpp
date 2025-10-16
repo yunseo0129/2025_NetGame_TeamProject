@@ -159,9 +159,93 @@ void CPlayer::update()
 
 void CPlayer::reload()
 {
+	bullet_count = 0;
+	for (CBullet& b : bullet) {
+		if (b.exist == FALSE)
+			b.c = 0;
+	}
 }
 
 void CPlayer::gunFire()
 {
+	//불렛카운트 -> 불렛 카운트가 맥스불렛을 넘으면 발사가 안됨 (총알 없음)
+	//불렛 카운트가 탄약 갯수를 넘지 않음 -> 총을 쏨 (비활성화인 총알 하나를 활성화 시킴) -> 불렛 카운트 증가
+	if (bullet_count < maxBullet) {
+		for (int i = 0; i < MAX_BULLET; i++) {
+			if (bullet[i].exist == FALSE && bullet[i].c == 0) {
+				bullet[i].exist = TRUE;
+				bullet[i].x = x + pWidth / 2;
+				bullet[i].y = y + pHeight / 2;
+				bullet[i].travelDistance = 0; // 초기화
+				//총알 방향 계산
+				switch (looking) {
+				case 0:
+					bullet[i].vx = -1;
+					bullet[i].vy = 0;
+					break;
+				case 1:
+					bullet[i].vx = 1;
+					bullet[i].vy = 0;
+					break;
+				}
+				bullet_count++;
+				channel->stop();
+				switch (gunType) {
+				case GUN_TYPE_PISTOL:
+					sound1->setMode(FMOD_LOOP_OFF);
+					ssystem->playSound(sound1, 0, false, &channel); //--- 1번 사운드 재생
+					break;
+				case GUN_TYPE_SNIPE:
+					sound2->setMode(FMOD_LOOP_OFF);
+					ssystem->playSound(sound2, 0, false, &channel); //--- 2번 사운드 재생
+					break;
+				}
+				break; 
+			}
+		}
+	}
 }
 
+void CPlayer::update_bullet(CPlayer* Enemy)
+{
+	//1. 총알1 충돌체크
+	for (int i = 0; i < MAX_BULLET; i++) {
+		if (bullet[i].exist == TRUE) {
+			//사거리 도달시
+			if (bullet[i].travelDistance > range) {
+				bullet[i].exist = FALSE;
+			} else {
+				if (bullet[i].x + BULLET_SIZE >= Enemy->x && bullet[i].x - BULLET_SIZE <= Enemy->x + pWidth &&
+					bullet[i].y + BULLET_SIZE >= Enemy->y && bullet[i].y - BULLET_SIZE <= Enemy->y + pHeight) {
+
+					Enemy->combo++;
+					Enemy->comboTime = 0;
+					Enemy->speed = (7 * Enemy->combo) * bullet[i].vx;
+					bullet[i].exist = FALSE;
+				}
+			}
+		}
+	}
+	//2. 총알1 이동 -> 플레이어의 방향에 따라(looking)
+	for (int i = 0; i < MAX_BULLET; i++) {
+		if (bullet[i].exist == TRUE) {
+			bullet[i].x += bullet[i].vx * 13; // 총알 속도 조절
+			bullet[i].travelDistance += 13;    // 이동 거리 추가
+			if (bullet[i].c < 30) {
+				bullet[i].c++;
+			}
+		}
+	}
+
+	// 플레이어의 충돌체크 로직 따로 리팩토링 필요할듯
+	//콤보초기화 -> 콤보가 1 이상이되면 시간을 검사한다
+	if (Enemy->combo > 0) {
+		Enemy->comboTime++;
+		//player2.combo++;
+
+		if (Enemy->comboTime > 200) {
+			Enemy->combo = 0;
+			Enemy->comboTime = 0;
+		}
+	}
+}

@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "CObject.h"
-//#include "CBullet.h"
+#include "CBullet.h"
 
 const int pWidth = 45;
 const int pHeight = 67;
@@ -27,8 +27,10 @@ private:
 public:
 	void regen();
 	void update();
+
 	void reload();
 	void gunFire();
+	void update_bullet(CPlayer* pTarget);
 
 public:
 	int exist;			// dead or alive
@@ -64,12 +66,13 @@ public:
 	int anim_frame;
 	int anim_timer;
 
+public:
+	CBullet bullet[30];
+	int bullet_count = 0;	// 현재 발사된 총알 수
+
 	// 총기 관련 (먹은 아이템에 따라 변화)
 	int gunType = 1;		// 1:pistol		2:snipe
 	int range = 300;		// 플레이어1의 사거리 (아이템을 먹으면 변화)
 	int maxBullet = 20;		// 1:pistol 20발, 2:snipe 10발
-	int bullet_count = 0;	// 현재 남은 총알 수
-
-	//CBullet* bulletArray;	// 총알 배열
 };
 

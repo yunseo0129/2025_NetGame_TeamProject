@@ -2,8 +2,11 @@
 #include "CObject.h"
 
 //총 길이(이미지)
-#define gunWidth 80
-#define gunHeight 30
+const int gunWidth = 80;
+const int gunHeight = 30;
+const int BULLET_SIZE = 2;		// 권총		가로 및 세로의 길이
+const int BULLET_SIZE2 = 4;		// 저격총	가로길이 - 세로는 권총과 동일
+const int MAX_BULLET = 20;		// 총알 최대 개수
 
 class CBullet final : CObject {
 public:
@@ -17,7 +20,7 @@ private:
 	virtual void Free();
 
 public:
-	void update_bullet();
+	void update();
 
 public:
 	int exist;	// 존재여부 (TRUE/FALSE)
