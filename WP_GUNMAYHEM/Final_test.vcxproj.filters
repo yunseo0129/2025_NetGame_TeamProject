@@ -39,6 +39,12 @@
     <ClCompile Include="CBase.cpp">
       <Filter>소스 파일\CBase</Filter>
     </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>소스 파일\CObject\CPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet.cpp">
+      <Filter>소스 파일\CObject\CBullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -55,6 +61,12 @@
     </ClInclude>
     <ClInclude Include="CBase.h">
       <Filter>소스 파일\CBase</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>소스 파일\CObject\CPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet.h">
+      <Filter>소스 파일\CObject\CBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

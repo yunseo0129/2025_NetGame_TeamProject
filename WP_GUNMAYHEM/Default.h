@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #pragma comment(lib, "Msimg32.lib")
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "fmod_vc.lib")
@@ -21,19 +21,19 @@ LPCTSTR lpszWindowName = L"WP_GUNMAYHEM";
 
 int cameraWidth = 900;
 int cameraHeight = 650;
-int cameraX = 0;   // Ä«¸Ş¶óÀÇ ÁÂ»ó´Ü X ÁÂÇ¥
-int cameraY = 0;   // Ä«¸Ş¶óÀÇ ÁÂ»ó´Ü Y ÁÂÇ¥
+int cameraX = 0;   // ì¹´ë©”ë¼ì˜ ì¢Œìƒë‹¨ X ì¢Œí‘œ
+int cameraY = 0;   // ì¹´ë©”ë¼ì˜ ì¢Œìƒë‹¨ Y ì¢Œí‘œ
 
-// ¾Ö´Ï¸ŞÀÌ¼Ç °ü·Ã º¯¼ö
+// ì• ë‹ˆë©”ì´ì…˜ ê´€ë ¨ ë³€ìˆ˜
 int player1_anim_frame = 0;
 int player1_anim_timer = 0;
-int player1_anim_max_frame = 2; // 0, 1, 2 ÃÑ 3ÇÁ·¹ÀÓ
+int player1_anim_max_frame = 2; // 0, 1, 2 ì´ 3í”„ë ˆì„
 
 int player2_anim_frame = 0;
 int player2_anim_timer = 0;
-int player2_anim_max_frame = 2; // 0, 1, 2 ÃÑ 3ÇÁ·¹ÀÓ
+int player2_anim_max_frame = 2; // 0, 1, 2 ì´ 3í”„ë ˆì„
 
-// ¾Ö´Ï¸ŞÀÌ¼Ç ºñÆ®¸Ê ÇÚµé
+// ì• ë‹ˆë©”ì´ì…˜ ë¹„íŠ¸ë§µ í•¸ë“¤
 HBITMAP BMP_player1_inform;
 HBITMAP BMP_player2_inform;
 HBITMAP BMP_player1_left_stand;
@@ -60,29 +60,29 @@ HBITMAP BMP_map2;
 HBITMAP BMP_ground1;
 HBITMAP BMP_inform;
 
-RECT rt;	//Å¬¶ó¿µ¿ª
+RECT rt;	//í´ë¼ì˜ì—­
 
-//»ç¿îµå
+//ì‚¬ìš´ë“œ
 FMOD::System* ssystem;
 FMOD::Sound* sound1, * sound2, * clickSound, * itemSound;
 FMOD::Channel* channel = 0;
 FMOD_RESULT result;
 void* extradriverdata = 0;
 
-//ÃÑ¾Ë
-#define BULLET_SIZE 2
-#define BULLET_SIZE2 4
-#define MAX_BULLET1 20
+//ì´ì•Œ
+#define BULLET_SIZE 2	// ê¶Œì´
+#define BULLET_SIZE2 4	// ì €ê²©ì´
+#define MAX_BULLET1 20	// ì´ì•Œ ìµœëŒ€ ê°œìˆ˜
 
 typedef struct {
-	int exist;	// Á¸Àç¿©ºÎ (TRUE/FALSE)
-	int x;		// ÇöÀç xÁÂÇ¥ (ÇÈ¼¿ »ó)
-	int y;		// ÇöÀç yÁÂÇ¥ (ÇÈ¼¿ »ó)
+	int exist;	// ì¡´ì¬ì—¬ë¶€ (TRUE/FALSE)
+	int x;		// í˜„ì¬ xì¢Œí‘œ (í”½ì…€ ìƒ)
+	int y;		// í˜„ì¬ yì¢Œí‘œ (í”½ì…€ ìƒ)
 
-	float vx;	// xÁÂÇ¥ ÀÌµ¿¹æÇâ
-	float vy;	// yÁÂÇ¥ ÀÌµ¿¹æÇâ
-	int c;		// ±×¶óµ¥ÀÌ¼ÇÀ» À§ÇÑ Ä«¿îÆ®
-	float travelDistance;   // ÀÌµ¿ÇÑ °Å¸®
+	float vx;	// xì¢Œí‘œ ì´ë™ë°©í–¥
+	float vy;	// yì¢Œí‘œ ì´ë™ë°©í–¥ // 0ìœ¼ë¡œ ê³ ì •
+	int c;		// ê·¸ë¼ë°ì´ì…˜ì„ ìœ„í•œ ì¹´ìš´íŠ¸
+	float travelDistance;   // ì´ë™í•œ ê±°ë¦¬
 }BULLET;
 BULLET bullet1[MAX_BULLET1 + 10];
 BULLET bullet2[MAX_BULLET1 + 10];
@@ -91,17 +91,17 @@ int bullet2_count = 0;
 
 int gunType1 = 1;		// 1:pistol		2:snipe
 int gunType2 = 1;		// 1:pistol		2:snipe
-int range1 = 300;		//ÇÃ·¹ÀÌ¾î1ÀÇ »ç°Å¸® (¾ÆÀÌÅÛÀ» ¸ÔÀ¸¸é º¯È­)
-int range2 = 300;		//ÇÃ·¹ÀÌ¾î2ÀÇ »ç°Å¸® (¾ÆÀÌÅÛÀ» ¸ÔÀ¸¸é º¯È­)
+int range1 = 300;		//í”Œë ˆì´ì–´1ì˜ ì‚¬ê±°ë¦¬ (ì•„ì´í…œì„ ë¨¹ìœ¼ë©´ ë³€í™”)
+int range2 = 300;		//í”Œë ˆì´ì–´2ì˜ ì‚¬ê±°ë¦¬ (ì•„ì´í…œì„ ë¨¹ìœ¼ë©´ ë³€í™”)
 int maxBullet1 = 20;
 int maxBullet2 = 20;
 
 
-//ÃÑ ±æÀÌ(ÀÌ¹ÌÁö)
+//ì´ ê¸¸ì´(ì´ë¯¸ì§€)
 #define gunWidth 80
 #define gunHeight 30
 
-//ÇÃ·¹ÀÌ¾î (1, 2)
+//í”Œë ˆì´ì–´ (1, 2)
 #define pWidth 45
 #define pHeight 67
 #define MAXLIFE 3
@@ -109,13 +109,13 @@ typedef struct {
 	int exist;		//dead or alive
 	int x;
 	int y;
-	float ax;		//°¡¼Óµµ : 
+	float ax;		//ê°€ì†ë„ : 
 	int looking;	//left right -> paint & gunfire
 	int life;
 	int combo;
-	int downCount;	//10ÀÇ Å¸ÀÌ¸Ó µ¿¾È ¶¥ ºÎµúÈû °Ë»ç x
+	int downCount;	//10ì˜ íƒ€ì´ë¨¸ ë™ì•ˆ ë•… ë¶€ë”ªí˜ ê²€ì‚¬ x
 
-	//³«ÇÏ ¹× Á¡ÇÁ º¯¼ö
+	//ë‚™í•˜ ë° ì í”„ ë³€ìˆ˜
 	int fstartY;
 	float downTime;
 	float downHeight;
@@ -127,16 +127,16 @@ typedef struct {
 	float jumpPower;
 	BOOL jumping;
 
-	//¼Óµµ, °¡¼Óµµ º¯¼ö
-	float acceleration;	// ÇöÀç °¡¼Óµµ
-	float speed;			// ÇöÀç ¼Óµµ
-	bool isMoving;		// ÀÌµ¿ ÁßÀÎÁö ¿©ºÎ
+	//ì†ë„, ê°€ì†ë„ ë³€ìˆ˜
+	float acceleration;	// í˜„ì¬ ê°€ì†ë„
+	float speed;			// í˜„ì¬ ì†ë„
+	bool isMoving;		// ì´ë™ ì¤‘ì¸ì§€ ì—¬ë¶€
 }PLAYER;
 PLAYER player1;
 PLAYER player2;
-#define MAX_SPEED 5.0f      // ÃÖ´ë ¼Óµµ
-#define ACCELERATION 0.1f   // °¡¼Óµµ
-#define FRICTION 0.05f      // ¸¶Âû·Â(°¨¼Ó)
+#define MAX_SPEED 5.0f      // ìµœëŒ€ ì†ë„
+#define ACCELERATION 0.1f   // ê°€ì†ë„
+#define FRICTION 0.05f      // ë§ˆì°°ë ¥(ê°ì†)
 int jumpCount1 = 0;
 int jumpCount2 = 0;
 int comboTime1 = 0;
@@ -150,18 +150,18 @@ typedef struct {
 	int x;
 	int y;
 
-	//³«ÇÏº¯¼ö
+	//ë‚™í•˜ë³€ìˆ˜
 	int fstartY;
 	float downTime;
 	float downHeight;
 	BOOL falling;
 
-	int type; //0: ÃÑ¾Ë 10°³, »ç°Å¸® 600,		1: ÃÑ¾Ë 20°³, »ç°Å¸® 300
+	int type; //0: ì´ì•Œ 10ê°œ, ì‚¬ê±°ë¦¬ 600,		1: ì´ì•Œ 20ê°œ, ì‚¬ê±°ë¦¬ 300
 }ITEMBOX;
 ITEMBOX item[MAX_ITEM];
 int item_count = 0;
 
-//¸Ê(»ç°¢Çü)
+//ë§µ(ì‚¬ê°í˜•)
 #define mapWidth 200
 #define mapHeight 30
 #define mapCount 5

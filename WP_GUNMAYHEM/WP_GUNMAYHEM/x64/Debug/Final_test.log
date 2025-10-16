@@ -1,23 +1,146 @@
 ﻿  CBase.cpp
   CMap.cpp
-  CObject.cpp
-C:\Users\장윤서\source\repos\2025_NetGame_TeamProject\WP_GUNMAYHEM\CBase.cpp(3,8): error C2533: 'CBase::{ctor}': 생성자에서 반환 형식을 사용할 수 없습니다.
-C:\Users\장윤서\source\repos\2025_NetGame_TeamProject\WP_GUNMAYHEM\CObject.h(5,1): error C2236: 예기치 않은 토큰 'class'입니다. ';'이 없습니다.
-  (소스 파일 'CObject.cpp'을(를) 컴파일하는 중)
-  
-C:\Users\장윤서\source\repos\2025_NetGame_TeamProject\WP_GUNMAYHEM\CObject.h(5,15): error C2059: 구문 오류: ':'
-  (소스 파일 'CObject.cpp'을(를) 컴파일하는 중)
-  
-C:\Users\장윤서\source\repos\2025_NetGame_TeamProject\WP_GUNMAYHEM\CObject.h(5,17): error C2059: 구문 오류: 'public'
-  (소스 파일 'CObject.cpp'을(를) 컴파일하는 중)
-  
-C:\Users\장윤서\source\repos\2025_NetGame_TeamProject\WP_GUNMAYHEM\CObject.h(6,1): error C2143: 구문 오류: ';'이(가) '{' 앞에 없습니다.
-  (소스 파일 'CObject.cpp'을(를) 컴파일하는 중)
-  
-C:\Users\장윤서\source\repos\2025_NetGame_TeamProject\WP_GUNMAYHEM\CObject.h(6,1): error C2447: '{': 함수 헤더가 없습니다. 이전 스타일의 형식 목록입니까?
-  (소스 파일 'CObject.cpp'을(를) 컴파일하는 중)
-  
-C:\Users\장윤서\source\repos\2025_NetGame_TeamProject\WP_GUNMAYHEM\CObject.cpp(3,1): error C2653: 'CObject': 클래스 또는 네임스페이스 이름이 아닙니다.
-C:\Users\장윤서\source\repos\2025_NetGame_TeamProject\WP_GUNMAYHEM\CObject.cpp(4,1): error C4430: 형식 지정자가 없습니다. int로 가정합니다. 참고: C++에서는 기본 int를 지원하지 않습니다.
-C:\Users\장윤서\source\repos\2025_NetGame_TeamProject\WP_GUNMAYHEM\CObject.cpp(5,1): warning C4508: 'CObject': 함수는 값을 반환해야 하므로 'void' 반환 형식으로 간주됩니다.
+  WP_FINAL.cpp
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(75,34): warning C4244: '+=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(163,34): warning C4244: '+=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(230,22): warning C4244: '+=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(357,22): warning C4244: '+=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(476,12): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(508,12): warning C4244: 'return': 'WPARAM'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(1208,76): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(1207,76): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(1206,76): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(1205,76): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(1248,76): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(1247,76): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(1246,76): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(1245,76): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\WP_FINAL.cpp(518,10): warning C4101: 'hBitmap' :참조되지 않은 지역 변수입니다.
   코드를 생성하고 있습니다...
+  LINK : D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\x64\Debug\WP_GUNMAYHEM.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
+CMap.obj : error LNK2005: "struct HINSTANCE__ * g_hInst" (?g_hInst@@3PEAUHINSTANCE__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "wchar_t const * const lpszClass" (?lpszClass@@3PEB_WEB)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "wchar_t const * const lpszWindowName" (?lpszWindowName@@3PEB_WEB)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int cameraWidth" (?cameraWidth@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int cameraHeight" (?cameraHeight@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int cameraX" (?cameraX@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int cameraY" (?cameraY@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int player1_anim_frame" (?player1_anim_frame@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int player1_anim_timer" (?player1_anim_timer@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int player1_anim_max_frame" (?player1_anim_max_frame@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int player2_anim_frame" (?player2_anim_frame@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int player2_anim_timer" (?player2_anim_timer@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int player2_anim_max_frame" (?player2_anim_max_frame@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_player1_inform" (?BMP_player1_inform@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_player2_inform" (?BMP_player2_inform@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_player1_left_stand" (?BMP_player1_left_stand@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * * BMP_player1_left_walk" (?BMP_player1_left_walk@@3PAPEAUHBITMAP__@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_player1_right_stand" (?BMP_player1_right_stand@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * * BMP_player1_right_walk" (?BMP_player1_right_walk@@3PAPEAUHBITMAP__@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_player2_left_stand" (?BMP_player2_left_stand@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * * BMP_player2_left_walk" (?BMP_player2_left_walk@@3PAPEAUHBITMAP__@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_player2_right_stand" (?BMP_player2_right_stand@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * * BMP_player2_right_walk" (?BMP_player2_right_walk@@3PAPEAUHBITMAP__@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_gun1_left" (?BMP_gun1_left@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_gun1_right" (?BMP_gun1_right@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_gun2_left" (?BMP_gun2_left@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_gun2_right" (?BMP_gun2_right@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_itemBox" (?BMP_itemBox@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_startMenu" (?BMP_startMenu@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_pauseMenu" (?BMP_pauseMenu@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_map1" (?BMP_map1@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_map2" (?BMP_map2@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_ground1" (?BMP_ground1@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct HBITMAP__ * BMP_inform" (?BMP_inform@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct tagRECT rt" (?rt@@3UtagRECT@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "class FMOD::System * ssystem" (?ssystem@@3PEAVSystem@FMOD@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "class FMOD::Sound * sound1" (?sound1@@3PEAVSound@FMOD@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "class FMOD::Sound * sound2" (?sound2@@3PEAVSound@FMOD@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "class FMOD::Sound * clickSound" (?clickSound@@3PEAVSound@FMOD@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "class FMOD::Sound * itemSound" (?itemSound@@3PEAVSound@FMOD@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "class FMOD::Channel * channel" (?channel@@3PEAVChannel@FMOD@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "enum FMOD_RESULT result" (?result@@3W4FMOD_RESULT@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "void * extradriverdata" (?extradriverdata@@3PEAXEA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct BULLET * bullet1" (?bullet1@@3PAUBULLET@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct BULLET * bullet2" (?bullet2@@3PAUBULLET@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int bullet1_count" (?bullet1_count@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int bullet2_count" (?bullet2_count@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int gunType1" (?gunType1@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int gunType2" (?gunType2@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int range1" (?range1@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int range2" (?range2@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int maxBullet1" (?maxBullet1@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int maxBullet2" (?maxBullet2@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct PLAYER player1" (?player1@@3UPLAYER@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct PLAYER player2" (?player2@@3UPLAYER@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int jumpCount1" (?jumpCount1@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int jumpCount2" (?jumpCount2@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int comboTime1" (?comboTime1@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int comboTime2" (?comboTime2@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct ITEMBOX * item" (?item@@3PAUITEMBOX@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "int item_count" (?item_count@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2005: "struct MAPS * maps" (?maps@@3PAUMAPS@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HINSTANCE__ * g_hInst" (?g_hInst@@3PEAUHINSTANCE__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "wchar_t const * const lpszClass" (?lpszClass@@3PEB_WEB)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "wchar_t const * const lpszWindowName" (?lpszWindowName@@3PEB_WEB)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int cameraWidth" (?cameraWidth@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int cameraHeight" (?cameraHeight@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int cameraX" (?cameraX@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int cameraY" (?cameraY@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int player1_anim_frame" (?player1_anim_frame@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int player1_anim_timer" (?player1_anim_timer@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int player1_anim_max_frame" (?player1_anim_max_frame@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int player2_anim_frame" (?player2_anim_frame@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int player2_anim_timer" (?player2_anim_timer@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int player2_anim_max_frame" (?player2_anim_max_frame@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_player1_inform" (?BMP_player1_inform@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_player2_inform" (?BMP_player2_inform@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_player1_left_stand" (?BMP_player1_left_stand@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * * BMP_player1_left_walk" (?BMP_player1_left_walk@@3PAPEAUHBITMAP__@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_player1_right_stand" (?BMP_player1_right_stand@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * * BMP_player1_right_walk" (?BMP_player1_right_walk@@3PAPEAUHBITMAP__@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_player2_left_stand" (?BMP_player2_left_stand@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * * BMP_player2_left_walk" (?BMP_player2_left_walk@@3PAPEAUHBITMAP__@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_player2_right_stand" (?BMP_player2_right_stand@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * * BMP_player2_right_walk" (?BMP_player2_right_walk@@3PAPEAUHBITMAP__@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_gun1_left" (?BMP_gun1_left@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_gun1_right" (?BMP_gun1_right@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_gun2_left" (?BMP_gun2_left@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_gun2_right" (?BMP_gun2_right@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_itemBox" (?BMP_itemBox@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_startMenu" (?BMP_startMenu@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_pauseMenu" (?BMP_pauseMenu@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_map1" (?BMP_map1@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_map2" (?BMP_map2@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_ground1" (?BMP_ground1@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct HBITMAP__ * BMP_inform" (?BMP_inform@@3PEAUHBITMAP__@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct tagRECT rt" (?rt@@3UtagRECT@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "class FMOD::System * ssystem" (?ssystem@@3PEAVSystem@FMOD@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "class FMOD::Sound * sound1" (?sound1@@3PEAVSound@FMOD@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "class FMOD::Sound * sound2" (?sound2@@3PEAVSound@FMOD@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "class FMOD::Sound * clickSound" (?clickSound@@3PEAVSound@FMOD@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "class FMOD::Sound * itemSound" (?itemSound@@3PEAVSound@FMOD@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "class FMOD::Channel * channel" (?channel@@3PEAVChannel@FMOD@@EA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "enum FMOD_RESULT result" (?result@@3W4FMOD_RESULT@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "void * extradriverdata" (?extradriverdata@@3PEAXEA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct BULLET * bullet1" (?bullet1@@3PAUBULLET@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct BULLET * bullet2" (?bullet2@@3PAUBULLET@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int bullet1_count" (?bullet1_count@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int bullet2_count" (?bullet2_count@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int gunType1" (?gunType1@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int gunType2" (?gunType2@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int range1" (?range1@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int range2" (?range2@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int maxBullet1" (?maxBullet1@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int maxBullet2" (?maxBullet2@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct PLAYER player1" (?player1@@3UPLAYER@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct PLAYER player2" (?player2@@3UPLAYER@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int jumpCount1" (?jumpCount1@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int jumpCount2" (?jumpCount2@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int comboTime1" (?comboTime1@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int comboTime2" (?comboTime2@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct ITEMBOX * item" (?item@@3PAUITEMBOX@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "int item_count" (?item_count@@3HA)이(가) CBase.obj에 이미 정의되어 있습니다.
+WP_FINAL.obj : error LNK2005: "struct MAPS * maps" (?maps@@3PAUMAPS@@A)이(가) CBase.obj에 이미 정의되어 있습니다.
+CMap.obj : error LNK2019: "public: virtual __cdecl CObject::~CObject(void)" (??1CObject@@UEAA@XZ)"public: virtual __cdecl CMap::~CMap(void)" (??1CMap@@UEAA@XZ) 함수에서 참조되는 확인할 수 없는 외부 기호
+D:\_Grade3\3-2\NGP\2025_NetGame_TeamProject\2025_NetGame_TeamProject\WP_GUNMAYHEM\x64\Debug\WP_GUNMAYHEM.exe : fatal error LNK1120: 1개의 확인할 수 없는 외부 참조입니다.

@@ -1,4 +1,4 @@
-#include "Default.h"
+ï»¿#include "Default.h"
 
 
 void reload1() {
@@ -9,8 +9,8 @@ void reload1() {
 	}
 }
 void gunFire1(int way, BULLET bullet[]) {
-	//ºÒ·¿Ä«¿îÆ® -> ºÒ·¿ Ä«¿îÆ®°¡ ¸Æ½ººÒ·¿À» ³ÑÀ¸¸é ¹ß»ç°¡ ¾ÈµÊ (ÃÑ¾Ë ¾øÀ½)
-	//ºÒ·¿ Ä«¿îÆ®°¡ Åº¾à °¹¼ö¸¦ ³ÑÁö ¾ÊÀ½ -> ÃÑÀ» ½ô (ºñÈ°¼ºÈ­ÀÎ ÃÑ¾Ë ÇÏ³ª¸¦ È°¼ºÈ­ ½ÃÅ´) -> ºÒ·¿ Ä«¿îÆ® Áõ°¡
+	//ë¶ˆë ›ì¹´ìš´íŠ¸ -> ë¶ˆë › ì¹´ìš´íŠ¸ê°€ ë§¥ìŠ¤ë¶ˆë ›ì„ ë„˜ìœ¼ë©´ ë°œì‚¬ê°€ ì•ˆë¨ (ì´ì•Œ ì—†ìŒ)
+	//ë¶ˆë › ì¹´ìš´íŠ¸ê°€ íƒ„ì•½ ê°¯ìˆ˜ë¥¼ ë„˜ì§€ ì•ŠìŒ -> ì´ì„ ì¨ (ë¹„í™œì„±í™”ì¸ ì´ì•Œ í•˜ë‚˜ë¥¼ í™œì„±í™” ì‹œí‚´) -> ë¶ˆë › ì¹´ìš´íŠ¸ ì¦ê°€
 	if (bullet1_count < maxBullet1) {
 		for (int i = 0; i < MAX_BULLET1; i++) {
 			if (bullet[i].exist == FALSE && bullet[i].c == 0)
@@ -18,9 +18,9 @@ void gunFire1(int way, BULLET bullet[]) {
 				bullet[i].exist = TRUE;
 				bullet[i].x = player1.x + pWidth / 2;
 				bullet[i].y = player1.y + pHeight / 2;
-				bullet[i].travelDistance = 0; // ÃÊ±âÈ­
+				bullet[i].travelDistance = 0; // ì´ˆê¸°í™”
 
-				//ÃÑ¾Ë ¹æÇâ °è»ê
+				//ì´ì•Œ ë°©í–¥ ê³„ì‚°
 				switch (way) {
 				case 0:
 					bullet[i].vx = -1;
@@ -37,23 +37,23 @@ void gunFire1(int way, BULLET bullet[]) {
 				switch (gunType1) {
 				case 1:
 					sound1->setMode(FMOD_LOOP_OFF);
-					ssystem->playSound(sound1, 0, false, &channel); //--- 1¹ø »ç¿îµå Àç»ı
+					ssystem->playSound(sound1, 0, false, &channel); //--- 1ë²ˆ ì‚¬ìš´ë“œ ì¬ìƒ
 					break;
 				case 2:
 					sound2->setMode(FMOD_LOOP_OFF);
-					ssystem->playSound(sound2, 0, false, &channel); //--- 1¹ø »ç¿îµå Àç»ı
+					ssystem->playSound(sound2, 0, false, &channel); //--- 1ë²ˆ ì‚¬ìš´ë“œ ì¬ìƒ
 					break;
 				}
-				break;	//ÇÑ¹ø ½î¸é ¹İº¹¹® Á¤Áö
+				break;	//í•œë²ˆ ì˜ë©´ ë°˜ë³µë¬¸ ì •ì§€
 			}
 		}
 	}
 }
 void update_bullet1() {
-	//1. ÃÑ¾Ë1 Ãæµ¹Ã¼Å©
+	//1. ì´ì•Œ1 ì¶©ëŒì²´í¬
 	for (int i = 0; i < MAX_BULLET1; i++) {
 		if (bullet1[i].exist == TRUE) {
-			//»ç°Å¸® µµ´Ş½Ã
+			//ì‚¬ê±°ë¦¬ ë„ë‹¬ì‹œ
 			if (bullet1[i].travelDistance > range1) {
 				bullet1[i].exist = FALSE;
 			}
@@ -69,17 +69,17 @@ void update_bullet1() {
 			}
 		}
 	}
-	//2. ÃÑ¾Ë1 ÀÌµ¿ -> ÇÃ·¹ÀÌ¾îÀÇ ¹æÇâ¿¡ µû¶ó(looking)
+	//2. ì´ì•Œ1 ì´ë™ -> í”Œë ˆì´ì–´ì˜ ë°©í–¥ì— ë”°ë¼(looking)
 	for (int i = 0; i < MAX_BULLET1; i++) {
 		if (bullet1[i].exist == TRUE) {
-			bullet1[i].x += bullet1[i].vx * 13; // ÃÑ¾Ë ¼Óµµ Á¶Àı
-			bullet1[i].travelDistance += 13;    // ÀÌµ¿ °Å¸® Ãß°¡
+			bullet1[i].x += bullet1[i].vx * 13; // ì´ì•Œ ì†ë„ ì¡°ì ˆ
+			bullet1[i].travelDistance += 13;    // ì´ë™ ê±°ë¦¬ ì¶”ê°€
 			if (bullet1[i].c < 30) {
 				bullet1[i].c++;
 			}
 		}
 	}
-	//ÄŞº¸ÃÊ±âÈ­ -> ÄŞº¸°¡ 1 ÀÌ»óÀÌµÇ¸é ½Ã°£À» °Ë»çÇÑ´Ù
+	//ì½¤ë³´ì´ˆê¸°í™” -> ì½¤ë³´ê°€ 1 ì´ìƒì´ë˜ë©´ ì‹œê°„ì„ ê²€ì‚¬í•œë‹¤
 	if (player2.combo > 0) {
 		comboTime2++;
 		//player2.combo++;
@@ -106,9 +106,9 @@ void gunFire2(int way, BULLET bullet[]) {
 				bullet[i].exist = TRUE;
 				bullet[i].x = player2.x + pWidth / 2;
 				bullet[i].y = player2.y + pHeight / 2;
-				bullet[i].travelDistance = 0; // ÃÊ±âÈ­
+				bullet[i].travelDistance = 0; // ì´ˆê¸°í™”
 
-				//ÃÑ¾Ë ¹æÇâ °è»ê
+				//ì´ì•Œ ë°©í–¥ ê³„ì‚°
 				switch (way) {
 				case 0:
 					bullet[i].vx = -1;
@@ -125,23 +125,23 @@ void gunFire2(int way, BULLET bullet[]) {
 				switch (gunType2) {
 				case 1:
 					sound1->setMode(FMOD_LOOP_OFF);
-					ssystem->playSound(sound1, 0, false, &channel); //--- 1¹ø »ç¿îµå Àç»ı
+					ssystem->playSound(sound1, 0, false, &channel); //--- 1ë²ˆ ì‚¬ìš´ë“œ ì¬ìƒ
 					break;
 				case 2:
 					sound2->setMode(FMOD_LOOP_OFF);
-					ssystem->playSound(sound2, 0, false, &channel); //--- 1¹ø »ç¿îµå Àç»ı
+					ssystem->playSound(sound2, 0, false, &channel); //--- 1ë²ˆ ì‚¬ìš´ë“œ ì¬ìƒ
 					break;
 				}
-				break;	//ÇÑ¹ø ½î¸é ¹İº¹¹® Á¤Áö
+				break;	//í•œë²ˆ ì˜ë©´ ë°˜ë³µë¬¸ ì •ì§€
 			}
 		}
 	}
 }
 void update_bullet2() {
-	//1. ÃÑ¾Ë2 Ãæµ¹Ã¼Å©
+	//1. ì´ì•Œ2 ì¶©ëŒì²´í¬
 	for (int i = 0; i < MAX_BULLET1; i++) {
 		if (bullet2[i].exist == TRUE) {
-			//»ç°Å¸® µµ´Ş ½Ã
+			//ì‚¬ê±°ë¦¬ ë„ë‹¬ ì‹œ
 			if (bullet2[i].travelDistance > range2) {
 				bullet2[i].exist = FALSE;
 			}
@@ -157,17 +157,17 @@ void update_bullet2() {
 			}
 		}
 	}
-	//2. ÃÑ¾Ë ÀÌµ¿ -> ÇÃ·¹ÀÌ¾îÀÇ ¹æÇâ¿¡ µû¶ó(looking)
+	//2. ì´ì•Œ ì´ë™ -> í”Œë ˆì´ì–´ì˜ ë°©í–¥ì— ë”°ë¼(looking)
 	for (int i = 0; i < MAX_BULLET1; i++) {
 		if (bullet2[i].exist == TRUE) {
-			bullet2[i].x += bullet2[i].vx * 13; //ÃÑ¾Ë ¼Óµµ Á¶Àı
-			bullet2[i].travelDistance += 13;    // ÀÌµ¿ °Å¸® Ãß°¡
+			bullet2[i].x += bullet2[i].vx * 13; //ì´ì•Œ ì†ë„ ì¡°ì ˆ
+			bullet2[i].travelDistance += 13;    // ì´ë™ ê±°ë¦¬ ì¶”ê°€
 			if (bullet2[i].c < 30) {
 				bullet2[i].c++;
 			}
 		}
 	}
-	//ÄŞº¸ÃÊ±âÈ­ -> ÄŞº¸°¡ 1 ÀÌ»óÀÌµÇ¸é ½Ã°£À» °Ë»çÇÑ´Ù
+	//ì½¤ë³´ì´ˆê¸°í™” -> ì½¤ë³´ê°€ 1 ì´ìƒì´ë˜ë©´ ì‹œê°„ì„ ê²€ì‚¬í•œë‹¤
 	if (player1.combo > 0) {
 		comboTime1++;
 		if (comboTime1 > 200) {
@@ -178,9 +178,9 @@ void update_bullet2() {
 }
 
 void regenerate_1() {
-	player1.acceleration = 0.0f;	// ÇöÀç °¡¼Óµµ
-	player1.speed = 0.0f;			// ÇöÀç ¼Óµµ
-	player1.isMoving = FALSE;		// ÀÌµ¿ ÁßÀÎÁö ¿©ºÎ
+	player1.acceleration = 0.0f;	// í˜„ì¬ ê°€ì†ë„
+	player1.speed = 0.0f;			// í˜„ì¬ ì†ë„
+	player1.isMoving = FALSE;		// ì´ë™ ì¤‘ì¸ì§€ ì—¬ë¶€
 	player1.falling = FALSE;
 	player1.jumping = FALSE;
 	player1.x = 420;
@@ -194,9 +194,9 @@ void regenerate_1() {
 	reload1();
 }
 void regenerate_2() {
-	player2.acceleration = 0.0f;	// ÇöÀç °¡¼Óµµ
-	player2.speed = 0.0f;			// ÇöÀç ¼Óµµ
-	player2.isMoving = FALSE;		// ÀÌµ¿ ÁßÀÎÁö ¿©ºÎ
+	player2.acceleration = 0.0f;	// í˜„ì¬ ê°€ì†ë„
+	player2.speed = 0.0f;			// í˜„ì¬ ì†ë„
+	player2.isMoving = FALSE;		// ì´ë™ ì¤‘ì¸ì§€ ì—¬ë¶€
 	player2.falling = FALSE;
 	player2.jumping = FALSE;
 	player2.x = 420;
@@ -212,13 +212,13 @@ void regenerate_2() {
 void update_player1() {
 	// update speed :  player 1
 	if (player1.isMoving) {
-		// °¡¼Óµµ¸¦ ¼Óµµ¿¡ Àû¿ë
+		// ê°€ì†ë„ë¥¼ ì†ë„ì— ì ìš©
 		player1.speed += player1.acceleration;
-		// ¼Óµµ°¡ ÃÖ´ë ¼Óµµ¸¦ ÃÊ°úÇÏÁö ¾Êµµ·Ï Á¶Á¤
+		// ì†ë„ê°€ ìµœëŒ€ ì†ë„ë¥¼ ì´ˆê³¼í•˜ì§€ ì•Šë„ë¡ ì¡°ì •
 		player1.speed = max(-MAX_SPEED, min(player1.speed, MAX_SPEED));
 	}
 	else {
-		// ¸¶Âû·ÂÀ» Àû¿ëÇÏ¿© Á¡Â÷ ¸ØÃã
+		// ë§ˆì°°ë ¥ì„ ì ìš©í•˜ì—¬ ì ì°¨ ë©ˆì¶¤
 		if (player1.speed > 0) {
 			player1.speed = max(0.0f, player1.speed - FRICTION);
 		}
@@ -226,7 +226,7 @@ void update_player1() {
 			player1.speed = min(0.0f, player1.speed + FRICTION);
 		}
 	}
-	// ¼Óµµ¿¡ µû¶ó ÇÃ·¹ÀÌ¾î À§Ä¡ ¾÷µ¥ÀÌÆ®
+	// ì†ë„ì— ë”°ë¼ í”Œë ˆì´ì–´ ìœ„ì¹˜ ì—…ë°ì´íŠ¸
 	player1.x += player1.speed;
 
 	// jumping or falling
@@ -235,7 +235,7 @@ void update_player1() {
 		player1.jumpTime += 0.2f;
 		player1.y = (player1.jstartY + (int)player1.jumpHeight);
 
-		//Á¡ÇÁÅ¸ÀÓÀÌ Á¡ÇÁÆÄ¿öº¸´Ù Ä¿Á³À» ¶§, ¶³¾îÁö´Â ÁßÀÏ ¶§¸¦ Ãæµ¹Ã¼Å©ÇÑ´Ù.
+		//ì í”„íƒ€ì„ì´ ì í”„íŒŒì›Œë³´ë‹¤ ì»¤ì¡Œì„ ë•Œ, ë–¨ì–´ì§€ëŠ” ì¤‘ì¼ ë•Œë¥¼ ì¶©ëŒì²´í¬í•œë‹¤.
 		if (player1.jumpHeight <= (player1.jumpTime * player1.jumpTime - player1.jumpPower * player1.jumpTime) * 4.f) {
 			for (int i = 0; i < mapCount; i++) {
 				if (player1.x + pWidth > maps[i].x && player1.x < maps[i].x + mapWidth &&
@@ -252,10 +252,10 @@ void update_player1() {
 
 	}
 	if (player1.jumping == FALSE) {
-		// 1. ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡ °Ë»ç -> ¶³¾îÁö±â ½ÃÀÛÇÒÁö, ¾È¶³¾îÁúÁö ÆÇ´Ü -> ´Ù¿îÄ«¿îÆ® ÁßÀÏ¶§´Â ÆÇ´Ü x
+		// 1. í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ ê²€ì‚¬ -> ë–¨ì–´ì§€ê¸° ì‹œì‘í• ì§€, ì•ˆë–¨ì–´ì§ˆì§€ íŒë‹¨ -> ë‹¤ìš´ì¹´ìš´íŠ¸ ì¤‘ì¼ë•ŒëŠ” íŒë‹¨ x
 		if (player1.downCount == 0) {
 			for (int i = 0; i < mapCount; i++) {
-				// ÇÃ·¹ÀÌ¾î°¡ ¸Ê À§¿¡ ÀÖÀ» ¶§
+				// í”Œë ˆì´ì–´ê°€ ë§µ ìœ„ì— ìˆì„ ë•Œ
 				if (player1.x + pWidth > maps[i].x && player1.x < maps[i].x + mapWidth &&
 					player1.y + pHeight > maps[i].y && player1.y + pHeight < maps[i].y + 15)
 				{
@@ -265,21 +265,21 @@ void update_player1() {
 					if (player1.y + pHeight > maps[i].y) {
 						player1.y = maps[i].y - pHeight;
 					}
-					break; // ¸Ê À§¿¡ ÀÖÀ¸¸é ´õ ÀÌ»ó °Ë»çÇÒ ÇÊ¿ä°¡ ¾øÀ¸¹Ç·Î ¹İº¹¹®À» ºüÁ®³ª¿Â´Ù.
+					break; // ë§µ ìœ„ì— ìˆìœ¼ë©´ ë” ì´ìƒ ê²€ì‚¬í•  í•„ìš”ê°€ ì—†ìœ¼ë¯€ë¡œ ë°˜ë³µë¬¸ì„ ë¹ ì ¸ë‚˜ì˜¨ë‹¤.
 				}
 				else {
-					// ÇÃ·¹ÀÌ¾î°¡ ¸Ê À§¿¡ ¾øÀ» ¶§
-					if (player1.falling == FALSE)	// ¶³¾îÁö°í ÀÖÁö ¾ÊÀº »óÅÂ¿´´Ù¸é
+					// í”Œë ˆì´ì–´ê°€ ë§µ ìœ„ì— ì—†ì„ ë•Œ
+					if (player1.falling == FALSE)	// ë–¨ì–´ì§€ê³  ìˆì§€ ì•Šì€ ìƒíƒœì˜€ë‹¤ë©´
 					{
 						player1.downTime = 0;
 						player1.downHeight = 0;
-						player1.fstartY = player1.y; // ÇöÀç ÁÂÇ¥¸¦ ÀúÀåÇÏ°í
-						player1.falling = TRUE;		// ¶³¾îÁö´Â »óÅÂ·Î ¸¸µç´Ù.
+						player1.fstartY = player1.y; // í˜„ì¬ ì¢Œí‘œë¥¼ ì €ì¥í•˜ê³ 
+						player1.falling = TRUE;		// ë–¨ì–´ì§€ëŠ” ìƒíƒœë¡œ ë§Œë“ ë‹¤.
 					}
 				}
 			}
 		}
-		// 2. ¶³¾îÁö´Â ÁßÀÌ¸é -> À§Ä¡º¯µ¿, Ãæµ¹Ã¼Å© -> ´Ù¿îÄ«¿îÆ® ÁßÀÏ¶§´Â Ãæµ¹Ã¼Å© x
+		// 2. ë–¨ì–´ì§€ëŠ” ì¤‘ì´ë©´ -> ìœ„ì¹˜ë³€ë™, ì¶©ëŒì²´í¬ -> ë‹¤ìš´ì¹´ìš´íŠ¸ ì¤‘ì¼ë•ŒëŠ” ì¶©ëŒì²´í¬ x
 		if (player1.falling == TRUE) {
 			player1.downHeight = (player1.downTime * (player1.downTime / 2)) * 4.f;
 			player1.downTime += 0.2f;
@@ -300,7 +300,7 @@ void update_player1() {
 			}
 		}
 	}
-	// ´Ù¿îÄ«¿îÆ® -> 0ÀÌ¸é Áõ°¡ x / 0ÀÌ ¾Æ´Ò¶§ Áõ°¡ ½ÃÀÛ / Nµµ´Ş½Ã 0À¸·Î ÃÊ±âÈ­
+	// ë‹¤ìš´ì¹´ìš´íŠ¸ -> 0ì´ë©´ ì¦ê°€ x / 0ì´ ì•„ë‹ë•Œ ì¦ê°€ ì‹œì‘ / Në„ë‹¬ì‹œ 0ìœ¼ë¡œ ì´ˆê¸°í™”
 	if (player1.downCount > 0) {
 		player1.downCount++;
 		if (player1.downCount > 30) {
@@ -308,7 +308,7 @@ void update_player1() {
 		}
 	}
 
-	//¾ÆÀÌÅÛ Ãæµ¹°Ë»ç
+	//ì•„ì´í…œ ì¶©ëŒê²€ì‚¬
 	for (int i = 0; i < MAX_ITEM; i++) {
 		if (item[i].exist == TRUE) {
 			if (player1.x < item[i].x + iWidth / 2 && item[i].x + iWidth / 2 < player1.x + pWidth &&
@@ -316,9 +316,9 @@ void update_player1() {
 
 				channel->stop();
 				itemSound->setMode(FMOD_LOOP_OFF);
-				ssystem->playSound(itemSound, 0, false, &channel); //--- 1¹ø »ç¿îµå Àç»ı
+				ssystem->playSound(itemSound, 0, false, &channel); //--- 1ë²ˆ ì‚¬ìš´ë“œ ì¬ìƒ
 				item[i].exist = FALSE;
-				//¾ÆÀÌÅÛ¿¡ µû¸¥ ÃÑ º¯È­
+				//ì•„ì´í…œì— ë”°ë¥¸ ì´ ë³€í™”
 				switch (item[i].type) {
 				case 0:
 					gunType1 = 2;
@@ -339,13 +339,13 @@ void update_player1() {
 void update_player2() {
 	// update speed :  player 2
 	if (player2.isMoving) {
-		// °¡¼Óµµ¸¦ ¼Óµµ¿¡ Àû¿ë
+		// ê°€ì†ë„ë¥¼ ì†ë„ì— ì ìš©
 		player2.speed += player2.acceleration;
-		// ¼Óµµ°¡ ÃÖ´ë ¼Óµµ¸¦ ÃÊ°úÇÏÁö ¾Êµµ·Ï Á¶Á¤
+		// ì†ë„ê°€ ìµœëŒ€ ì†ë„ë¥¼ ì´ˆê³¼í•˜ì§€ ì•Šë„ë¡ ì¡°ì •
 		player2.speed = max(-MAX_SPEED, min(player2.speed, MAX_SPEED));
 	}
 	else {
-		// ¸¶Âû·ÂÀ» Àû¿ëÇÏ¿© Á¡Â÷ ¸ØÃã
+		// ë§ˆì°°ë ¥ì„ ì ìš©í•˜ì—¬ ì ì°¨ ë©ˆì¶¤
 		if (player2.speed > 0) {
 			player2.speed = max(0.0f, player2.speed - FRICTION);
 		}
@@ -353,7 +353,7 @@ void update_player2() {
 			player2.speed = min(0.0f, player2.speed + FRICTION);
 		}
 	}
-	// ¼Óµµ¿¡ µû¶ó ÇÃ·¹ÀÌ¾î À§Ä¡ ¾÷µ¥ÀÌÆ®
+	// ì†ë„ì— ë”°ë¼ í”Œë ˆì´ì–´ ìœ„ì¹˜ ì—…ë°ì´íŠ¸
 	player2.x += player2.speed;
 
 	// jumping or falling
@@ -362,7 +362,7 @@ void update_player2() {
 		player2.jumpTime += 0.2f;
 		player2.y = (player2.jstartY + (int)player2.jumpHeight);
 
-		//Á¡ÇÁÅ¸ÀÓÀÌ Á¡ÇÁÆÄ¿öº¸´Ù Ä¿Á³À» ¶§, ¶³¾îÁö´Â ÁßÀÏ ¶§¸¦ Ãæµ¹Ã¼Å©ÇÑ´Ù.
+		//ì í”„íƒ€ì„ì´ ì í”„íŒŒì›Œë³´ë‹¤ ì»¤ì¡Œì„ ë•Œ, ë–¨ì–´ì§€ëŠ” ì¤‘ì¼ ë•Œë¥¼ ì¶©ëŒì²´í¬í•œë‹¤.
 		if (player2.jumpHeight <= (player2.jumpTime * player2.jumpTime - player2.jumpPower * player2.jumpTime) * 4.f) {
 			for (int i = 0; i < mapCount; i++) {
 				if (player2.x + pWidth > maps[i].x && player2.x < maps[i].x + mapWidth &&
@@ -379,10 +379,10 @@ void update_player2() {
 
 	}
 	if (player2.jumping == FALSE) {
-		// 1. ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡ °Ë»ç -> ¶³¾îÁö±â ½ÃÀÛÇÒÁö, ¾È¶³¾îÁúÁö ÆÇ´Ü -> ´Ù¿îÄ«¿îÆ® ÁßÀÏ¶§´Â ÆÇ´Ü x
+		// 1. í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ ê²€ì‚¬ -> ë–¨ì–´ì§€ê¸° ì‹œì‘í• ì§€, ì•ˆë–¨ì–´ì§ˆì§€ íŒë‹¨ -> ë‹¤ìš´ì¹´ìš´íŠ¸ ì¤‘ì¼ë•ŒëŠ” íŒë‹¨ x
 		if (player2.downCount == 0) {
 			for (int i = 0; i < mapCount; i++) {
-				// ÇÃ·¹ÀÌ¾î°¡ ¸Ê À§¿¡ ÀÖÀ» ¶§
+				// í”Œë ˆì´ì–´ê°€ ë§µ ìœ„ì— ìˆì„ ë•Œ
 				if (player2.x + pWidth > maps[i].x && player2.x < maps[i].x + mapWidth &&
 					player2.y + pHeight > maps[i].y && player2.y + pHeight < maps[i].y + 15)
 				{
@@ -392,21 +392,21 @@ void update_player2() {
 					if (player2.y + pHeight > maps[i].y) {
 						player2.y = maps[i].y - pHeight;
 					}
-					break; // ¸Ê À§¿¡ ÀÖÀ¸¸é ´õ ÀÌ»ó °Ë»çÇÒ ÇÊ¿ä°¡ ¾øÀ¸¹Ç·Î ¹İº¹¹®À» ºüÁ®³ª¿Â´Ù.
+					break; // ë§µ ìœ„ì— ìˆìœ¼ë©´ ë” ì´ìƒ ê²€ì‚¬í•  í•„ìš”ê°€ ì—†ìœ¼ë¯€ë¡œ ë°˜ë³µë¬¸ì„ ë¹ ì ¸ë‚˜ì˜¨ë‹¤.
 				}
 				else {
-					// ÇÃ·¹ÀÌ¾î°¡ ¸Ê À§¿¡ ¾øÀ» ¶§
-					if (player2.falling == FALSE)	// ¶³¾îÁö°í ÀÖÁö ¾ÊÀº »óÅÂ¿´´Ù¸é
+					// í”Œë ˆì´ì–´ê°€ ë§µ ìœ„ì— ì—†ì„ ë•Œ
+					if (player2.falling == FALSE)	// ë–¨ì–´ì§€ê³  ìˆì§€ ì•Šì€ ìƒíƒœì˜€ë‹¤ë©´
 					{
 						player2.downTime = 0;
 						player2.downHeight = 0;
-						player2.fstartY = player2.y; // ÇöÀç ÁÂÇ¥¸¦ ÀúÀåÇÏ°í
-						player2.falling = TRUE;		// ¶³¾îÁö´Â »óÅÂ·Î ¸¸µç´Ù.
+						player2.fstartY = player2.y; // í˜„ì¬ ì¢Œí‘œë¥¼ ì €ì¥í•˜ê³ 
+						player2.falling = TRUE;		// ë–¨ì–´ì§€ëŠ” ìƒíƒœë¡œ ë§Œë“ ë‹¤.
 					}
 				}
 			}
 		}
-		// 2. ¶³¾îÁö´Â ÁßÀÌ¸é -> À§Ä¡º¯µ¿, Ãæµ¹Ã¼Å© -> ´Ù¿îÄ«¿îÆ® ÁßÀÏ¶§´Â Ãæµ¹Ã¼Å© x
+		// 2. ë–¨ì–´ì§€ëŠ” ì¤‘ì´ë©´ -> ìœ„ì¹˜ë³€ë™, ì¶©ëŒì²´í¬ -> ë‹¤ìš´ì¹´ìš´íŠ¸ ì¤‘ì¼ë•ŒëŠ” ì¶©ëŒì²´í¬ x
 		if (player2.falling == TRUE) {
 			player2.downHeight = (player2.downTime * (player2.downTime / 2)) * 4.f;
 			player2.downTime += 0.2f;
@@ -427,7 +427,7 @@ void update_player2() {
 			}
 		}
 	}
-	// ´Ù¿îÄ«¿îÆ® -> 0ÀÌ¸é Áõ°¡ x / 0ÀÌ ¾Æ´Ò¶§ Áõ°¡ ½ÃÀÛ / Nµµ´Ş½Ã 0À¸·Î ÃÊ±âÈ­
+	// ë‹¤ìš´ì¹´ìš´íŠ¸ -> 0ì´ë©´ ì¦ê°€ x / 0ì´ ì•„ë‹ë•Œ ì¦ê°€ ì‹œì‘ / Në„ë‹¬ì‹œ 0ìœ¼ë¡œ ì´ˆê¸°í™”
 	if (player2.downCount > 0) {
 		player2.downCount++;
 		if (player2.downCount > 30) {
@@ -435,7 +435,7 @@ void update_player2() {
 		}
 	}
 
-	//¾ÆÀÌÅÛ Ãæµ¹°Ë»ç
+	//ì•„ì´í…œ ì¶©ëŒê²€ì‚¬
 	for (int i = 0; i < MAX_ITEM; i++) {
 		if (item[i].exist == TRUE) {
 			if (player2.x < item[i].x + iWidth / 2 && item[i].x + iWidth / 2 < player2.x + pWidth &&
@@ -443,7 +443,7 @@ void update_player2() {
 
 				channel->stop();
 				itemSound->setMode(FMOD_LOOP_OFF);
-				ssystem->playSound(itemSound, 0, false, &channel); //--- 1¹ø »ç¿îµå Àç»ı
+				ssystem->playSound(itemSound, 0, false, &channel); //--- 1ë²ˆ ì‚¬ìš´ë“œ ì¬ìƒ
 				item[i].exist = FALSE;
 				switch (item[i].type) {
 				case 0:
@@ -478,7 +478,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	WNDCLASSEX WndClass;
 	g_hInst = hInstance;
 	WndClass.cbSize = sizeof(WndClass);
-	WndClass.style = CS_HREDRAW | CS_VREDRAW; // ´õºí Å¬¸¯À» »ç¿ëÇÒ ¼ö ÀÖ°Ô ½ºÅ¸ÀÏ ¼³Á¤
+	WndClass.style = CS_HREDRAW | CS_VREDRAW; // ë”ë¸” í´ë¦­ì„ ì‚¬ìš©í•  ìˆ˜ ìˆê²Œ ìŠ¤íƒ€ì¼ ì„¤ì •
 	WndClass.lpfnWndProc = (WNDPROC)WndProc;
 	WndClass.cbClsExtra = 0;
 	WndClass.cbWndExtra = 0;
@@ -503,28 +503,28 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		//else { //¸Ş½ÃÁö°¡ ¾ø´Â °æ¿ì¿¡ È£Ãâ }
+		//else { //ë©”ì‹œì§€ê°€ ì—†ëŠ” ê²½ìš°ì— í˜¸ì¶œ }
 	}
 	return msg.wParam;
 }
 
-//winmain »ı·«
+//winmain ìƒëµ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
-	//WndProc ±âº» È°¿ë º¯¼ö
+	//WndProc ê¸°ë³¸ í™œìš© ë³€ìˆ˜
 	PAINTSTRUCT ps;
 	HDC hDC, mDC;
 	static HDC BMPmDC;
-	HBITMAP hBitmap;			// ´õºí¹öÆÛ¸µÀ» À§ÇÑ hBitmap
-	//static RECT rt;			// ÀüÃ¼ È­¸éÀÇ »ç°¢¿µ¿ª ¹Ş¾Æ¿À±â
+	HBITMAP hBitmap;			// ë”ë¸”ë²„í¼ë§ì„ ìœ„í•œ hBitmap
+	//static RECT rt;			// ì „ì²´ í™”ë©´ì˜ ì‚¬ê°ì˜ì—­ ë°›ì•„ì˜¤ê¸°
 
 	HPEN mPen, oldPen;
-	HBRUSH mBrush, oldBrush;	// ´õºí¹öÆÛ¸µÀ» À§ÇÑ mBrush
+	HBRUSH mBrush, oldBrush;	// ë”ë¸”ë²„í¼ë§ì„ ìœ„í•œ mBrush
 
-	static TCHAR lpOut1[100];	// wsprintf : ÅØ½ºÆ® ÀúÀå¿ë º¯¼ö
-	static TCHAR lpOut2[100];	// wsprintf : ÅØ½ºÆ® ÀúÀå¿ë º¯¼ö
-	static TCHAR Combo1[100];	// wsprintf : ÅØ½ºÆ® ÀúÀå¿ë º¯¼ö
-	static TCHAR Combo2[100];	// wsprintf : ÅØ½ºÆ® ÀúÀå¿ë º¯¼ö
+	static TCHAR lpOut1[100];	// wsprintf : í…ìŠ¤íŠ¸ ì €ì¥ìš© ë³€ìˆ˜
+	static TCHAR lpOut2[100];	// wsprintf : í…ìŠ¤íŠ¸ ì €ì¥ìš© ë³€ìˆ˜
+	static TCHAR Combo1[100];	// wsprintf : í…ìŠ¤íŠ¸ ì €ì¥ìš© ë³€ìˆ˜
+	static TCHAR Combo2[100];	// wsprintf : í…ìŠ¤íŠ¸ ì €ì¥ìš© ë³€ìˆ˜
 
 	static int start = FALSE;
 	static int pause = FALSE;
@@ -538,7 +538,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	RECT changeMapMenu = { 600, 250, 800, 300 };
 	static int end = FALSE;
 
-	//--- ¸Ş½ÃÁö Ã³¸®ÇÏ±â
+	//--- ë©”ì‹œì§€ ì²˜ë¦¬í•˜ê¸°
 	switch (iMsg) {
 	case WM_CREATE:
 	{
@@ -588,18 +588,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 		BMPmDC = CreateCompatibleDC(NULL);
 
-		//»ç¿îµå
-		result = FMOD::System_Create(&ssystem); //--- »ç¿îµå ½Ã½ºÅÛ »ı¼º
+		//ì‚¬ìš´ë“œ
+		result = FMOD::System_Create(&ssystem); //--- ì‚¬ìš´ë“œ ì‹œìŠ¤í…œ ìƒì„±
 		if (result != FMOD_OK)
 			exit(0);
-		ssystem->init(32, FMOD_INIT_NORMAL, extradriverdata); //--- »ç¿îµå ½Ã½ºÅÛ ÃÊ±âÈ­
-		ssystem->createSound("744_pistol3.wav", FMOD_LOOP_NORMAL, 0, &sound1); //--- 1¹ø »ç¿îµå »ı¼º ¹× ¼³Á¤
-		ssystem->createSound("761_snipe1.wav", FMOD_LOOP_NORMAL, 0, &sound2); //--- 2¹ø »ç¿îµå »ı¼º ¹× ¼³Á¤
+		ssystem->init(32, FMOD_INIT_NORMAL, extradriverdata); //--- ì‚¬ìš´ë“œ ì‹œìŠ¤í…œ ì´ˆê¸°í™”
+		ssystem->createSound("744_pistol3.wav", FMOD_LOOP_NORMAL, 0, &sound1); //--- 1ë²ˆ ì‚¬ìš´ë“œ ìƒì„± ë° ì„¤ì •
+		ssystem->createSound("761_snipe1.wav", FMOD_LOOP_NORMAL, 0, &sound2); //--- 2ë²ˆ ì‚¬ìš´ë“œ ìƒì„± ë° ì„¤ì •
 		ssystem->createSound("1_menu.wav", FMOD_LOOP_NORMAL, 0, &clickSound);
 		ssystem->createSound("737_item.wav", FMOD_LOOP_NORMAL, 0, &itemSound);
 		PlaySound(TEXT("787_music555.wav"), NULL, SND_ASYNC | SND_LOOP);
 
-		SetTimer(hWnd, 3, 100, NULL); // ¾Ö´Ï¸ŞÀÌ¼Ç Å¸ÀÌ¸Ó (200ms °£°İ)
+		SetTimer(hWnd, 3, 100, NULL); // ì• ë‹ˆë©”ì´ì…˜ íƒ€ì´ë¨¸ (200ms ê°„ê²©)
 		break;
 	}
 	case WM_CHAR:
@@ -611,7 +611,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			gunFire2(player2.looking, bullet2);
 			break;
 		}
-		//player2 ÀÌµ¿
+		//player2 ì´ë™
 		case 'w':
 		{
 			if (jumpCount1 < 2)
@@ -627,13 +627,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		}
 		case 's':
 		{
-			//¾Æ·¡Á¡ÇÁ ±¸Çö -> ¶¥¿¡ ÀÖÀ» ¶§¸¸ ¾Æ·¡Á¡ÇÁ °¡´É
+			//ì•„ë˜ì í”„ êµ¬í˜„ -> ë•…ì— ìˆì„ ë•Œë§Œ ì•„ë˜ì í”„ ê°€ëŠ¥
 			if (player1.downCount == 0) {
 				player1.downCount = 1;
 
 				player1.downTime = 0;
 				player1.downHeight = 0;
-				player1.fstartY = player1.y; // ÇöÀç ÁÂÇ¥¸¦ ÀúÀåÇÏ°í
+				player1.fstartY = player1.y; // í˜„ì¬ ì¢Œí‘œë¥¼ ì €ì¥í•˜ê³ 
 
 				player1.jumping = FALSE;
 				player1.falling = TRUE;
@@ -645,7 +645,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	case WM_KEYDOWN:
-	{	//´Ù¸¥ ¸Ş¼¼Áö°¡ ¹ß»ıÇÒ¶§, keyup¸Ş½ÃÁö°¡ Á¦¶§ ÀÛµ¿ÇÏÁö ¾Ê´Â ¹ö±×°¡ ÀÖÀ½ -> ¸ØÃßÁö ¾ÊÀ½
+	{	//ë‹¤ë¥¸ ë©”ì„¸ì§€ê°€ ë°œìƒí• ë•Œ, keyupë©”ì‹œì§€ê°€ ì œë•Œ ì‘ë™í•˜ì§€ ì•ŠëŠ” ë²„ê·¸ê°€ ìˆìŒ -> ë©ˆì¶”ì§€ ì•ŠìŒ
 		switch (wParam) {
 		case VK_ESCAPE:
 		{
@@ -671,7 +671,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			gunFire1(player1.looking, bullet1);
 			break;
 		}
-		//player2 ÀÌµ¿
+		//player2 ì´ë™
 		case VK_UP:
 		{
 			if (jumpCount2 < 2)
@@ -687,13 +687,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		}	
 		case VK_DOWN:
 		{
-			//¾Æ·¡Á¡ÇÁ ±¸Çö -> ¶¥¿¡ ÀÖÀ» ¶§¸¸ ¾Æ·¡Á¡ÇÁ °¡´É
+			//ì•„ë˜ì í”„ êµ¬í˜„ -> ë•…ì— ìˆì„ ë•Œë§Œ ì•„ë˜ì í”„ ê°€ëŠ¥
 			if (player2.downCount == 0) {
 				player2.downCount = 1;
 
 				player2.downTime = 0;
 				player2.downHeight = 0;
-				player2.fstartY = player2.y; // ÇöÀç ÁÂÇ¥¸¦ ÀúÀåÇÏ°í
+				player2.fstartY = player2.y; // í˜„ì¬ ì¢Œí‘œë¥¼ ì €ì¥í•˜ê³ 
 
 				player2.jumping = FALSE;
 				player2.falling = TRUE;
@@ -708,16 +708,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (wParam) {
 		case 'A':
-			player1.isMoving = FALSE; // Å°¸¦ ¶ÃÀ» ¶§ ÀÌµ¿ ÁßÁö
+			player1.isMoving = FALSE; // í‚¤ë¥¼ ë—ì„ ë•Œ ì´ë™ ì¤‘ì§€
 			break;
 		case 'D':
-			player1.isMoving = FALSE; // Å°¸¦ ¶ÃÀ» ¶§ ÀÌµ¿ ÁßÁö
+			player1.isMoving = FALSE; // í‚¤ë¥¼ ë—ì„ ë•Œ ì´ë™ ì¤‘ì§€
 			break;
 		case VK_LEFT:
-			player2.isMoving = FALSE; // Å°¸¦ ¶ÃÀ» ¶§ ÀÌµ¿ ÁßÁö
+			player2.isMoving = FALSE; // í‚¤ë¥¼ ë—ì„ ë•Œ ì´ë™ ì¤‘ì§€
 			break;
 		case VK_RIGHT:
-			player2.isMoving = FALSE; // Å°¸¦ ¶ÃÀ» ¶§ ÀÌµ¿ ÁßÁö
+			player2.isMoving = FALSE; // í‚¤ë¥¼ ë—ì„ ë•Œ ì´ë™ ì¤‘ì§€
 			break;
 		}
 		InvalidateRect(hWnd, NULL, false);
@@ -727,10 +727,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	{
 		channel->stop();
 		clickSound->setMode(FMOD_LOOP_OFF);
-		ssystem->playSound(clickSound, 0, false, &channel); //--- 1¹ø »ç¿îµå Àç»ı
+		ssystem->playSound(clickSound, 0, false, &channel); //--- 1ë²ˆ ì‚¬ìš´ë“œ ì¬ìƒ
 			
-		//½ÃÀÛ »óÅÂÀÏ¶§ ´©¸£´Â ÁÂÇ¥°¡ »ç°¢¿µ¿ª¿¡ ÇØ´çÇÏ¸é ½ÃÀÛ or Á¾·á
-		//Á¤Áö »óÅÂÀÏ¶§ ´©¸£´Â ÁÂÇ¥¿¡ µû¶ó ´Ù½Ã½ÃÀÛ or Á¾·á
+		//ì‹œì‘ ìƒíƒœì¼ë•Œ ëˆ„ë¥´ëŠ” ì¢Œí‘œê°€ ì‚¬ê°ì˜ì—­ì— í•´ë‹¹í•˜ë©´ ì‹œì‘ or ì¢…ë£Œ
+		//ì •ì§€ ìƒíƒœì¼ë•Œ ëˆ„ë¥´ëŠ” ì¢Œí‘œì— ë”°ë¼ ë‹¤ì‹œì‹œì‘ or ì¢…ë£Œ
 		if (end == TRUE) {
 			end = FALSE;
 			start = FALSE;
@@ -740,9 +740,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			mx = LOWORD(lParam);
 			my = HIWORD(lParam);
 			POINT pt = { mx, my };
-			if (PtInRect(&startMenu, pt)) {	//½ÃÀÛ¹öÆ° Å¬¸¯ -> ÃÊ±âÈ­ ÁøÇà, Å¸ÀÌ¸Ó ½ÃÀÛ
+			if (PtInRect(&startMenu, pt)) {	//ì‹œì‘ë²„íŠ¼ í´ë¦­ -> ì´ˆê¸°í™” ì§„í–‰, íƒ€ì´ë¨¸ ì‹œì‘
 				start = TRUE;
-				//ÃÑ¾Ë1 ÃÊ±âÈ­
+				//ì´ì•Œ1 ì´ˆê¸°í™”
 				for (int i = 0; i < MAX_BULLET1; i++) {
 					bullet1[i].exist = FALSE;
 					bullet1[i].c = 0;
@@ -752,7 +752,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				range1 = 300;
 				maxBullet1 = 20;
 
-				//ÃÑ¾Ë2 ÃÊ±âÈ­
+				//ì´ì•Œ2 ì´ˆê¸°í™”
 				for (int i = 0; i < MAX_BULLET1; i++) {
 					bullet2[i].exist = FALSE;
 					bullet2[i].c = 0;
@@ -762,14 +762,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				range2 = 300;
 				maxBullet2 = 20;
 
-				//¾ÆÀÌÅÛ ÃÊ±âÈ­
+				//ì•„ì´í…œ ì´ˆê¸°í™”
 				for (int i = 0; i < MAX_ITEM; i++) {
 					item[i].exist = FALSE;
 				}
 
-				//ÇÃ·¹ÀÌ¾î1 ÃÊ±âÈ­
+				//í”Œë ˆì´ì–´1 ì´ˆê¸°í™”
 				if (TRUE) {
-					//ÇÃ·¹ÀÌ¾î ÃÊ±âÈ­
+					//í”Œë ˆì´ì–´ ì´ˆê¸°í™”
 					player1.exist = TRUE;
 					player1.x = 150;
 					player1.y = -200;
@@ -790,14 +790,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					player1.jumpPower = 12.f;
 					player1.jumping = FALSE;
 
-					//¼Óµµ, °¡¼Óµµ º¯¼ö
-					player1.acceleration = 0.0f;	// ÇöÀç °¡¼Óµµ
-					player1.speed = 0.0f;			// ÇöÀç ¼Óµµ
-					player1.isMoving = FALSE;		// ÀÌµ¿ ÁßÀÎÁö ¿©ºÎ
+					//ì†ë„, ê°€ì†ë„ ë³€ìˆ˜
+					player1.acceleration = 0.0f;	// í˜„ì¬ ê°€ì†ë„
+					player1.speed = 0.0f;			// í˜„ì¬ ì†ë„
+					player1.isMoving = FALSE;		// ì´ë™ ì¤‘ì¸ì§€ ì—¬ë¶€
 				}
-				//ÇÃ·¹ÀÌ¾î2 ÃÊ±âÈ­
+				//í”Œë ˆì´ì–´2 ì´ˆê¸°í™”
 				if (TRUE) {
-					//ÇÃ·¹ÀÌ¾î ÃÊ±âÈ­
+					//í”Œë ˆì´ì–´ ì´ˆê¸°í™”
 					player2.exist = TRUE;
 					player2.x = 650;
 					player2.y = -200;
@@ -818,51 +818,51 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					player2.jumpPower = 12.f;
 					player2.jumping = FALSE;
 
-					//¼Óµµ, °¡¼Óµµ º¯¼ö
-					player2.acceleration = 0.0f;	// ÇöÀç °¡¼Óµµ
-					player2.speed = 0.0f;			// ÇöÀç ¼Óµµ
-					player2.isMoving = FALSE;		// ÀÌµ¿ ÁßÀÎÁö ¿©ºÎ
+					//ì†ë„, ê°€ì†ë„ ë³€ìˆ˜
+					player2.acceleration = 0.0f;	// í˜„ì¬ ê°€ì†ë„
+					player2.speed = 0.0f;			// í˜„ì¬ ì†ë„
+					player2.isMoving = FALSE;		// ì´ë™ ì¤‘ì¸ì§€ ì—¬ë¶€
 				}
-				//¸Ê ÃÊ±âÈ­
+				//ë§µ ì´ˆê¸°í™”
 				if (TRUE) {
 					if (mapType == 0) {
-						maps[0] = { 330, 170 };	//1´Ü
+						maps[0] = { 330, 170 };	//1ë‹¨
 
-						maps[1] = { 160, 300 };	//2´Ü
+						maps[1] = { 160, 300 };	//2ë‹¨
 						maps[2] = { 510, 300 };
 
-						maps[3] = { 70, 420 };	//3´Ü
+						maps[3] = { 70, 420 };	//3ë‹¨
 						maps[4] = { 600, 420 };
 					}
 					else { //if (mapType == 1)
-						maps[0] = { 160, 170 };	//1´Ü
+						maps[0] = { 160, 170 };	//1ë‹¨
 						maps[1] = { 510, 170 };
 
-						maps[2] = { 330, 300 }; //2´Ü
+						maps[2] = { 330, 300 }; //2ë‹¨
 
-						maps[3] = { 70, 420 };	//3´Ü
+						maps[3] = { 70, 420 };	//3ë‹¨
 						maps[4] = { 600, 420 };
 					}
 				}
 
-				//¾÷µ¥ÀÌÆ® Å¸ÀÌ¸Ó
+				//ì—…ë°ì´íŠ¸ íƒ€ì´ë¨¸
 				SetTimer(hWnd, 1, 15, NULL);
-				//¾ÆÀÌÅÛ »ı¼º Å¸ÀÌ¸Ó
+				//ì•„ì´í…œ ìƒì„± íƒ€ì´ë¨¸
 				SetTimer(hWnd, 2, 7000, NULL);
 			}
 			else if (PtInRect(&endMenu, pt)) {
 				DeleteDC(BMPmDC);
-				DeleteObject(BMP_player1_left_stand);	//ºñÆ®¸Ê »èÁ¦
-				DeleteObject(BMP_player1_right_stand);	//ºñÆ®¸Ê »èÁ¦
+				DeleteObject(BMP_player1_left_stand);	//ë¹„íŠ¸ë§µ ì‚­ì œ
+				DeleteObject(BMP_player1_right_stand);	//ë¹„íŠ¸ë§µ ì‚­ì œ
 				for (int i = 0; i < 4; i++) {
-					DeleteObject(BMP_player1_left_walk[i]);	//ºñÆ®¸Ê »èÁ¦
-					DeleteObject(BMP_player1_right_walk[i]);	//ºñÆ®¸Ê »èÁ¦
+					DeleteObject(BMP_player1_left_walk[i]);	//ë¹„íŠ¸ë§µ ì‚­ì œ
+					DeleteObject(BMP_player1_right_walk[i]);	//ë¹„íŠ¸ë§µ ì‚­ì œ
 				}
-				DeleteObject(BMP_player2_left_stand);	//ºñÆ®¸Ê »èÁ¦
-				DeleteObject(BMP_player2_right_stand);	//ºñÆ®¸Ê »èÁ¦
+				DeleteObject(BMP_player2_left_stand);	//ë¹„íŠ¸ë§µ ì‚­ì œ
+				DeleteObject(BMP_player2_right_stand);	//ë¹„íŠ¸ë§µ ì‚­ì œ
 				for (int i = 0; i < 4; i++) {
-					DeleteObject(BMP_player2_left_walk[i]);	//ºñÆ®¸Ê »èÁ¦
-					DeleteObject(BMP_player2_right_walk[i]);	//ºñÆ®¸Ê »èÁ¦
+					DeleteObject(BMP_player2_left_walk[i]);	//ë¹„íŠ¸ë§µ ì‚­ì œ
+					DeleteObject(BMP_player2_right_walk[i]);	//ë¹„íŠ¸ë§µ ì‚­ì œ
 				}
 				PlaySound(NULL, NULL, NULL);
 				channel->stop();
@@ -888,17 +888,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			}
 			else if (PtInRect(&pauseEndMenu, pt)) {
 				DeleteDC(BMPmDC);
-				DeleteObject(BMP_player1_left_stand);	//ºñÆ®¸Ê »èÁ¦
-				DeleteObject(BMP_player1_right_stand);	//ºñÆ®¸Ê »èÁ¦
+				DeleteObject(BMP_player1_left_stand);	//ë¹„íŠ¸ë§µ ì‚­ì œ
+				DeleteObject(BMP_player1_right_stand);	//ë¹„íŠ¸ë§µ ì‚­ì œ
 				for (int i = 0; i < 4; i++) {
-					DeleteObject(BMP_player1_left_walk[i]);	//ºñÆ®¸Ê »èÁ¦
-					DeleteObject(BMP_player1_right_walk[i]);	//ºñÆ®¸Ê »èÁ¦
+					DeleteObject(BMP_player1_left_walk[i]);	//ë¹„íŠ¸ë§µ ì‚­ì œ
+					DeleteObject(BMP_player1_right_walk[i]);	//ë¹„íŠ¸ë§µ ì‚­ì œ
 				}
-				DeleteObject(BMP_player2_left_stand);	//ºñÆ®¸Ê »èÁ¦
-				DeleteObject(BMP_player2_right_stand);	//ºñÆ®¸Ê »èÁ¦
+				DeleteObject(BMP_player2_left_stand);	//ë¹„íŠ¸ë§µ ì‚­ì œ
+				DeleteObject(BMP_player2_right_stand);	//ë¹„íŠ¸ë§µ ì‚­ì œ
 				for (int i = 0; i < 4; i++) {
-					DeleteObject(BMP_player2_left_walk[i]);	//ºñÆ®¸Ê »èÁ¦
-					DeleteObject(BMP_player2_right_walk[i]);	//ºñÆ®¸Ê »èÁ¦
+					DeleteObject(BMP_player2_left_walk[i]);	//ë¹„íŠ¸ë§µ ì‚­ì œ
+					DeleteObject(BMP_player2_right_walk[i]);	//ë¹„íŠ¸ë§µ ì‚­ì œ
 				}
 				PlaySound(NULL, NULL, NULL);
 				channel->stop();
@@ -916,7 +916,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		//A - player1 left
 		if (GetAsyncKeyState(0x41) & 0x8000) {
 			player1.looking = 0;
-			if (player1.isMoving && player1.speed > 0) { // ¹İ´ë ¹æÇâÀ¸·Î ºü¸£°Ô °¨¼Ó
+			if (player1.isMoving && player1.speed > 0) { // ë°˜ëŒ€ ë°©í–¥ìœ¼ë¡œ ë¹ ë¥´ê²Œ ê°ì†
 				player1.speed -= FRICTION;
 			}
 			else {
@@ -927,7 +927,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		//D - player1 right
 		if (GetAsyncKeyState(0x44) & 0x8000) {
 			player1.looking = 1;
-			if (player1.isMoving && player1.speed < 0) { // ¹İ´ë ¹æÇâÀ¸·Î ºü¸£°Ô °¨¼Ó
+			if (player1.isMoving && player1.speed < 0) { // ë°˜ëŒ€ ë°©í–¥ìœ¼ë¡œ ë¹ ë¥´ê²Œ ê°ì†
 				player1.speed += FRICTION;
 			}
 			else {
@@ -938,7 +938,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		//player2 left
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
 			player2.looking = 0;
-			if (player2.isMoving && player2.speed > 0) { // ¹İ´ë ¹æÇâÀ¸·Î ºü¸£°Ô °¨¼Ó
+			if (player2.isMoving && player2.speed > 0) { // ë°˜ëŒ€ ë°©í–¥ìœ¼ë¡œ ë¹ ë¥´ê²Œ ê°ì†
 				player2.speed -= FRICTION;
 			}
 			else {
@@ -949,7 +949,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		//player2 right
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
 			player2.looking = 1;
-			if (player2.isMoving && player2.speed < 0) { // ¹İ´ë ¹æÇâÀ¸·Î ºü¸£°Ô °¨¼Ó
+			if (player2.isMoving && player2.speed < 0) { // ë°˜ëŒ€ ë°©í–¥ìœ¼ë¡œ ë¹ ë¥´ê²Œ ê°ì†
 				player2.speed += FRICTION;
 			}
 			else {
@@ -983,7 +983,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			update_bullet1();
 			update_bullet2();
 
-			//update item create & move -> ÇÏ´Ã¿¡¼­ ¶³¾îÁü	
+			//update item create & move -> í•˜ëŠ˜ì—ì„œ ë–¨ì–´ì§	
 			for (int i = 0; i < MAX_ITEM; i++) {
 				if (item[i].exist == TRUE) {
 					for (int j = 0; j < mapCount; j++) {
@@ -994,15 +994,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 							if (item[i].y + iHeight > maps[j].y) {
 								item[i].y = maps[j].y - iHeight;
 							}
-							break; // ¸Ê À§¿¡ ÀÖÀ¸¸é ´õ ÀÌ»ó °Ë»çÇÒ ÇÊ¿ä°¡ ¾øÀ¸¹Ç·Î ¹İº¹¹®À» ºüÁ®³ª¿Â´Ù.
+							break; // ë§µ ìœ„ì— ìˆìœ¼ë©´ ë” ì´ìƒ ê²€ì‚¬í•  í•„ìš”ê°€ ì—†ìœ¼ë¯€ë¡œ ë°˜ë³µë¬¸ì„ ë¹ ì ¸ë‚˜ì˜¨ë‹¤.
 						}
 						else {
-							if (item[i].falling == FALSE)	// ¶³¾îÁö°í ÀÖÁö ¾ÊÀº »óÅÂ¿´´Ù¸é
+							if (item[i].falling == FALSE)	// ë–¨ì–´ì§€ê³  ìˆì§€ ì•Šì€ ìƒíƒœì˜€ë‹¤ë©´
 							{
 								item[i].downTime = 0;
 								item[i].downHeight = 0;
-								item[i].fstartY = item[i].y; // ÇöÀç ÁÂÇ¥¸¦ ÀúÀåÇÏ°í
-								item[i].falling = TRUE;		// ¶³¾îÁö´Â »óÅÂ·Î ¸¸µç´Ù.
+								item[i].fstartY = item[i].y; // í˜„ì¬ ì¢Œí‘œë¥¼ ì €ì¥í•˜ê³ 
+								item[i].falling = TRUE;		// ë–¨ì–´ì§€ëŠ” ìƒíƒœë¡œ ë§Œë“ ë‹¤.
 							}
 						}
 					}
@@ -1028,7 +1028,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		}
 		case 2:
-		{	//¾ÆÀÌÅÛ »ı¼º Å¸ÀÌ¸Ó
+		{	//ì•„ì´í…œ ìƒì„± íƒ€ì´ë¨¸
 			for (int i = 0; i < MAX_ITEM; i++) {
 				if (item[i].exist == FALSE) {
 					item[i].exist = TRUE;
@@ -1046,12 +1046,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		}
 		case 3:
 		{
-			// ¾Ö´Ï¸ŞÀÌ¼Ç Å¸ÀÌ¸Ó
+			// ì• ë‹ˆë©”ì´ì…˜ íƒ€ì´ë¨¸
 			if (player1.isMoving) {
-				player1_anim_frame = (player1_anim_frame + 1) % 4; // 0, 1, 2, 3 ¹İº¹
+				player1_anim_frame = (player1_anim_frame + 1) % 4; // 0, 1, 2, 3 ë°˜ë³µ
 			}
 			if (player2.isMoving) {
-				player2_anim_frame = (player2_anim_frame + 1) % 4; // 0, 1, 2, 3 ¹İº¹
+				player2_anim_frame = (player2_anim_frame + 1) % 4; // 0, 1, 2, 3 ë°˜ë³µ
 			}
 			break;
 		}
@@ -1063,23 +1063,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	{
 		hDC = BeginPaint(hWnd, &ps);
 
-		mDC = CreateCompatibleDC(hDC);									//¸Ş¸ğ¸®DC »ı¼º
+		mDC = CreateCompatibleDC(hDC);									//ë©”ëª¨ë¦¬DC ìƒì„±
 		HBITMAP memBitmap = CreateCompatibleBitmap(hDC, rt.right, rt.bottom);
 		HBITMAP oldBitmap = (HBITMAP)SelectObject(mDC, memBitmap);
 
-		//	----±×¸®±â´Â ¸ğµÎ mDC¿¡ ±×¸°´Ù----
-		Rectangle(mDC, 0, 0, rt.right, rt.bottom);	//È­¸é »öÄ¥
+		//	----ê·¸ë¦¬ê¸°ëŠ” ëª¨ë‘ mDCì— ê·¸ë¦°ë‹¤----
+		Rectangle(mDC, 0, 0, rt.right, rt.bottom);	//í™”ë©´ ìƒ‰ì¹ 
 
-		//½ÃÀÛ¸Ş´º -> ½ÃÀÛ, Á¾·á ½ÃÀÛ -> Å¸ÀÌ¸Ó½ÃÀÛ ¹× ¸Ê Ãâ·Â µî È°¼ºÈ­
+		//ì‹œì‘ë©”ë‰´ -> ì‹œì‘, ì¢…ë£Œ ì‹œì‘ -> íƒ€ì´ë¨¸ì‹œì‘ ë° ë§µ ì¶œë ¥ ë“± í™œì„±í™”
 		if (start == FALSE) {
 			SelectObject(BMPmDC, BMP_startMenu);
 			BitBlt(mDC, 0, 0, rt.right, rt.bottom, BMPmDC, 0, 0, SRCCOPY);
 			wsprintf(lpOut1, L"Type : %d", mapType);
 			TextOut(mDC, changeMapMenu.left + 140, changeMapMenu.top + 50, lpOut1, lstrlen(lpOut1));
 		}
-		//±×¸®±â
+		//ê·¸ë¦¬ê¸°
 		if (start == TRUE) {
-			//¹è°æÈ­¸é(¸Ê Å¸ÀÔ¿¡ µû¶ó ´Ù¸£°Ô)
+			//ë°°ê²½í™”ë©´(ë§µ íƒ€ì…ì— ë”°ë¼ ë‹¤ë¥´ê²Œ)
 			switch (mapType) {
 			case 0:
 				SelectObject(BMPmDC, BMP_map1);
@@ -1090,14 +1090,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				BitBlt(mDC, 0, 0, 900, 650, BMPmDC, 900 - cameraX / 5, 650 - cameraY / 5, SRCCOPY);
 				break;
 			}
-			//¸Ê(5°³ÀÇ ¶¥)
+			//ë§µ(5ê°œì˜ ë•…)
 			SelectObject(BMPmDC, BMP_ground1);
 			for (int i = 0; i < mapCount; i++) {
 				BitBlt(mDC, maps[i].x - cameraX, maps[i].y - 5 - cameraY, mapWidth, mapHeight, BMPmDC, 0, 0, SRCCOPY);
 				//Rectangle(mDC, maps[i].x - cameraX, maps[i].y - 5 - cameraY, maps[i].x + mapWidth - cameraX, maps[i].y + mapHeight - cameraY);
 			}
 
-			// ÇÃ·¹ÀÌ¾î 1
+			// í”Œë ˆì´ì–´ 1
 			switch (player1.looking) {
 			case 0:
 				if (player1.isMoving) {
@@ -1122,7 +1122,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				TextOut(mDC, player1.x + pWidth - cameraX, player1.y - 10 - cameraY, Combo1, lstrlen(Combo1));
 			}
 
-			// ÇÃ·¹ÀÌ¾î 2
+			// í”Œë ˆì´ì–´ 2
 			switch (player2.looking) {
 			case 0:
 				if (player2.isMoving) {
@@ -1148,7 +1148,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				TextOut(mDC, player2.x + pWidth - cameraX, player2.y - 10 - cameraY, Combo2, lstrlen(Combo2));
 			}
 
-			//ÇÃ·¹ÀÌ¾î 1 °Å¸®Ç¥½Ã(¸Ê ¹ÛÀ¸·Î ³ª°¬À» ¶§)
+			//í”Œë ˆì´ì–´ 1 ê±°ë¦¬í‘œì‹œ(ë§µ ë°–ìœ¼ë¡œ ë‚˜ê°”ì„ ë•Œ)
 			if (player1.x > rt.right) {
 				wsprintf(lpOut1, L"%d > ", player1.x - rt.right);
 				TextOut(mDC, player1.x - 55 - cameraX, player1.y + pHeight / 2 - cameraY, lpOut1, lstrlen(lpOut1));
@@ -1162,7 +1162,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				TextOut(mDC, player1.x + 10 - cameraX, player1.y - 25 - cameraY, lpOut1, lstrlen(lpOut1));
 			}
 
-			//ÇÃ·¹ÀÌ¾î 2 °Å¸®Ç¥½Ã(¸Ê ¹ÛÀ¸·Î ³ª°¬À» ¶§)
+			//í”Œë ˆì´ì–´ 2 ê±°ë¦¬í‘œì‹œ(ë§µ ë°–ìœ¼ë¡œ ë‚˜ê°”ì„ ë•Œ)
 			if (player2.x > rt.right) {
 				wsprintf(lpOut1, L"%d > ", player2.x - rt.right);
 				TextOut(mDC, player2.x - 55 - cameraX, player2.y + pHeight / 2 - cameraY, lpOut1, lstrlen(lpOut1));
@@ -1175,12 +1175,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				wsprintf(lpOut1, L"%d", rt.top - player2.y);
 				TextOut(mDC, player2.x + 10 - cameraX, player2.y - 25  - cameraY, lpOut1, lstrlen(lpOut1));
 			}
-			// ÃÑ¾Ë1 ( ÇÃ·¹ÀÌ¾î1 )
+			// ì´ì•Œ1 ( í”Œë ˆì´ì–´1 )
 			for (int i = 0; i < MAX_BULLET1; i++) {
-				//Á¸ÀçÇÏ´Â ÃÑ¾Ë¸¸ Ãâ·Â
+				//ì¡´ì¬í•˜ëŠ” ì´ì•Œë§Œ ì¶œë ¥
 				if (bullet1[i].exist == TRUE) {
-					mPen = CreatePen(PS_SOLID, 0, RGB(0, 0, 0)); // GDI: Ææ ¸¸µé±â
-					oldPen = (HPEN)SelectObject(mDC, mPen); // »õ·Î¿î Ææ ¼±ÅÃÇÏ±â
+					mPen = CreatePen(PS_SOLID, 0, RGB(0, 0, 0)); // GDI: íœ ë§Œë“¤ê¸°
+					oldPen = (HPEN)SelectObject(mDC, mPen); // ìƒˆë¡œìš´ íœ ì„ íƒí•˜ê¸°
 					mBrush = CreateSolidBrush(RGB(0, 0, 0));
 					oldBrush = (HBRUSH)SelectObject(mDC, mBrush);
 
@@ -1193,11 +1193,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					SelectObject(mDC, oldBrush);
 					DeleteObject(mBrush);
 					SelectObject(mDC, oldPen);
-					DeleteObject(mPen); // ¸¸µç Ææ °´Ã¼ »èÁ¦ÇÏ±â
+					DeleteObject(mPen); // ë§Œë“  íœ ê°ì²´ ì‚­ì œí•˜ê¸°
 
 					for (int j = 0; j < bullet1[i].c; j++) {
-						mPen = CreatePen(PS_SOLID, 0, RGB(7 * j, 7 * j, 7 * j)); // GDI: Ææ ¸¸µé±â
-						oldPen = (HPEN)SelectObject(mDC, mPen); // »õ·Î¿î Ææ ¼±ÅÃÇÏ±â
+						mPen = CreatePen(PS_SOLID, 0, RGB(7 * j, 7 * j, 7 * j)); // GDI: íœ ë§Œë“¤ê¸°
+						oldPen = (HPEN)SelectObject(mDC, mPen); // ìƒˆë¡œìš´ íœ ì„ íƒí•˜ê¸°
 						mBrush = CreateSolidBrush(RGB(7 * j, 7 * j, 7 * j));
 						oldBrush = (HBRUSH)SelectObject(mDC, mBrush);
 
@@ -1210,16 +1210,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 						SelectObject(mDC, oldBrush);
 						DeleteObject(mBrush);
 						SelectObject(mDC, oldPen);
-						DeleteObject(mPen); // ¸¸µç Ææ °´Ã¼ »èÁ¦ÇÏ±â
+						DeleteObject(mPen); // ë§Œë“  íœ ê°ì²´ ì‚­ì œí•˜ê¸°
 					}
 				}
 			}
-			// ÃÑ¾Ë2 ( ÇÃ·¹ÀÌ¾î2 )
+			// ì´ì•Œ2 ( í”Œë ˆì´ì–´2 )
 			for (int i = 0; i < MAX_BULLET1; i++) {
-				//Á¸ÀçÇÏ´Â ÃÑ¾Ë¸¸ Ãâ·Â
+				//ì¡´ì¬í•˜ëŠ” ì´ì•Œë§Œ ì¶œë ¥
 				if (bullet2[i].exist == TRUE) {
-					mPen = CreatePen(PS_SOLID, 0, RGB(0, 0, 0)); // GDI: Ææ ¸¸µé±â
-					oldPen = (HPEN)SelectObject(mDC, mPen); // »õ·Î¿î Ææ ¼±ÅÃÇÏ±â
+					mPen = CreatePen(PS_SOLID, 0, RGB(0, 0, 0)); // GDI: íœ ë§Œë“¤ê¸°
+					oldPen = (HPEN)SelectObject(mDC, mPen); // ìƒˆë¡œìš´ íœ ì„ íƒí•˜ê¸°
 					mBrush = CreateSolidBrush(RGB(0, 0, 0));
 					oldBrush = (HBRUSH)SelectObject(mDC, mBrush);
 
@@ -1232,11 +1232,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					SelectObject(mDC, oldBrush);
 					DeleteObject(mBrush);
 					SelectObject(mDC, oldPen);
-					DeleteObject(mPen); // ¸¸µç Ææ °´Ã¼ »èÁ¦ÇÏ±â
+					DeleteObject(mPen); // ë§Œë“  íœ ê°ì²´ ì‚­ì œí•˜ê¸°
 
 					for (int j = 0; j < bullet2[i].c; j++) {
-						mPen = CreatePen(PS_SOLID, 0, RGB(7 * j, 7 * j, 7 * j)); // GDI: Ææ ¸¸µé±â
-						oldPen = (HPEN)SelectObject(mDC, mPen); // »õ·Î¿î Ææ ¼±ÅÃÇÏ±â
+						mPen = CreatePen(PS_SOLID, 0, RGB(7 * j, 7 * j, 7 * j)); // GDI: íœ ë§Œë“¤ê¸°
+						oldPen = (HPEN)SelectObject(mDC, mPen); // ìƒˆë¡œìš´ íœ ì„ íƒí•˜ê¸°
 						mBrush = CreateSolidBrush(RGB(7 * j, 7 * j, 7 * j));
 						oldBrush = (HBRUSH)SelectObject(mDC, mBrush);
 
@@ -1250,13 +1250,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 						SelectObject(mDC, oldBrush);
 						DeleteObject(mBrush);
 						SelectObject(mDC, oldPen);
-						DeleteObject(mPen); // ¸¸µç Ææ °´Ã¼ »èÁ¦ÇÏ±â
+						DeleteObject(mPen); // ë§Œë“  íœ ê°ì²´ ì‚­ì œí•˜ê¸°
 					}
 				}
 			}
-			// ÃÑ1 ( ÇÃ·¹ÀÌ¾î1 )
+			// ì´1 ( í”Œë ˆì´ì–´1 )
 			switch (player1.looking) {
-			case 0://¿ŞÂÊ
+			case 0://ì™¼ìª½
 				switch (gunType1) {
 				case 1:
 					SelectObject(BMPmDC, BMP_gun1_left);
@@ -1271,7 +1271,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					gunWidth, gunHeight,
 					BMPmDC, 0, 0, gunWidth, gunHeight, RGB(127, 127, 127));
 				break;
-			case 1://¿À¸¥ÂÊ
+			case 1://ì˜¤ë¥¸ìª½
 				switch (gunType1) {
 				case 1:
 					SelectObject(BMPmDC, BMP_gun1_right);
@@ -1287,9 +1287,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					BMPmDC, 0, 0, gunWidth, gunHeight, RGB(127, 127, 127));
 				break;
 			}
-			// ÃÑ2 ( ÇÃ·¹ÀÌ¾î2 )
+			// ì´2 ( í”Œë ˆì´ì–´2 )
 			switch (player2.looking) {
-			case 0://¿ŞÂÊ
+			case 0://ì™¼ìª½
 				switch (gunType2) {
 				case 1:
 					SelectObject(BMPmDC, BMP_gun1_left);
@@ -1304,7 +1304,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					gunWidth, gunHeight,
 					BMPmDC, 0, 0, gunWidth, gunHeight, RGB(127, 127, 127));
 				break;
-			case 1://¿À¸¥ÂÊ
+			case 1://ì˜¤ë¥¸ìª½
 				switch (gunType2) {
 				case 1:
 					SelectObject(BMPmDC, BMP_gun1_right);
@@ -1320,7 +1320,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					BMPmDC, 0, 0, gunWidth, gunHeight, RGB(127, 127, 127));
 				break;
 			}
-			// ¾ÆÀÌÅÛ
+			// ì•„ì´í…œ
 			for (int i = 0; i < MAX_ITEM; i++) {
 				if (item[i].exist) {
 					SelectObject(BMPmDC, BMP_itemBox);
@@ -1328,7 +1328,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				}
 			}
 
-			// ÇÃ·¹ÀÌ¾î1 Á¤º¸Ã¢ 100, 500, 200, 150 
+			// í”Œë ˆì´ì–´1 ì •ë³´ì°½ 100, 500, 200, 150 
 			SelectObject(BMPmDC, BMP_inform);
 			BitBlt(mDC, 100, 500, 200, 150, BMPmDC, 0, 0, SRCCOPY);
 			//Rectangle(mDC, 100 , 500 , 300 , 650);
@@ -1341,7 +1341,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			SelectObject(BMPmDC, BMP_player1_inform);
 			BitBlt(mDC, 240, 515, 45, 45, BMPmDC, 0, 0, SRCCOPY);
 
-			// ÇÃ·¹ÀÌ¾î2 Á¤º¸Ã¢ 570 , 500, 200, 150 
+			// í”Œë ˆì´ì–´2 ì •ë³´ì°½ 570 , 500, 200, 150 
 			SelectObject(BMPmDC, BMP_inform);
 			BitBlt(mDC, 570, 500, 200, 150, BMPmDC, 0, 0, SRCCOPY);
 			wsprintf(lpOut2, L"player2");
@@ -1353,14 +1353,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			SelectObject(BMPmDC, BMP_player2_inform);
 			BitBlt(mDC, 710, 515, 45, 45, BMPmDC, 0, 0, SRCCOPY);
 		}
-		//Á¤Áö¸Ş´º
+		//ì •ì§€ë©”ë‰´
 		if (pause == TRUE) {
 			SelectObject(BMPmDC, BMP_pauseMenu);
 			BitBlt(mDC, 0, 0, rt.right, rt.bottom, BMPmDC, 0, 0, SRCCOPY);	
 		}
-		//°ÔÀÓ Á¾·á
+		//ê²Œì„ ì¢…ë£Œ
 		if (end == TRUE) {
-			// Á¾·á ¹è°æ
+			// ì¢…ë£Œ ë°°ê²½
 			Rectangle(mDC, 0, 0, rt.right, rt.bottom);
 			if (player1.life == 0)
 			{
@@ -1374,9 +1374,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			wsprintf(lpOut1, L"Click to Back to Menu");
 			TextOut(mDC, 400, 300, lpOut1, lstrlen(lpOut1));
 		}
-		//	----mDC ±×¸®±â Á¾·á----
-		BitBlt(hDC, 0, 0, rt.right, rt.bottom, mDC, 0, 0, SRCCOPY);		//hDC¿¡ mDC³»¿ë º¹»ç
-		// ¸Ş¸ğ¸® DC¿Í ºñÆ®¸Ê ÇØÁ¦
+		//	----mDC ê·¸ë¦¬ê¸° ì¢…ë£Œ----
+		BitBlt(hDC, 0, 0, rt.right, rt.bottom, mDC, 0, 0, SRCCOPY);		//hDCì— mDCë‚´ìš© ë³µì‚¬
+		// ë©”ëª¨ë¦¬ DCì™€ ë¹„íŠ¸ë§µ í•´ì œ
 		SelectObject(mDC, oldBitmap);
 		DeleteObject(memBitmap);
 		DeleteDC(mDC);
@@ -1386,17 +1386,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 	{
 		DeleteDC(BMPmDC);
-		DeleteObject(BMP_player1_left_stand);	//ºñÆ®¸Ê »èÁ¦
-		DeleteObject(BMP_player1_right_stand);	//ºñÆ®¸Ê »èÁ¦
+		DeleteObject(BMP_player1_left_stand);	//ë¹„íŠ¸ë§µ ì‚­ì œ
+		DeleteObject(BMP_player1_right_stand);	//ë¹„íŠ¸ë§µ ì‚­ì œ
 		for (int i = 0; i < 4; i++) {
-			DeleteObject(BMP_player1_left_walk[i]);	//ºñÆ®¸Ê »èÁ¦
-			DeleteObject(BMP_player1_right_walk[i]);	//ºñÆ®¸Ê »èÁ¦
+			DeleteObject(BMP_player1_left_walk[i]);	//ë¹„íŠ¸ë§µ ì‚­ì œ
+			DeleteObject(BMP_player1_right_walk[i]);	//ë¹„íŠ¸ë§µ ì‚­ì œ
 		}
-		DeleteObject(BMP_player2_left_stand);	//ºñÆ®¸Ê »èÁ¦
-		DeleteObject(BMP_player2_right_stand);	//ºñÆ®¸Ê »èÁ¦
+		DeleteObject(BMP_player2_left_stand);	//ë¹„íŠ¸ë§µ ì‚­ì œ
+		DeleteObject(BMP_player2_right_stand);	//ë¹„íŠ¸ë§µ ì‚­ì œ
 		for (int i = 0; i < 4; i++) {
-			DeleteObject(BMP_player2_left_walk[i]);	//ºñÆ®¸Ê »èÁ¦
-			DeleteObject(BMP_player2_right_walk[i]);	//ºñÆ®¸Ê »èÁ¦
+			DeleteObject(BMP_player2_left_walk[i]);	//ë¹„íŠ¸ë§µ ì‚­ì œ
+			DeleteObject(BMP_player2_right_walk[i]);	//ë¹„íŠ¸ë§µ ì‚­ì œ
 		}
 
 		PlaySound(NULL, NULL, NULL);
@@ -1408,5 +1408,5 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	}
-	return DefWindowProc(hWnd, iMsg, wParam, lParam); //--- À§ÀÇ ¼¼ ¸Ş½ÃÁö ¿ÜÀÇ ³ª¸ÓÁö ¸Ş½ÃÁö´Â OS·Î
+	return DefWindowProc(hWnd, iMsg, wParam, lParam); //--- ìœ„ì˜ ì„¸ ë©”ì‹œì§€ ì™¸ì˜ ë‚˜ë¨¸ì§€ ë©”ì‹œì§€ëŠ” OSë¡œ
 }
