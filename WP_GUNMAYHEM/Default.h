@@ -16,8 +16,8 @@
 #include "fmod_errors.h"
 
 // extern 키워드를 사용하여 전역 변수들을 선언(Declaration)으로 변경
-extern int GUN_TYPE_PISTOL;
-extern int GUN_TYPE_SNIPE;
+constexpr int GUN_TYPE_PISTOL = 1;
+constexpr int GUN_TYPE_SNIPE = 2;
 
 extern HINSTANCE g_hInst;
 extern LPCTSTR lpszClass;
@@ -83,14 +83,6 @@ extern BULLET bullet1[MAX_BULLET1 + 10];
 extern BULLET bullet2[MAX_BULLET1 + 10];
 extern int bullet1_count;
 extern int bullet2_count;
-
-extern int gunType1;		// 1:pistol		2:snipe
-extern int gunType2;		// 1:pistol		2:snipe
-extern int range1;		//플레이어1의 사거리 (아이템을 먹으면 변화)
-extern int range2;		//플레이어2의 사거리 (아이템을 먹으면 변화)
-extern int maxBullet1;
-extern int maxBullet2;
-
 
 //총 길이(이미지)
 #define gunWidth 80

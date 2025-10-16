@@ -1,8 +1,6 @@
 ﻿#include "Default.h"
 
 // Default.h에 extern으로 선언된 모든 전역 변수들의 정의(Definition) 및 초기화
-int GUN_TYPE_PISTOL = 0;
-int GUN_TYPE_SNIPE = 1;
 
 HINSTANCE g_hInst = NULL;
 LPCTSTR lpszClass = L"Window Class Name";
@@ -55,14 +53,6 @@ BULLET bullet1[MAX_BULLET1 + 10] = {}; // {}로 모든 멤버를 0으로 초기�
 BULLET bullet2[MAX_BULLET1 + 10] = {}; // {}로 모든 멤버를 0으로 초기화
 int bullet1_count = 0;
 int bullet2_count = 0;
-
-int gunType1 = 1;		// 1:pistol		2:snipe
-int gunType2 = 1;		// 1:pistol		2:snipe
-int range1 = 300;		//플레이어1의 사거리 (아이템을 먹으면 변화)
-int range2 = 300;		//플레이어2의 사거리 (아이템을 먹으면 변화)
-int maxBullet1 = 20;
-int maxBullet2 = 20;
-
 
 // 아이템 =====================================================================
 // ITEMBOX 구조체 정의는 Default.h에 있음
