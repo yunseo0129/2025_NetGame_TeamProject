@@ -1,5 +1,8 @@
-﻿#include "Default.h"
+﻿#include "CPlayer.h"
+#include "Default.h"
 
+CPlayer player1;
+CPlayer player2;
 
 void reload1() {
 	bullet1_count = 0;
@@ -62,7 +65,7 @@ void update_bullet1() {
 					bullet1[i].y + BULLET_SIZE >= player2.y && bullet1[i].y - BULLET_SIZE <= player2.y + pHeight) {
 
 					player2.combo++;
-					comboTime2 = 0;
+					player2.comboTime = 0;
 					player2.speed = (7 * player2.combo) * bullet1[i].vx;
 					bullet1[i].exist = FALSE;
 				}
@@ -81,12 +84,12 @@ void update_bullet1() {
 	}
 	//콤보초기화 -> 콤보가 1 이상이되면 시간을 검사한다
 	if (player2.combo > 0) {
-		comboTime2++;
+		player2. comboTime++;
 		//player2.combo++;
 
-		if (comboTime2 > 200) {
+		if (player2.comboTime > 200) {
 			player2.combo = 0;
-			comboTime2 = 0;
+			player2.comboTime = 0;
 		}
 	}
 }
@@ -150,7 +153,7 @@ void update_bullet2() {
 					bullet2[i].y + BULLET_SIZE >= player1.y && bullet2[i].y - BULLET_SIZE <= player1.y + pHeight) {
 
 					player1.combo++;
-					comboTime1 = 0;
+					player1.comboTime = 0;
 					player1.speed = (7 * player1.combo) * bullet2[i].vx;
 					bullet2[i].exist = FALSE;
 				}
@@ -169,10 +172,10 @@ void update_bullet2() {
 	}
 	//콤보초기화 -> 콤보가 1 이상이되면 시간을 검사한다
 	if (player1.combo > 0) {
-		comboTime1++;
-		if (comboTime1 > 200) {
+		player1.comboTime++;
+		if (player1.comboTime > 200) {
 			player1.combo = 0;
-			comboTime1 = 0;
+			player1.comboTime = 0;
 		}
 	}
 }
@@ -243,7 +246,7 @@ void update_player1() {
 				{
 					player1.falling = FALSE;
 					player1.jumping = FALSE;
-					jumpCount1 = 0;
+					player1.jumpCount = 0;
 					player1.y = maps[i].y - pHeight;
 					break;
 				}
@@ -261,7 +264,7 @@ void update_player1() {
 				{
 					player1.jumping = FALSE;
 					player1.falling = FALSE;
-					jumpCount1 = 0;
+					player1.jumpCount = 0;
 					if (player1.y + pHeight > maps[i].y) {
 						player1.y = maps[i].y - pHeight;
 					}
@@ -292,7 +295,7 @@ void update_player1() {
 					{
 						player1.falling = FALSE;
 						player1.jumping = FALSE;
-						jumpCount1 = 0;
+						player1.jumpCount = 0;
 						player1.y = maps[i].y - pHeight;
 						break;
 					}
@@ -370,7 +373,7 @@ void update_player2() {
 				{
 					player2.falling = FALSE;
 					player2.jumping = FALSE;
-					jumpCount2 = 0;
+					player2.jumpCount = 0;
 					player2.y = maps[i].y - pHeight;
 					break;
 				}
@@ -388,7 +391,7 @@ void update_player2() {
 				{
 					player2.jumping = FALSE;
 					player2.falling = FALSE;
-					jumpCount2 = 0;
+					player2.jumpCount = 0;
 					if (player2.y + pHeight > maps[i].y) {
 						player2.y = maps[i].y - pHeight;
 					}
@@ -419,7 +422,7 @@ void update_player2() {
 					{
 						player2.falling = FALSE;
 						player2.jumping = FALSE;
-						jumpCount2 = 0;
+						player2.jumpCount = 0;
 						player2.y = maps[i].y - pHeight;
 						break;
 					}
@@ -611,12 +614,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			gunFire2(player2.looking, bullet2);
 			break;
 		}
-		//player2 이동
+		// player1 jump
 		case 'w':
 		{
-			if (jumpCount1 < 2)
+			if (player1.jumpCount < 2)
 			{
-				jumpCount1++;
+				player1.jumpCount++;
 				player1.jumpTime = 0.f;
 				player1.jumpHeight = 0;
 				player1.jstartY = player1.y;
@@ -674,9 +677,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		//player2 이동
 		case VK_UP:
 		{
-			if (jumpCount2 < 2)
+			if (player2.jumpCount < 2)
 			{
-				jumpCount2++;
+				player2.jumpCount++;
 				player2.jumpTime = 0.f;
 				player2.jumpHeight = 0;
 				player2.jstartY = player2.y;
@@ -773,7 +776,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					player1.exist = TRUE;
 					player1.x = 150;
 					player1.y = -200;
-					player1.ax = 0;
+					//player1.ax = 0;
 					player1.looking = 0;
 					player1.life = MAXLIFE;
 					player1.combo = 0;
@@ -801,7 +804,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					player2.exist = TRUE;
 					player2.x = 650;
 					player2.y = -200;
-					player2.ax = 0;
+					//player2.ax = 0;
 					player2.looking = 0;
 					player2.life = MAXLIFE;
 					player2.combo = 0;
@@ -1048,10 +1051,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		{
 			// 애니메이션 타이머
 			if (player1.isMoving) {
-				player1_anim_frame = (player1_anim_frame + 1) % 4; // 0, 1, 2, 3 반복
+				player1.anim_frame = (player1.anim_frame + 1) % 4; // 0, 1, 2, 3 반복
 			}
 			if (player2.isMoving) {
-				player2_anim_frame = (player2_anim_frame + 1) % 4; // 0, 1, 2, 3 반복
+				player2.anim_frame = (player2.anim_frame + 1) % 4; // 0, 1, 2, 3 반복
 			}
 			break;
 		}
@@ -1101,7 +1104,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			switch (player1.looking) {
 			case 0:
 				if (player1.isMoving) {
-					SelectObject(BMPmDC, BMP_player1_left_walk[player1_anim_frame]);
+					SelectObject(BMPmDC, BMP_player1_left_walk[player1.anim_frame]);
 				}
 				else {
 					SelectObject(BMPmDC, BMP_player1_left_stand);
@@ -1109,7 +1112,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				break;
 			case 1:
 				if (player1.isMoving) {
-					SelectObject(BMPmDC, BMP_player1_right_walk[player1_anim_frame]);
+					SelectObject(BMPmDC, BMP_player1_right_walk[player1.anim_frame]);
 				}
 				else {
 					SelectObject(BMPmDC, BMP_player1_right_stand);
@@ -1126,7 +1129,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			switch (player2.looking) {
 			case 0:
 				if (player2.isMoving) {
-					SelectObject(BMPmDC, BMP_player2_left_walk[player2_anim_frame]);
+					SelectObject(BMPmDC, BMP_player2_left_walk[player2.anim_frame]);
 				}
 				else {
 					SelectObject(BMPmDC, BMP_player2_left_stand);
@@ -1134,7 +1137,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				break;
 			case 1:
 				if (player2.isMoving) {
-					SelectObject(BMPmDC, BMP_player2_right_walk[player2_anim_frame]);
+					SelectObject(BMPmDC, BMP_player2_right_walk[player2.anim_frame]);
 				}
 				else {
 					SelectObject(BMPmDC, BMP_player2_right_stand);

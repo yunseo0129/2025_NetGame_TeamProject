@@ -1,14 +1,16 @@
 ﻿#pragma once
 #include "CObject.h"
-#include "CBullet.h"
+//#include "CBullet.h"
 
-#define pWidth 45
-#define pHeight 67
-#define MAXLIFE 3
+const int pWidth = 45;
+const int pHeight = 67;
+const int MAXLIFE = 3;
 
-#define MAX_SPEED 5.0f      // 최대 속도
-#define ACCELERATION 0.1f   // 가속도
-#define FRICTION 0.05f      // 마찰력(감속)
+const float MAX_SPEED = 5.0f;      // 최대 속도
+const float ACCELERATION = 0.1f;   // 가속도
+const float FRICTION = 0.05f;      // 마찰력(감속)
+
+//const int anim_max_frame;
 
 class CPlayer final : CObject 
 {
@@ -61,7 +63,6 @@ public:
 	// 애니메이션
 	int anim_frame;
 	int anim_timer;
-	int anim_max_frame;
 
 	// 총기 관련 (먹은 아이템에 따라 변화)
 	int gunType = 1;		// 1:pistol		2:snipe
@@ -69,6 +70,6 @@ public:
 	int maxBullet = 20;		// 1:pistol 20발, 2:snipe 10발
 	int bullet_count = 0;	// 현재 남은 총알 수
 
-	CBullet* bulletArray;	// 총알 배열
+	//CBullet* bulletArray;	// 총알 배열
 };
 
