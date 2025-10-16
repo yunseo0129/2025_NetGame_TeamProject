@@ -25,8 +25,8 @@ private:
 	virtual void Free();
 
 public:
-	void regen_player();
-	void update_player();
+	void regen();
+	void update();
 	void reload();
 	void gunFire();
 

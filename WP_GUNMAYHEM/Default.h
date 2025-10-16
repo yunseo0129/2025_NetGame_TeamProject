@@ -16,6 +16,9 @@
 #include "fmod_errors.h"
 
 // extern 키워드를 사용하여 전역 변수들을 선언(Declaration)으로 변경
+extern int GUN_TYPE_PISTOL;
+extern int GUN_TYPE_SNIPE;
+
 extern HINSTANCE g_hInst;
 extern LPCTSTR lpszClass;
 extern LPCTSTR lpszWindowName;

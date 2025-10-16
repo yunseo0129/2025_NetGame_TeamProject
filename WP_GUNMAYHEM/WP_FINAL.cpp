@@ -180,38 +180,6 @@ void update_bullet2() {
 	}
 }
 
-void regenerate_1() {
-	player1.acceleration = 0.0f;	// 현재 가속도
-	player1.speed = 0.0f;			// 현재 속도
-	player1.isMoving = FALSE;		// 이동 중인지 여부
-	player1.falling = FALSE;
-	player1.jumping = FALSE;
-	player1.x = 420;
-	player1.y = -200;
-	player1.life--;
-	player1.combo = 0;
-
-	gunType1 = 1;
-	range1 = 300;
-	maxBullet1 = 20;
-	reload1();
-}
-void regenerate_2() {
-	player2.acceleration = 0.0f;	// 현재 가속도
-	player2.speed = 0.0f;			// 현재 속도
-	player2.isMoving = FALSE;		// 이동 중인지 여부
-	player2.falling = FALSE;
-	player2.jumping = FALSE;
-	player2.x = 420;
-	player2.y = -200;
-	player2.life--;
-	player2.combo = 0;
-
-	gunType2 = 1;
-	range2 = 300;
-	maxBullet2 = 20;
-	reload2();
-}
 void update_player1() {
 	// update speed :  player 1
 	if (player1.isMoving) {
@@ -966,11 +934,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		{
 			// check player1 out
 			if (player1.y > rt.bottom) {
-				regenerate_1();
+				player1.regen();
+				reload1();
 			}
 			// check player2 out
 			if (player2.y > rt.bottom) {
-				regenerate_2();
+				player2.regen();
+				reload2();
 			}
 			if (player1.life == 0 || player2.life == 0) {
 				end = TRUE;

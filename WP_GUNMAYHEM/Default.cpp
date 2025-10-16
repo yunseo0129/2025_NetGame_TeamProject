@@ -1,6 +1,8 @@
 ﻿#include "Default.h"
 
 // Default.h에 extern으로 선언된 모든 전역 변수들의 정의(Definition) 및 초기화
+int GUN_TYPE_PISTOL = 0;
+int GUN_TYPE_SNIPE = 1;
 
 HINSTANCE g_hInst = NULL;
 LPCTSTR lpszClass = L"Window Class Name";
