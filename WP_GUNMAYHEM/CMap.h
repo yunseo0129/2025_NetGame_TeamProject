@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CObject.h"
 
 class CMap final : CObject
@@ -8,7 +8,7 @@ public:
 	~CMap();
 
 public:
-	virtual void Draw(HDC BMPmDC, HDC mDC);
+	virtual void Draw(HDC mDC);
 
 private:
 	virtual void Free();

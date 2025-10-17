@@ -1,6 +1,6 @@
 ﻿#include "CLevel.h"
 
-void CLevel::Update(HWND hWnd)
+void CLevel::Update()
 {
 	for (size_t i = 0; i < OBJ_END; ++i)
 	{
@@ -15,5 +15,28 @@ void CLevel::Update(HWND hWnd)
 			else
 				++iter;
 		}
+	}
+}
+
+void CLevel::Draw(HDC mDC)
+{
+	for (size_t i = 0; i < OBJ_END; ++i)
+	{
+		for (auto& obj : m_ObjList[i])
+		{
+			obj->Draw(mDC);
+		}
+	}
+}
+
+void CLevel::Free()
+{
+	for (size_t i = 0; i < OBJ_END; ++i)
+	{
+		for (auto& obj : m_ObjList[i])
+		{
+			// Safe_Delete<CObject*>(obj);
+		}
+		m_ObjList[i].clear();
 	}
 }

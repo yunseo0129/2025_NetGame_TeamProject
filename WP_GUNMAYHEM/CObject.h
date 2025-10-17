@@ -7,7 +7,7 @@ public:
 	virtual ~CObject() = 0;
 
 public:
-	virtual void Draw(HDC BMPmDC, HDC mDC) = 0;
+	virtual void Draw(HDC mDC) = 0;
 	virtual bool Update() = 0;
 
 private:

@@ -8,7 +8,7 @@ CPlayer::~CPlayer()
 {
 }
 
-void CPlayer::Draw(HDC BMPmDC, HDC mDC)
+void CPlayer::Draw(HDC mDC)
 {
 }
 

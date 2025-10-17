@@ -144,9 +144,12 @@
     </ClCompile>
     <ClCompile Include="CLevel.cpp" />
     <ClCompile Include="CLevelManager.cpp" />
+    <ClCompile Include="CMainLevel.cpp" />
     <ClCompile Include="CMap.cpp" />
     <ClCompile Include="CObject.cpp" />
+    <ClCompile Include="CPauseLevel.cpp" />
     <ClCompile Include="CPlayer.cpp" />
+    <ClCompile Include="CPlayLevel.cpp" />
     <ClCompile Include="Default.cpp" />
     <ClCompile Include="WP_FINAL.cpp" />
   </ItemGroup>
@@ -155,9 +158,12 @@
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CLevel.h" />
     <ClInclude Include="CLevelManager.h" />
+    <ClInclude Include="CMainLevel.h" />
     <ClInclude Include="CMap.h" />
     <ClInclude Include="CObject.h" />
+    <ClInclude Include="CPauseLevel.h" />
     <ClInclude Include="CPlayer.h" />
+    <ClInclude Include="CPlayLevel.h" />
     <ClInclude Include="Default.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
