@@ -16,7 +16,7 @@ class CLevelManager
 {
 private:
 	CLevelManager();
-	~CLevelManager() = default;
+	~CLevelManager();
 
 private:
 	static CLevelManager* m_pInstance;
@@ -41,5 +41,12 @@ public:
 		if (nullptr == m_pInstance)
 			m_pInstance = new CLevelManager();
 		return m_pInstance;
+	}
+	static void DestroyInstance()
+	{
+		if (m_pInstance) {
+			delete m_pInstance;
+			m_pInstance = nullptr;
+		}
 	}
 };

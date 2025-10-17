@@ -1,5 +1,21 @@
 ﻿#include "CLevelManager.h"
 
+CLevelManager* CLevelManager::m_pInstance = nullptr;	// 정적 멤버 변수 초기화
+
+CLevelManager::CLevelManager()
+{
+}
+
+CLevelManager::~CLevelManager()
+{
+	for (int i = 0; i < LEVEL_END; ++i) {
+		if (m_pLevel[i]) {
+			delete m_pLevel[i];
+			m_pLevel[i] = nullptr;
+		}
+	}
+}
+
 void CLevelManager::ChangeLevel(LEVEL_ID _eNextLevelID)
 {
 	m_eNextLevel = _eNextLevelID;
@@ -18,10 +34,15 @@ void CLevelManager::UpdateLevel()
 		m_eNextLevel = LEVEL_END;
 		m_pLevel[m_eCurrentLevel]->Initialize();
 	}
-	m_pLevel[m_eCurrentLevel]->Update();
+
+	if (m_pLevel[m_eCurrentLevel] != nullptr) {
+		m_pLevel[m_eCurrentLevel]->Update();	
+	}
 }
 
 void CLevelManager::DrawLevel(HDC mDC)
 {
-	m_pLevel[m_eCurrentLevel]->Draw(mDC);
+	if (m_pLevel[m_eCurrentLevel] != nullptr) {
+		m_pLevel[m_eCurrentLevel]->Draw(mDC);	
+	}
 }

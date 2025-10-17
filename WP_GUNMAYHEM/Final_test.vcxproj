@@ -153,7 +153,11 @@
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPlayLevel.cpp" />
     <ClCompile Include="Default.cpp" />
-    <ClCompile Include="WP_FINAL.cpp" />
+    <ClCompile Include="Test.cpp" />
+    <ClCompile Include="WP_FINAL.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CBase.h" />
