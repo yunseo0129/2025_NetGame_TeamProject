@@ -34,7 +34,7 @@ void CPlayer::regen()
 	reload();
 }
 
-void CPlayer::update()
+bool CPlayer::Update()
 {
 	// update speed :  player 1
 	if (isMoving) {
@@ -155,6 +155,8 @@ void CPlayer::update()
 			}
 		}
 	}
+
+	return false;
 }
 
 void CPlayer::reload()

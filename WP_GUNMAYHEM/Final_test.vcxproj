@@ -142,6 +142,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="CLevel.cpp" />
+    <ClCompile Include="CLevelManager.cpp" />
     <ClCompile Include="CMap.cpp" />
     <ClCompile Include="CObject.cpp" />
     <ClCompile Include="CPlayer.cpp" />
@@ -151,6 +153,8 @@
   <ItemGroup>
     <ClInclude Include="CBase.h" />
     <ClInclude Include="CBullet.h" />
+    <ClInclude Include="CLevel.h" />
+    <ClInclude Include="CLevelManager.h" />
     <ClInclude Include="CMap.h" />
     <ClInclude Include="CObject.h" />
     <ClInclude Include="CPlayer.h" />

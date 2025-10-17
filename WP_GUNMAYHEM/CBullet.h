@@ -20,7 +20,7 @@ private:
 	virtual void Free();
 
 public:
-	void update();
+	virtual bool Update();
 
 public:
 	int exist;	// 존재여부 (TRUE/FALSE)

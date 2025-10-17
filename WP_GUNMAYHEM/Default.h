@@ -14,6 +14,17 @@
 #include "resource.h"
 #include "fmod.hpp"
 #include "fmod_errors.h"
+#include <list>
+
+enum OBJ_ID {
+	OBJ_PLAYER1,
+	OBJ_PLAYER2,
+	OBJ_BULLET,
+	OBJ_GUN,
+	OBJ_ITEMBOX,
+	OBJ_MAP,
+	OBJ_END
+};
 
 // extern 키워드를 사용하여 전역 변수들을 선언(Declaration)으로 변경
 constexpr int GUN_TYPE_PISTOL = 1;
