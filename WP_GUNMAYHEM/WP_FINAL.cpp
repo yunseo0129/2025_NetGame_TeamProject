@@ -56,7 +56,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	//WndProc 기본 활용 변수
 	PAINTSTRUCT ps;
 	HDC hDC, mDC;
-	static HDC BMPmDC;
+	//static HDC BMPmDC;
 	HBITMAP hBitmap;			// 더블버퍼링을 위한 hBitmap
 	//static RECT rt;			// 전체 화면의 사각영역 받아오기
 

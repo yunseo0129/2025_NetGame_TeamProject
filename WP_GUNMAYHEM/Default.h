@@ -30,6 +30,9 @@ enum OBJ_ID {
 
 extern HWND g_hWnd;
 
+extern int mapType;
+extern HDC BMPmDC; // 더블버퍼링을 위한 mDC
+
 // extern 키워드를 사용하여 전역 변수들을 선언(Declaration)으로 변경
 constexpr int GUN_TYPE_PISTOL = 1;
 constexpr int GUN_TYPE_SNIPE = 2;
