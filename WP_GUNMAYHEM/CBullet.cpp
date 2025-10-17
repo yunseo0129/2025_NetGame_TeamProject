@@ -23,6 +23,7 @@ void CBullet::Free()
 {
 }
 
-void CBullet::update()
+bool CBullet::Update()
 {
+	return false;
 }

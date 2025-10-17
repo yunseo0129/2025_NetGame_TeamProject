@@ -14,6 +14,17 @@
 #include "resource.h"
 #include "fmod.hpp"
 #include "fmod_errors.h"
+#include <list>
+
+enum OBJ_ID {
+	OBJ_PLAYER1,
+	OBJ_PLAYER2,
+	OBJ_BULLET,
+	OBJ_GUN,
+	OBJ_ITEMBOX,
+	OBJ_MAP,
+	OBJ_END
+};
 #include <map>
 #include <algorithm>
 

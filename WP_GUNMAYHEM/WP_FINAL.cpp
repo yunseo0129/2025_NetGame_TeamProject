@@ -519,8 +519,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			}
 
 			//update Players move
-			player1.update();
-			player2.update();
+			player1.Update();
+			player2.Update();
 
 			//update bullets crush & move
 			player1.update_bullet(&player2);

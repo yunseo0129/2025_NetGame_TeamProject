@@ -28,6 +28,9 @@
     <Filter Include="소스 파일\CBase">
       <UniqueIdentifier>{0e793972-aad0-4935-b916-426583635403}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Level">
+      <UniqueIdentifier>{9135c208-2f24-432b-b70e-f3c522f1e190}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WP_FINAL.cpp">
@@ -51,6 +54,12 @@
     <ClCompile Include="Default.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="CLevel.cpp">
+      <Filter>소스 파일\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelManager.cpp">
+      <Filter>소스 파일\Level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -73,6 +82,12 @@
     </ClInclude>
     <ClInclude Include="CBullet.h">
       <Filter>소스 파일\CObject\CBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevel.h">
+      <Filter>소스 파일\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelManager.h">
+      <Filter>소스 파일\Level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -12,7 +12,7 @@ const float FRICTION = 0.05f;      // 마찰력(감속)
 
 //const int anim_max_frame;
 
-class CPlayer final : CObject 
+class CPlayer final : public CObject 
 {
 public:
 	CPlayer();
@@ -26,7 +26,7 @@ private:
 
 public:
 	void regen();
-	void update();
+	bool Update();
 
 	void reload();
 	void gunFire();
