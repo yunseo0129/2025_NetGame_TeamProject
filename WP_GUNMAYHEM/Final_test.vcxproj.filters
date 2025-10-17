@@ -28,6 +28,9 @@
     <Filter Include="소스 파일\CBase">
       <UniqueIdentifier>{0e793972-aad0-4935-b916-426583635403}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Level">
+      <UniqueIdentifier>{05532fc3-ea20-4373-af77-533a23424771}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WP_FINAL.cpp">

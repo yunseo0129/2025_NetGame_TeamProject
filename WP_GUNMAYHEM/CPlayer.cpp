@@ -155,6 +155,17 @@ void CPlayer::update()
 			}
 		}
 	}
+
+	// 콤보 시간 관리 로직 이동
+	if (combo > 0)
+	{
+		comboTime++;
+		if (comboTime > 200)
+		{
+			combo = 0;
+			comboTime = 0;
+		}
+	}
 }
 
 void CPlayer::reload()
@@ -206,46 +217,50 @@ void CPlayer::gunFire()
 	}
 }
 
-void CPlayer::update_bullet(CPlayer* Enemy)
+void CPlayer::update_bullet()
 {
-	//1. 총알1 충돌체크
-	for (int i = 0; i < MAX_BULLET; i++) {
-		if (bullet[i].exist == TRUE) {
-			//사거리 도달시
-			if (bullet[i].travelDistance > range) {
-				bullet[i].exist = FALSE;
-			} else {
-				if (bullet[i].x + BULLET_SIZE >= Enemy->x && bullet[i].x - BULLET_SIZE <= Enemy->x + pWidth &&
-					bullet[i].y + BULLET_SIZE >= Enemy->y && bullet[i].y - BULLET_SIZE <= Enemy->y + pHeight) {
+	for (int i = 0; i < MAX_BULLET; i++)
+	{
+		if (bullet[i].exist == TRUE)
+		{
+			//총알 이동
+			bullet[i].x += bullet[i].vx * 13;
+			bullet[i].travelDistance += 13;
 
-					Enemy->combo++;
-					Enemy->comboTime = 0;
-					Enemy->speed = (7 * Enemy->combo) * bullet[i].vx;
-					bullet[i].exist = FALSE;
-				}
+			if (bullet[i].travelDistance > range)
+			{
+				bullet[i].exist = FALSE;
 			}
-		}
-	}
-	//2. 총알1 이동 -> 플레이어의 방향에 따라(looking)
-	for (int i = 0; i < MAX_BULLET; i++) {
-		if (bullet[i].exist == TRUE) {
-			bullet[i].x += bullet[i].vx * 13; // 총알 속도 조절
-			bullet[i].travelDistance += 13;    // 이동 거리 추가
-			if (bullet[i].c < 30) {
+
+			if (bullet[i].c < 30)
+			{
 				bullet[i].c++;
 			}
 		}
 	}
+}
 
-	// 플레이어의 충돌체크 로직 따로 리팩토링 필요할듯
-	//콤보초기화 -> 콤보가 1 이상이되면 시간을 검사한다
-	if (Enemy->combo > 0) {
-		Enemy->comboTime++;
-		//player2.combo++;
+void CPlayer::OnHit(const CBullet& bullet)
+{
+	combo++;
+	comboTime = 0;
+	speed = (7 * combo) * bullet.vx;
+}
 
-		if (Enemy->comboTime > 200) {
-			Enemy->combo = 0;
-			Enemy->comboTime = 0;
-		}
+RECT CPlayer::GetRect() const
+{
+	return { (LONG)x, (LONG)y, (LONG)(x + pWidth), (LONG)(y + pHeight) };
+}
+
+CBullet* CPlayer::GetBullets()
+{
+	return bullet;
+}
+
+void CPlayer::DeactivateBullet(int index)
+{
+	if (index >= 0 && index < MAX_BULLET)
+	{
+		bullet[index].exist = FALSE;
 	}
 }

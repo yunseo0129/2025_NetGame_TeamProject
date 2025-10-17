@@ -524,8 +524,40 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			player2.update();
 
 			//update bullets crush & move
-			player1.update_bullet(&player2);
-			player2.update_bullet(&player1);
+			player1.update_bullet();
+			player2.update_bullet();
+
+			// p1의 총알이 p2에게 맞았는지 체크
+			RECT p2Rect = player2.GetRect();
+			CBullet* p1Bullets = player1.GetBullets();
+			for (int i = 0; i < MAX_BULLET; ++i)
+			{
+				if (p1Bullets[i].exist == TRUE)
+				{
+					if (p1Bullets[i].x >= p2Rect.left && p1Bullets[i].x <= p2Rect.right &&
+						p1Bullets[i].y >= p2Rect.top && p1Bullets[i].y <= p2Rect.bottom)
+					{
+						player2.OnHit(p1Bullets[i]); // p2에게 맞았다고 알림
+						player1.DeactivateBullet(i); // 명중한 총알은 비활성화
+					}
+				}
+			}
+
+			// p2의 총알이 p1에게 맞았는지 체크
+			RECT p1Rect = player1.GetRect();
+			CBullet* p2Bullets = player2.GetBullets();
+			for (int i = 0; i < MAX_BULLET; ++i)
+			{
+				if (p2Bullets[i].exist == TRUE)
+				{
+					if (p2Bullets[i].x >= p1Rect.left && p2Bullets[i].x <= p1Rect.right &&
+						p2Bullets[i].y >= p1Rect.top && p2Bullets[i].y <= p1Rect.bottom)
+					{
+						player1.OnHit(p2Bullets[i]);
+						player2.DeactivateBullet(i);
+					}
+				}
+			}
 
 			//update item create & move -> 하늘에서 떨어짐	
 			for (int i = 0; i < MAX_ITEM; i++) {

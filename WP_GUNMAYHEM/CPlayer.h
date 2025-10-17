@@ -30,7 +30,19 @@ public:
 
 	void reload();
 	void gunFire();
-	void update_bullet(CPlayer* pTarget);
+	void update_bullet();
+
+	// 외부에서 충돌 체크를 위해 필요한 정보 제공 함수
+	RECT GetRect() const;
+	CBullet* GetBullets();		// 총알 배열 포인터 반환
+
+	// 외부에서 충돌이 발생했을때 알려주는 함수
+	void OnHit(const CBullet& bullet);
+
+	// 총알 비활성화 함수
+	void DeactivateBullet(int index);
+
+	
 
 public:
 	int exist;			// dead or alive
