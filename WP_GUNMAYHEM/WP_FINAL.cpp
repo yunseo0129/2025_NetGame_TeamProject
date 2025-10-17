@@ -1,5 +1,6 @@
 ﻿#include "CPlayer.h"
 #include "Default.h"
+#include "CBmpMgr.h"
 
 CPlayer player1;
 CPlayer player2;

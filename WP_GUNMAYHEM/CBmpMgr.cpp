@@ -5,11 +5,6 @@ CBmpMgr::CBmpMgr()
 
 }
 
-CBmpMgr::~CBmpMgr()
-{
-	Release();
-}
-
 void CBmpMgr::Insert_Bmp(const TCHAR* pFilePath, const TCHAR* pImgKey)
 {
 	auto	iter = find_if(m_mapBit.begin(), m_mapBit.end(), [&](auto& MyPair)->bool

@@ -5,7 +5,7 @@ class CBitmap final : public CBase
 {
 public:
 	CBitmap();
-	~CBitmap();
+	~CBitmap() = default;
 
 public:
 	HDC Get_MDC() { return m_hMDC; }

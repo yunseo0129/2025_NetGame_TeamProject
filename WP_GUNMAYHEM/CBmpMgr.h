@@ -9,7 +9,7 @@ class CBmpMgr final : public CBase
 {
 private:
 	CBmpMgr();
-	~CBmpMgr();
+	~CBmpMgr() = default;
 
 public:
 	void		Insert_Bmp(const TCHAR* pFilePath, const TCHAR* pImgKey);
