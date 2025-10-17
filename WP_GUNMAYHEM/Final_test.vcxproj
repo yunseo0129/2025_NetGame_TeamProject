@@ -138,6 +138,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CBase.cpp" />
+    <ClCompile Include="CBitmap.cpp" />
+    <ClCompile Include="CBmpMgr.cpp" />
     <ClCompile Include="CBullet.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -150,6 +152,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CBase.h" />
+    <ClInclude Include="CBitmap.h" />
+    <ClInclude Include="CBmpMgr.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CMap.h" />
     <ClInclude Include="CObject.h" />

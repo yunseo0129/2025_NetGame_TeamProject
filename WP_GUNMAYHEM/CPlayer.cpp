@@ -6,6 +6,7 @@ CPlayer::CPlayer()
 
 CPlayer::~CPlayer()
 {
+	Release();
 }
 
 void CPlayer::Draw(HDC BMPmDC, HDC mDC)
@@ -14,6 +15,7 @@ void CPlayer::Draw(HDC BMPmDC, HDC mDC)
 
 void CPlayer::Free()
 {
+
 }
 
 void CPlayer::regen()

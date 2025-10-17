@@ -14,6 +14,8 @@
 #include "resource.h"
 #include "fmod.hpp"
 #include "fmod_errors.h"
+#include <map>
+#include <algorithm>
 
 // extern 키워드를 사용하여 전역 변수들을 선언(Declaration)으로 변경
 constexpr int GUN_TYPE_PISTOL = 1;
