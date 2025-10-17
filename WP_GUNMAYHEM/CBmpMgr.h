@@ -2,6 +2,9 @@
 #include "CBase.h"
 #include "CBitmap.h"
 
+// 싱글톤임 GetInstance 불러서 사용할 것
+// 비트맵들 싹다 들고있게 짤 예정
+
 class CBmpMgr final : public CBase
 {
 private:

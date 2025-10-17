@@ -4,11 +4,6 @@ CPlayer::CPlayer()
 {
 }
 
-CPlayer::~CPlayer()
-{
-	Release();
-}
-
 void CPlayer::Draw(HDC BMPmDC, HDC mDC)
 {
 }

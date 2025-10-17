@@ -16,7 +16,7 @@ class CPlayer final : CObject
 {
 public:
 	CPlayer();
-	~CPlayer();
+	~CPlayer() = default;
 
 public:
 	virtual void Draw(HDC BMPmDC, HDC mDC);

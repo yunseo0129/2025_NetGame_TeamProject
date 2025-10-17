@@ -17,6 +17,8 @@
 #include <map>
 #include <algorithm>
 
+extern HWND g_hWnd;
+
 // extern 키워드를 사용하여 전역 변수들을 선언(Declaration)으로 변경
 constexpr int GUN_TYPE_PISTOL = 1;
 constexpr int GUN_TYPE_SNIPE = 2;
