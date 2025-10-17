@@ -138,9 +138,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CBase.cpp" />
-    <ClCompile Include="CBullet.cpp" />
+    <ClCompile Include="CBullet.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="CMap.cpp" />
+    <ClCompile Include="CObject.cpp" />
     <ClCompile Include="CPlayer.cpp" />
+    <ClCompile Include="Default.cpp" />
     <ClCompile Include="WP_FINAL.cpp" />
   </ItemGroup>
   <ItemGroup>

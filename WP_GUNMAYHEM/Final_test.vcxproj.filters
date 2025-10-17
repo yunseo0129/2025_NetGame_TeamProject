@@ -45,6 +45,12 @@
     <ClCompile Include="CBullet.cpp">
       <Filter>소스 파일\CObject\CBullet</Filter>
     </ClCompile>
+    <ClCompile Include="CObject.cpp">
+      <Filter>소스 파일\CObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Default.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
