@@ -31,6 +31,9 @@
     <Filter Include="소스 파일\Level">
       <UniqueIdentifier>{9135c208-2f24-432b-b70e-f3c522f1e190}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Level_Inherited">
+      <UniqueIdentifier>{eb820730-510e-4252-8b4e-073b4b9042df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WP_FINAL.cpp">
@@ -60,6 +63,15 @@
     <ClCompile Include="CLevelManager.cpp">
       <Filter>소스 파일\Level</Filter>
     </ClCompile>
+    <ClCompile Include="CMainLevel.cpp">
+      <Filter>소스 파일\Level_Inherited</Filter>
+    </ClCompile>
+    <ClCompile Include="CPauseLevel.cpp">
+      <Filter>소스 파일\Level_Inherited</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayLevel.cpp">
+      <Filter>소스 파일\Level_Inherited</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -88,6 +100,15 @@
     </ClInclude>
     <ClInclude Include="CLevelManager.h">
       <Filter>소스 파일\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CMainLevel.h">
+      <Filter>소스 파일\Level_Inherited</Filter>
+    </ClInclude>
+    <ClInclude Include="CPauseLevel.h">
+      <Filter>소스 파일\Level_Inherited</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayLevel.h">
+      <Filter>소스 파일\Level_Inherited</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

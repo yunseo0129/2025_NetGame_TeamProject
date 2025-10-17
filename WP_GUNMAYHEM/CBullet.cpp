@@ -15,7 +15,7 @@ CBullet::~CBullet()
 {
 }
 
-void CBullet::Draw(HDC BMPmDC, HDC mDC)
+void CBullet::Draw(HDC mDC)
 {
 }
 

@@ -14,7 +14,7 @@ public:
 	~CBullet();
 
 public:
-	virtual void Draw(HDC BMPmDC, HDC mDC);
+	virtual void Draw(HDC mDC);
 
 private:
 	virtual void Free();
