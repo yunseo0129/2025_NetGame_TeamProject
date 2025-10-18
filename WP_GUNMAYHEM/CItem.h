@@ -20,6 +20,9 @@ public:
 	bool IsFalling() const { return m_falling; }
 	RECT GetRect() const { return { m_x, m_y, m_x + iWidth, m_y + iHeight }; }
 
+	void SetDead() { m_exist = false; }
+	bool IsDead() const { return !m_exist; }
+
 private:
 	virtual void Free() override;
 

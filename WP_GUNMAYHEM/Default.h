@@ -28,6 +28,8 @@ enum OBJ_ID {
 #include <map>
 #include <algorithm>
 
+bool CheckRectCollision(const RECT& rect1, const RECT& rect2);
+
 extern HWND g_hWnd;
 extern int g_mapType;
 extern HDC g_BMPmDC; // 더블버퍼링을 위한 mDC

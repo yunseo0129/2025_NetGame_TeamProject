@@ -9,8 +9,8 @@ void CLevel::Update()
 			int iResult = (*iter)->Update();
 			if (true == iResult)
 			{
-				// Safe_Delete<CObject*>(*iter);
-				// iter = m_ObjList[i].erase(iter);
+				delete (*iter); // 1. 객체 삭제 (메모리 누수 방지)
+				iter = m_ObjList[i].erase(iter); // 2. 리스트에서 포인터 제거
 			}
 			else
 				++iter;

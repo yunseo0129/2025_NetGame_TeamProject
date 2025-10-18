@@ -1,5 +1,16 @@
 ﻿#include "Default.h"
 
+// 사각형 충돌 유틸리티 함수
+bool CheckRectCollision(const RECT& rect1, const RECT& rect2)
+{
+    if (rect1.left < rect2.right && rect1.right > rect2.left &&
+        rect1.top < rect2.bottom && rect1.bottom > rect2.top) {
+        return true;
+    }
+    return false;
+}
+
+
 // Default.h에 extern으로 선언된 모든 전역 변수들의 정의(Definition) 및 초기화
 int g_mapType;
 HDC g_BMPmDC; // 더블버퍼링을 위한 mDC

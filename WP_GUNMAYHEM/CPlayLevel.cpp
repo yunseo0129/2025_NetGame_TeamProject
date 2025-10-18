@@ -1,15 +1,5 @@
 ﻿#include "CPlayLevel.h"
 
-// 사각형 충돌 유틸리티 함수
-bool CheckRectCollision(const RECT& rect1, const RECT& rect2)
-{
-    if (rect1.left < rect2.right && rect1.right > rect2.left &&
-        rect1.top < rect2.bottom && rect1.bottom > rect2.top) {
-        return true;
-    }
-    return false;
-}
-
 CPlayLevel::CPlayLevel()
 {
 }
@@ -20,57 +10,191 @@ void CPlayLevel::Initialize()
     m_prevTime = GetTickCount64(); // 현재 시간
     m_itemSpawnTimer = 0.f;
 
+    // === 플레이어 생성 ===
+    m_pPlayer1 = new CPlayer();
+    m_pPlayer1->x = 150;                // P1 시작 위치
+    m_pPlayer1->playerType = 1;
+    AddObject(m_pPlayer1, OBJ_PLAYER1); // 레벨에 등록
+
+    m_pPlayer2 = new CPlayer();
+    m_pPlayer2->x = 650;                // P2 시작 위치
+    m_pPlayer2->playerType = 2;
+    AddObject(m_pPlayer2, OBJ_PLAYER2); // 레벨에 등록
+
     if (g_mapType == 0) {
         AddObject(new CMap(330, 170), OBJ_MAP);  // 1단
         AddObject(new CMap(160, 300), OBJ_MAP);  // 2단
-        AddObject(new CMap(510, 300), OBJ_MAP);  
-        AddObject(new CMap(70, 420),  OBJ_MAP);  // 3단
+        AddObject(new CMap(510, 300), OBJ_MAP);
+        AddObject(new CMap(70, 420), OBJ_MAP);  // 3단
         AddObject(new CMap(600, 420), OBJ_MAP);
     } else { // mapType == 1
         AddObject(new CMap(160, 170), OBJ_MAP);  // 1단
         AddObject(new CMap(510, 170), OBJ_MAP);
         AddObject(new CMap(330, 300), OBJ_MAP);  // 2단
-        AddObject(new CMap(70, 420),  OBJ_MAP);  // 3단
+        AddObject(new CMap(70, 420), OBJ_MAP);  // 3단
         AddObject(new CMap(600, 420), OBJ_MAP);
     }
+}
 
-    // === 아이템 초기화 ===
-    // 아이템은 시작 시 생성하는 것이 아니라, Update에서 타이머로 생성
-    // (기존 '총알1/2 초기화', '아이템 초기화' 로직은 CPlayer, CItem 생성자로 이동)
+
+void CPlayLevel::update_camera()
+{
+    if (m_pPlayer1 && m_pPlayer2) {
+        int playerCenterX = (m_pPlayer1->x + m_pPlayer2->x) / 2;
+        int playerCenterY = (m_pPlayer1->y + m_pPlayer2->y) / 2;
+
+        cameraX = playerCenterX - cameraWidth / 2;
+        cameraY = playerCenterY - cameraHeight / 2 + 100;
+    }
+}
+
+// 플레이어 물리/충돌 처리
+void CPlayLevel::ProcessPlayerPhysics(CPlayer* player)
+{
+    if (player->jumping) {
+        // 점프 중일 때 땅에 닿았는지 검사
+        if (player->jumpHeight > 0) { // 점프 정점 찍고 하강 중일 때만
+            const auto& maps = GetGroupObject(OBJ_MAP);
+            RECT playerFeet = player->GetRect();
+            playerFeet.top = playerFeet.bottom - 10; // 발밑 10픽셀
+
+            for (auto* pMapObj : maps) {
+                CMap* pMap = static_cast<CMap*>(pMapObj);
+                if (CheckRectCollision(playerFeet, pMap->GetRect())) {
+                    player->SetOnGround(pMap->GetTopY());
+                    return; // 땅 찾음
+                }
+            }
+        }
+    } else if (player->falling) {
+        // 낙하 중일 때 땅에 닿았는지 검사
+        if (player->downCount == 0) { // 아래점프 무적 아닐 때만
+            const auto& maps = GetGroupObject(OBJ_MAP);
+            RECT playerFeet = player->GetRect();
+            playerFeet.top = playerFeet.bottom - 10;
+
+            for (auto* pMapObj : maps) {
+                CMap* pMap = static_cast<CMap*>(pMapObj);
+                if (CheckRectCollision(playerFeet, pMap->GetRect())) {
+                    player->SetOnGround(pMap->GetTopY());
+                    return; // 땅 찾음
+                }
+            }
+        }
+    } else {
+        // 점프/낙하 중이 아닐 때 (땅 위에 서 있을 때)
+        // 발밑에 땅이 사라졌는지 검사
+        const auto& maps = GetGroupObject(OBJ_MAP);
+        RECT playerFeet = player->GetRect();
+        playerFeet.top = playerFeet.bottom; // 발 바로 밑
+        playerFeet.bottom += 5;             // 5픽셀 아래까지
+
+        bool bOnGround = false;
+        for (auto* pMapObj : maps) {
+            CMap* pMap = static_cast<CMap*>(pMapObj);
+            if (CheckRectCollision(playerFeet, pMap->GetRect())) {
+                bOnGround = true;
+                break;
+            }
+        }
+        if (!bOnGround) {
+            player->SetFalling(); // 밟고 있던 땅이 없어짐 -> 낙하
+        }
+    }
 }
 
 void CPlayLevel::Update()
 {
-    //OutputDebugString(L"PlayLevel Update\n");
-
-    // === 1. DeltaTime 계산 (타이머 기반 로직을 위해) ===
-    DWORD curTime = GetTickCount64();
+    // === 1. DeltaTime 계산 ===
+    ULONGLONG curTime = GetTickCount64();
     m_deltaTime = (float)(curTime - m_prevTime);
     m_prevTime = curTime;
 
-    // === 2. 모든 객체(아이템 포함)의 기본 Update 호출 ===
-    // (CItem::Update()가 여기서 호출되어 아이템이 낙하함)
+    // === 2. 입력 처리 (Input) ===
+    // -- Player 1 --
+    if (GetAsyncKeyState('A') & 0x8000) {
+        m_pPlayer1->looking = 0;
+        if (m_pPlayer1->isMoving && m_pPlayer1->speed > 0) m_pPlayer1->speed -= FRICTION;
+        else { m_pPlayer1->acceleration = -ACCELERATION; m_pPlayer1->isMoving = TRUE; }
+    } 
+    else if (GetAsyncKeyState('D') & 0x8000) {
+        m_pPlayer1->looking = 1;
+        if (m_pPlayer1->isMoving && m_pPlayer1->speed < 0) m_pPlayer1->speed += FRICTION;
+        else { m_pPlayer1->acceleration = ACCELERATION; m_pPlayer1->isMoving = TRUE; }
+    } 
+    else {
+        m_pPlayer1->isMoving = FALSE;
+    }
+    // (W, S, SPACE는 GetAsyncKeyState로 하면 연타됨 -> 별도 처리 필요)
+    // (임시로 GetAsyncKeyState 사용)
+    if (GetAsyncKeyState('W') & 0x8001) { // 점프
+        if (m_pPlayer1->jumpCount < 2) {
+            m_pPlayer1->jumpCount++;
+            m_pPlayer1->jumpTime = 0.f;
+            m_pPlayer1->jumpHeight = 0;
+            m_pPlayer1->jstartY = m_pPlayer1->y;
+            m_pPlayer1->jumping = TRUE;
+            m_pPlayer1->falling = FALSE;
+        }
+    }
+    if (GetAsyncKeyState('S') & 0x8001) { // 아래 점프
+        if (m_pPlayer1->downCount == 0 && !m_pPlayer1->falling && !m_pPlayer1->jumping) {
+            m_pPlayer1->downCount = 1;
+            m_pPlayer1->fstartY = m_pPlayer1->y;
+            m_pPlayer1->falling = TRUE;
+        }
+    }
+    if (GetAsyncKeyState(VK_SPACE) & 0x8001) { m_pPlayer1->gunFire(); }
+
+    // -- Player 2 --
+    if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
+        m_pPlayer2->looking = 0;
+        if (m_pPlayer2->isMoving && m_pPlayer2->speed > 0) m_pPlayer2->speed -= FRICTION;
+        else { m_pPlayer2->acceleration = -ACCELERATION; m_pPlayer2->isMoving = TRUE; }
+    } 
+    else if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
+        m_pPlayer2->looking = 1;
+        if (m_pPlayer2->isMoving && m_pPlayer2->speed < 0) m_pPlayer2->speed += FRICTION;
+        else { m_pPlayer2->acceleration = ACCELERATION; m_pPlayer2->isMoving = TRUE; }
+    } 
+    else {
+        m_pPlayer2->isMoving = FALSE;
+    }
+    if (GetAsyncKeyState(VK_UP) & 0x8001) { 
+        if (m_pPlayer2->jumpCount < 2) {
+            m_pPlayer2->jumpCount++;
+            m_pPlayer2->jumpTime = 0.f;
+            m_pPlayer2->jumpHeight = 0;
+            m_pPlayer2->jstartY = m_pPlayer2->y;
+            m_pPlayer2->jumping = TRUE;
+            m_pPlayer2->falling = FALSE;
+        }
+    }
+    if (GetAsyncKeyState(VK_DOWN) & 0x8001) { 
+        if (m_pPlayer2->downCount == 0 && !m_pPlayer2->falling && !m_pPlayer2->jumping) {
+            m_pPlayer2->downCount = 1;
+            m_pPlayer2->fstartY = m_pPlayer2->y;
+            m_pPlayer2->falling = TRUE;
+        }
+    }
+    if (GetAsyncKeyState(VK_OEM_4) & 0x8001) { m_pPlayer2->gunFire(); } // '[' 키
+
+	// === 3. 부모 클래스의 Update 호출 ===
     CLevel::Update();
 
-    // === 3. 아이템 생성 타이머 (기존 WM_TIMER 2번) ===
+    // === 4. 아이템 생성 타이머 ===
     m_itemSpawnTimer += m_deltaTime;
-
     if (m_itemSpawnTimer >= m_itemSpawnDelay) {
-        m_itemSpawnTimer = 0.f; // 타이머 리셋
-
-        // 아이템 개수 제한 (MAX_ITEM)
+        m_itemSpawnTimer = 0.f;
         if (GetGroupObject(OBJ_ITEMBOX).size() < MAX_ITEM) {
-            AddObject(new CItem(), OBJ_ITEMBOX); // 새 아이템 생성 및 레벨에 등록
+            AddObject(new CItem(), OBJ_ITEMBOX);
         }
     }
 
-    // === 4. 충돌 처리 ===
-    // (기존 WP_FINAL의 update item create & move 로직 대체)
-
-    // 4-1. 아이템 vs 맵 충돌
+    // ========== 5. 물리 및 충돌 처리 ==========
+    // 아이템 vs 맵
     const auto& maps = GetGroupObject(OBJ_MAP);
     auto& items = GetGroupObject(OBJ_ITEMBOX); // (수정 가능해야 하므로 const 아님)
-
     for (auto* pItemObj : items) {
         CItem* pItem = static_cast<CItem*>(pItemObj); // CItem으로 캐스팅
 
@@ -92,14 +216,42 @@ void CPlayLevel::Update()
         }
     }
 
-    // 4-2. 플레이어 vs 맵 충돌
-    // (CPlayer를 객체로 만든 후 여기에 구현)
+    // 플레이어 vs 맵
+    ProcessPlayerPhysics(m_pPlayer1);
+    ProcessPlayerPhysics(m_pPlayer2);
 
-    // 4-3. 플레이어 vs 아이템 충돌
-    // (CPlayer를 객체로 만든 후 여기에 구현)
+    // 플레이어 vs 아이템
+    RECT p1Rect = m_pPlayer1->GetRect();
+    RECT p2Rect = m_pPlayer2->GetRect();
 
-    // 4-4. 총알 vs 플레이어 충돌
-    // (CBullet, CPlayer를 객체로 만든 후 여기에 구현)
+    for (auto* pItemObj : items) {
+        CItem* pItem = static_cast<CItem*>(pItemObj);
+
+        // 이미 이번 프레임에 죽었으면 건너뛰기
+        if (pItem->IsDead()) continue;
+
+        RECT itemRect = pItem->GetRect();
+
+        if (CheckRectCollision(p1Rect, itemRect)) {
+            pItem->SetDead(); 
+            // m_pPlayer1->ApplyItem(pItem); // P1에게 아이템 효과 적용
+        }
+
+        if (CheckRectCollision(p2Rect, itemRect)) {
+            pItem->SetDead(); 
+            // m_pPlayer2->ApplyItem(pItem); // P2에게 아이템 효과 적용
+        }
+    }
+
+    // 총알 vs 플레이어
+    m_pPlayer1->update_bullet(m_pPlayer2); // P1 총알이 P2를 맞추는지
+    m_pPlayer2->update_bullet(m_pPlayer1); // P2 총알이 P1을 맞추는지
+
+    if (m_pPlayer1->y > rt.bottom + 100) m_pPlayer1->regen();
+    if (m_pPlayer2->y > rt.bottom + 100) m_pPlayer2->regen();
+
+	// === 6. 카메라 업데이트 ===
+	update_camera();
 }
 
 void CPlayLevel::Draw(HDC mDC)

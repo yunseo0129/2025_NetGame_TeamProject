@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "CLevel.h"
-//#include "CPlayer.h"
+#include "CPlayer.h"
 #include "CMap.h"
 #include "CItem.h"
 
@@ -20,6 +20,9 @@ public:
 	virtual void Draw(HDC mDC) override;
 	virtual void Free() override;
 
+	void update_camera();
+	void ProcessPlayerPhysics(CPlayer* player);
+
 private:
 	// 아이템 생성 타이머
 	float m_itemSpawnTimer = 0.f;
@@ -27,5 +30,8 @@ private:
 
 	// 타이머 관리를 위한 시간 변수
 	float m_deltaTime = 0.f; // 직전 프레임과의 시간 차
-	DWORD m_prevTime = 0;
+	ULONGLONG m_prevTime = 0;
+
+	CPlayer* m_pPlayer1 = nullptr;
+	CPlayer* m_pPlayer2 = nullptr;
 };

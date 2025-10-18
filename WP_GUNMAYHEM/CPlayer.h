@@ -19,20 +19,24 @@ public:
 	~CPlayer() = default;
 
 public:
-	virtual void Draw(HDC mDC);
-
-private:
-	virtual void Free();
+	virtual void Draw(HDC mDC) override;
+	virtual void Free() override;       
+	virtual bool Update() override;     
 
 public:
 	void regen();
-	bool Update();
-
 	void reload();
 	void gunFire();
 	void update_bullet(CPlayer* pTarget);
 
+	// CPlayLevel 충돌처리용 함수
+	RECT GetRect() const { return { x, y, x + pWidth, y + pHeight }; }
+	void SetOnGround(int groundY);
+	void SetFalling();
+	
 public:
+	int playerType = 1;
+
 	int exist;			// dead or alive
 	int x;				   
 	int y;				   

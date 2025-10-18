@@ -2,20 +2,8 @@
 #include "Default.h"
 #include "CLevelManager.h"
 
-CPlayer player1;
-CPlayer player2;
-
 PAINTSTRUCT ps;
 HDC hDC;
-
-void update_camera()
-{
-	int playerCenterX = (player1.x + player2.x) / 2;
-	int playerCenterY = (player1.y + player2.y) / 2;
-
-	cameraX = playerCenterX - cameraWidth / 2;
-	cameraY = playerCenterY - cameraHeight / 2 + 100;
-}
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpszCmdParam, _In_ int nCmdShow)

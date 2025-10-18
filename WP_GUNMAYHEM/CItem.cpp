@@ -37,7 +37,11 @@ bool CItem::Update()
 			m_y = (m_fstartY + (int)m_downHeight);
 		}
 	}
-	return false;
+	if (m_y > rt.bottom + 200) {
+		m_exist = false;
+	}
+
+	return !m_exist;	// 죽었으면 true 반환
 }
 
 void CItem::StopFalling(int groundY)
