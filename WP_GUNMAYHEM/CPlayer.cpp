@@ -358,3 +358,22 @@ void CPlayer::SetFalling()
 		falling = TRUE;
 	}
 }
+
+void CPlayer::ApplyItem(int gunType)
+{
+	switch (gunType) {
+	case GUN_TYPE_SNIPE:
+		this->gunType = GUN_TYPE_SNIPE;
+		maxBullet = 10;
+		range = 600;
+		OutputDebugString(L"Apply SNIPE Item\n");
+		break;
+	case GUN_TYPE_PISTOL:
+		this->gunType = GUN_TYPE_PISTOL;
+		maxBullet = 20;
+		range = 300;
+		OutputDebugString(L"Apply PISTOL Item\n");
+		break;
+	}
+	reload();
+}

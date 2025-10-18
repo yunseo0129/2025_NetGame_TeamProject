@@ -26,7 +26,7 @@ public:
 private:
 	// 아이템 생성 타이머
 	float m_itemSpawnTimer = 0.f;
-	float m_itemSpawnDelay = 7000.f; // 7초 (기존 WM_TIMER 2번)
+	float m_itemSpawnDelay = 1000.f; // 7초 (기존 WM_TIMER 2번)
 
 	// 타이머 관리를 위한 시간 변수
 	float m_deltaTime = 0.f; // 직전 프레임과의 시간 차

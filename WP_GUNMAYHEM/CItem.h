@@ -22,6 +22,7 @@ public:
 
 	void SetDead() { m_exist = false; }
 	bool IsDead() const { return !m_exist; }
+	int GetGunType() const { return m_type; }
 
 private:
 	virtual void Free() override;

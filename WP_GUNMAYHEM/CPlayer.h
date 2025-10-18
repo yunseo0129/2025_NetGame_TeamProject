@@ -33,6 +33,7 @@ public:
 	RECT GetRect() const { return { x, y, x + pWidth, y + pHeight }; }
 	void SetOnGround(int groundY);
 	void SetFalling();
+	void ApplyItem(int gunType);
 	
 public:
 	int playerType = 1;

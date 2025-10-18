@@ -9,8 +9,8 @@ CItem::CItem()
 	m_fstartY = 0;
 	m_downTime = 0.f;
 	m_downHeight = 0;
-	m_falling = true;		// 생성과 동시에 낙하 시작
-	m_type = rand() % 2;	// 0 or 1
+	m_falling = true;			// 생성과 동시에 낙하 시작
+	m_type = rand() % 2 + 1;	// 0 or 1
 }
 
 CItem::~CItem()

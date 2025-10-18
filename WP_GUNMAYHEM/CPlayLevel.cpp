@@ -4,7 +4,6 @@
 // 더블 점프 안되는 오류 (GetKeyState)
 // 점프 후 상단 플랫폼에 올라가지 못하는 오류
 // 
-// 아이템 먹어서 총 바꾸기 추가 필요
 // 승리/패배 결과 출력 필요
 
 CPlayLevel::CPlayLevel()
@@ -241,12 +240,12 @@ void CPlayLevel::Update()
 
         if (CheckRectCollision(p1Rect, itemRect)) {
             pItem->SetDead(); 
-            // m_pPlayer1->ApplyItem(pItem); // P1에게 아이템 효과 적용
+            m_pPlayer1->ApplyItem(pItem->GetGunType()); // P1에게 아이템 효과 적용
         }
 
         if (CheckRectCollision(p2Rect, itemRect)) {
             pItem->SetDead(); 
-            // m_pPlayer2->ApplyItem(pItem); // P2에게 아이템 효과 적용
+            m_pPlayer2->ApplyItem(pItem->GetGunType()); // P2에게 아이템 효과 적용
         }
     }
 
