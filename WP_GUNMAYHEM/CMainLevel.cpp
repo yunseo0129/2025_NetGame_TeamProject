@@ -1,4 +1,5 @@
 ﻿#include "CMainLevel.h"
+#include "CLevelManager.h"
 
 CMainLevel::CMainLevel() { 
 	 m_startMenu = { 500, 350, 800, 400 };
@@ -34,7 +35,7 @@ void CMainLevel::Update() // 입력 처리 포함 (WM_LBUTTONDOWN 메시지를 �
             if (PtInRect(&m_startMenu, pt)) {
                 // 시작 버튼 클릭 시
                 // TODO: CPlayLevel 구현 후 레벨 변경
-                // CLevelManager::GetInstance()->ChangeLevel(LEVEL_PLAY);
+                CLevelManager::GetInstance()->ChangeLevel(LEVEL_PLAY);
             } 
             else if (PtInRect(&m_endMenu, pt)) {
                 // 종료 버튼

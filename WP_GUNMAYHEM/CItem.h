@@ -6,17 +6,22 @@ const int iHeight = 40;
 const int MAX_ITEM = 5;
 // int item_count = 0;
 
-class CItem final : CObject{
+class CItem final : public CObject{
 public:
 	CItem();
 	~CItem();
 
 public:
-	virtual void Draw(HDC mDC);
-	virtual bool Update();
+	virtual void Draw(HDC mDC) override;
+	virtual bool Update() override;
+
+	// 충돌 처리를 위한 함수 추가
+	void StopFalling(int groundY);
+	bool IsFalling() const { return m_falling; }
+	RECT GetRect() const { return { m_x, m_y, m_x + iWidth, m_y + iHeight }; }
 
 private:
-	virtual void Free();
+	virtual void Free() override;
 
 private:
 	bool m_exist;

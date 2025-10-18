@@ -1,7 +1,8 @@
 ﻿#pragma once
 #include "CLevel.h"
-#include "CPlayer.h"
-#include "CBullet.h"
+//#include "CPlayer.h"
+#include "CMap.h"
+#include "CItem.h"
 
 // 플레이 레벨 ====
 // 캐릭터, 아이템, 맵, 총알 오브젝트들
@@ -20,5 +21,11 @@ public:
 	virtual void Free() override;
 
 private:
+	// 아이템 생성 타이머
+	float m_itemSpawnTimer = 0.f;
+	float m_itemSpawnDelay = 7000.f; // 7초 (기존 WM_TIMER 2번)
 
+	// 타이머 관리를 위한 시간 변수
+	float m_deltaTime = 0.f; // 직전 프레임과의 시간 차
+	DWORD m_prevTime = 0;
 };

@@ -9,7 +9,7 @@ CItem::CItem()
 	m_fstartY = 0;
 	m_downTime = 0.f;
 	m_downHeight = 0;
-	m_falling = true;
+	m_falling = true;		// 생성과 동시에 낙하 시작
 	m_type = rand() % 2;	// 0 or 1
 }
 
@@ -38,6 +38,12 @@ bool CItem::Update()
 		}
 	}
 	return false;
+}
+
+void CItem::StopFalling(int groundY)
+{
+	m_falling = false;
+	m_y = groundY - iHeight; // 땅 위에 정확히 안착
 }
 
 void CItem::Free()

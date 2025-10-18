@@ -1,7 +1,9 @@
 ﻿#include "CMap.h"
 
-CMap::CMap()
+CMap::CMap(int x, int y)
 {
+	m_x = x;
+	m_y = y;
 }
 
 CMap::~CMap()

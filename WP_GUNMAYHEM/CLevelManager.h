@@ -31,6 +31,7 @@ public:
 	void Initialize()
 	{
 		m_pLevel[LEVEL_MAIN] = new CMainLevel();
+		m_pLevel[LEVEL_PLAY] = new CPlayLevel();
 		m_eCurrentLevel = LEVEL_MAIN;
 	}
 	void ChangeLevel(LEVEL_ID _eNewLevelID);			// 레벨 전환
