@@ -1,10 +1,5 @@
 ﻿#include "CPlayLevel.h"
 
-// 더블 점프 안되는 오류 (GetKeyState)
-// 점프 후 상단 플랫폼에 올라가지 못하는 오류
-// 
-// 승리/패배 결과 출력 필요
-
 CPlayLevel::CPlayLevel()
 {
 }
@@ -58,7 +53,7 @@ void CPlayLevel::ProcessPlayerPhysics(CPlayer* player)
 {
     if (player->jumping) {
         // 점프 중일 때 땅에 닿았는지 검사
-        if (player->jumpHeight > 0) { // 점프 정점 찍고 하강 중일 때만
+        if (player->jumpHeight <= (player->jumpTime * player->jumpTime - player->jumpPower * player->jumpTime) * 4.f) { // 점프 정점 찍고 하강 중일 때만
             const auto& maps = GetGroupObject(OBJ_MAP);
             RECT playerFeet = player->GetRect();
             playerFeet.top = playerFeet.bottom - 10; // 발밑 10픽셀
