@@ -30,7 +30,7 @@ bool CItem::Update()
 	// 충돌 처리는 플레이 레벨에서 수행
 
 	// 낙하 처리만 수행
-	if (m_exist == false) {
+	if (m_exist == true) {
 		if (m_falling == true) {
 			m_downHeight = (m_downTime * (m_downTime / 2)) * 4.f;
 			m_downTime += 0.2f;

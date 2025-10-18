@@ -17,7 +17,7 @@ CPlayLevel::CPlayLevel()
 void CPlayLevel::Initialize()
 {
     // === 타이머 초기화 ===
-    m_prevTime = GetTickCount(); // 현재 시간
+    m_prevTime = GetTickCount64(); // 현재 시간
     m_itemSpawnTimer = 0.f;
 
     if (g_mapType == 0) {
@@ -41,17 +41,20 @@ void CPlayLevel::Initialize()
 
 void CPlayLevel::Update()
 {
+    //OutputDebugString(L"PlayLevel Update\n");
+
     // === 1. DeltaTime 계산 (타이머 기반 로직을 위해) ===
-    DWORD curTime = GetTickCount();
+    DWORD curTime = GetTickCount64();
     m_deltaTime = (float)(curTime - m_prevTime);
     m_prevTime = curTime;
 
     // === 2. 모든 객체(아이템 포함)의 기본 Update 호출 ===
     // (CItem::Update()가 여기서 호출되어 아이템이 낙하함)
-    CLevel::Update(); //
+    CLevel::Update();
 
     // === 3. 아이템 생성 타이머 (기존 WM_TIMER 2번) ===
     m_itemSpawnTimer += m_deltaTime;
+
     if (m_itemSpawnTimer >= m_itemSpawnDelay) {
         m_itemSpawnTimer = 0.f; // 타이머 리셋
 
