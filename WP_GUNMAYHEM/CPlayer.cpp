@@ -128,6 +128,40 @@ void CPlayer::Draw(HDC mDC)
 			}
 		}
 	}
+
+	// 4. 정보창 그리기
+	switch (playerType) { 
+	case 1: { 
+		// 플레이어1 정보창 100, 500, 200, 150 
+		SelectObject(g_BMPmDC, BMP_inform);
+		BitBlt(mDC, 100, 500, 200, 150, g_BMPmDC, 0, 0, SRCCOPY);
+		//Rectangle(mDC, 100 , 500 , 300 , 650);
+		wsprintf(lpOut, L"player1");
+		TextOut(mDC, 112, 512, lpOut, lstrlen(lpOut));
+		wsprintf(lpOut, L"LIFE : %d", life);
+		TextOut(mDC, 112, 532, lpOut, lstrlen(lpOut));
+		wsprintf(lpOut, L"bullet : %d", maxBullet - bullet_count);
+		TextOut(mDC, 112, 552, lpOut, lstrlen(lpOut));
+		SelectObject(g_BMPmDC, BMP_player1_inform);
+		BitBlt(mDC, 240, 515, 45, 45, g_BMPmDC, 0, 0, SRCCOPY);
+		break; 
+	}
+	case 2: { 
+		// 플레이어2 정보창 570 , 500, 200, 150 
+		SelectObject(g_BMPmDC, BMP_inform);
+		BitBlt(mDC, 570, 500, 200, 150, g_BMPmDC, 0, 0, SRCCOPY);
+		wsprintf(lpOut, L"player2");
+		TextOut(mDC, 582, 512, lpOut, lstrlen(lpOut));
+		wsprintf(lpOut, L"LIFE : %d", life);
+		TextOut(mDC, 582, 532, lpOut, lstrlen(lpOut));
+		wsprintf(lpOut, L"bullet : %d", maxBullet - bullet_count);
+		TextOut(mDC, 582, 552, lpOut, lstrlen(lpOut));
+		SelectObject(g_BMPmDC, BMP_player2_inform);
+		BitBlt(mDC, 710, 515, 45, 45, g_BMPmDC, 0, 0, SRCCOPY);
+		break; 
+	}
+	}
+
 }
 
 void CPlayer::Free()

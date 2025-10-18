@@ -3,6 +3,14 @@
 #include "CObject.h"
 #include "CBase.h"
 
+enum OBJ_ID {
+	OBJ_MAP,
+	OBJ_ITEMBOX,
+	OBJ_PLAYER1,
+	OBJ_PLAYER2,
+	OBJ_END
+};
+
 class CLevel abstract : public CBase
 {
 public:

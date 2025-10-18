@@ -78,5 +78,7 @@ public:
 	int gunType = 1;		// 1:pistol		2:snipe
 	int range = 300;		// 플레이어1의 사거리 (아이템을 먹으면 변화)
 	int maxBullet = 20;		// 1:pistol 20발, 2:snipe 10발
+
+	TCHAR lpOut[20];
 };
 
