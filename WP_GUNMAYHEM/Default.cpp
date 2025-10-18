@@ -1,8 +1,8 @@
 ﻿#include "Default.h"
 
 // Default.h에 extern으로 선언된 모든 전역 변수들의 정의(Definition) 및 초기화
-int mapType;
-HDC BMPmDC; // 더블버퍼링을 위한 mDC
+int g_mapType;
+HDC g_BMPmDC; // 더블버퍼링을 위한 mDC
 
 HWND g_hWnd;
 
@@ -53,9 +53,9 @@ void* extradriverdata = 0;
 
 // 아이템 =====================================================================
 // ITEMBOX 구조체 정의는 Default.h에 있음
-ITEMBOX item[MAX_ITEM] = {};
-int item_count = 0;
+//ITEMBOX item[MAX_ITEM] = {};
+//int item_count = 0;
 
 // 맵(사각형) =====================================================================
 // MAPS 구조체 정의는 Default.h에 있음
-MAPS maps[mapCount] = {};
+//MAPS maps[mapCount] = {};

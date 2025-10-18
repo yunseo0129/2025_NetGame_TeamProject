@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "CLevel.h"
 #include "CMainLevel.h"
+#include "CPlayLevel.h"
 // #include "CPauseLevel.h"
 
 enum LEVEL_ID

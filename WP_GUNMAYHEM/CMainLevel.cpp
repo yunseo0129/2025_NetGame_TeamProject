@@ -42,8 +42,8 @@ void CMainLevel::Update() // 입력 처리 포함 (WM_LBUTTONDOWN 메시지를 �
             } 
             else if (PtInRect(&m_changeMapMenu, pt)) {
                 // 맵 변경
-                mapType++;
-                mapType = mapType % 2;
+                g_mapType++;
+                g_mapType = g_mapType % 2;
             }
         }
     } 
@@ -54,13 +54,14 @@ void CMainLevel::Update() // 입력 처리 포함 (WM_LBUTTONDOWN 메시지를 �
 
 void CMainLevel::Draw(HDC mDC)
 {
-    SelectObject(BMPmDC, BMP_startMenu);
-    BitBlt(mDC, 0, 0, rt.right, rt.bottom, BMPmDC, 0, 0, SRCCOPY);
+    SelectObject(g_BMPmDC, BMP_startMenu);
+    BitBlt(mDC, 0, 0, rt.right, rt.bottom, g_BMPmDC, 0, 0, SRCCOPY);
 
-    wsprintf(lpOut, L"Type : %d", mapType);
+    wsprintf(lpOut, L"Type : %d", g_mapType);
     TextOut(mDC, m_changeMapMenu.left + 140, m_changeMapMenu.top + 50, lpOut, lstrlen(lpOut));
 }
 
 void CMainLevel::Free()
 {
+	// 특별히 해제할 동적 리소스 없음
 }

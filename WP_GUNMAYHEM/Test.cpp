@@ -143,7 +143,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		BMP_player1_inform = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P1INFORM));
 		BMP_player2_inform = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P2INFORM));
 
-		BMPmDC = CreateCompatibleDC(NULL);
+		g_BMPmDC = CreateCompatibleDC(NULL);
 
 		//사운드
 		result = FMOD::System_Create(&ssystem); //--- 사운드 시스템 생성
@@ -217,7 +217,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 	{
 		// ==== 리소스 해제 작업 ====
-		DeleteDC(BMPmDC);
+		DeleteDC(g_BMPmDC);
 		DeleteObject(BMP_player1_left_stand);	
 		DeleteObject(BMP_player1_right_stand);	
 		for (int i = 0; i < 4; i++) {

@@ -29,9 +29,8 @@ enum OBJ_ID {
 #include <algorithm>
 
 extern HWND g_hWnd;
-
-extern int mapType;
-extern HDC BMPmDC; // 더블버퍼링을 위한 mDC
+extern int g_mapType;
+extern HDC g_BMPmDC; // 더블버퍼링을 위한 mDC
 
 // extern 키워드를 사용하여 전역 변수들을 선언(Declaration)으로 변경
 constexpr int GUN_TYPE_PISTOL = 1;
@@ -83,32 +82,7 @@ extern FMOD_RESULT result;
 extern void* extradriverdata;
 
 
-// 아이템 =====================================================================
-#define iWidth 40
-#define iHeight 40
-#define MAX_ITEM 5
-typedef struct {
-	int exist;
-	int x;
-	int y;
 
-	//낙하변수
-	int fstartY;
-	float downTime;
-	float downHeight;
-	BOOL falling;
-
-	int type; //0: 총알 10개, 사거리 600,		1: 총알 20개, 사거리 300
-}ITEMBOX;
-extern ITEMBOX item[MAX_ITEM];
-extern int item_count;
-
-// 맵(사각형) =====================================================================
-#define mapWidth 200
-#define mapHeight 30
-#define mapCount 5
-typedef struct {
-	int x;
-	int y;
-}MAPS;
-extern MAPS maps[mapCount];
+//extern ITEMBOX item[MAX_ITEM];
+//extern int item_count;
+//extern MAPS maps[mapCount];
