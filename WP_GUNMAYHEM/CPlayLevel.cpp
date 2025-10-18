@@ -1,6 +1,5 @@
 ﻿#include "CPlayLevel.h"
 
-// 밑점프 오류
 // 더블 점프 안되는 오류 (GetKeyState)
 // 점프 후 상단 플랫폼에 올라가지 못하는 오류
 // 
@@ -131,8 +130,7 @@ void CPlayLevel::Update()
     else {
         m_pPlayer1->isMoving = FALSE;
     }
-    // (W, S, SPACE는 GetAsyncKeyState로 하면 연타됨 -> 별도 처리 필요)
-    // (임시로 GetAsyncKeyState 사용)
+    
     if (GetAsyncKeyState('W') & 0x8001) { // 점프
         if (m_pPlayer1->jumpCount < 2) {
             m_pPlayer1->jumpCount++;
@@ -146,6 +144,8 @@ void CPlayLevel::Update()
     if (GetAsyncKeyState('S') & 0x8001) { // 아래 점프
         if (m_pPlayer1->downCount == 0 && !m_pPlayer1->falling && !m_pPlayer1->jumping) {
             m_pPlayer1->downCount = 1;
+            m_pPlayer1->downTime = 0;
+            m_pPlayer1->downHeight = 0;
             m_pPlayer1->fstartY = m_pPlayer1->y;
             m_pPlayer1->falling = TRUE;
         }
@@ -166,6 +166,7 @@ void CPlayLevel::Update()
     else {
         m_pPlayer2->isMoving = FALSE;
     }
+
     if (GetAsyncKeyState(VK_UP) & 0x8001) { 
         if (m_pPlayer2->jumpCount < 2) {
             m_pPlayer2->jumpCount++;
@@ -179,6 +180,8 @@ void CPlayLevel::Update()
     if (GetAsyncKeyState(VK_DOWN) & 0x8001) { 
         if (m_pPlayer2->downCount == 0 && !m_pPlayer2->falling && !m_pPlayer2->jumping) {
             m_pPlayer2->downCount = 1;
+            m_pPlayer2->downTime = 0;
+            m_pPlayer2->downHeight = 0;
             m_pPlayer2->fstartY = m_pPlayer2->y;
             m_pPlayer2->falling = TRUE;
         }
