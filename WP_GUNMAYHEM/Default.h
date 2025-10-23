@@ -16,6 +16,9 @@
 #include "fmod_errors.h"
 #include <list>
 
+
+#define         VK_MAX            0xff
+
 enum OBJ_ID {
 	OBJ_PLAYER1,
 	OBJ_PLAYER2,

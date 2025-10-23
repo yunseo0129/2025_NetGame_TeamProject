@@ -153,6 +153,7 @@
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPlayLevel.cpp" />
     <ClCompile Include="Default.cpp" />
+    <ClCompile Include="KeyMgr.cpp" />
     <ClCompile Include="WP_FINAL.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +170,7 @@
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPlayLevel.h" />
     <ClInclude Include="Default.h" />
+    <ClInclude Include="KeyMgr.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
