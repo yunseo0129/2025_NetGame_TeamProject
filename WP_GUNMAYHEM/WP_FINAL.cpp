@@ -2,9 +2,11 @@
 #include "Default.h"
 #include "CLevelManager.h"
 #include "CBmpMgr.h"
+#include "CMap.h"
 
 CPlayer player1;
 CPlayer player2;
+std::vector<CObject*> g_vObjects[OBJ_END];
 
 void update_camera() {
 	int playerCenterX = (player1.x + player2.x) / 2;
@@ -372,24 +374,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				}
 				//맵 초기화
 				if (TRUE) {
-					if (mapType == 0) {
-						maps[0] = { 330, 170 };	//1단
-
-						maps[1] = { 160, 300 };	//2단
-						maps[2] = { 510, 300 };
-
-						maps[3] = { 70, 420 };	//3단
-						maps[4] = { 600, 420 };
-					}
-					else { //if (mapType == 1)
-						maps[0] = { 160, 170 };	//1단
-						maps[1] = { 510, 170 };
-
-						maps[2] = { 330, 300 }; //2단
-
-						maps[3] = { 70, 420 };	//3단
-						maps[4] = { 600, 420 };
-					}
+					CObject* map = new CMap;
+					static_cast<CMap*>(map)->MapSelect((bool)mapType);
+					g_vObjects[OBJ_MAP].push_back(map);
 				}
 
 				//업데이트 타이머

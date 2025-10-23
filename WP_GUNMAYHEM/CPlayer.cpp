@@ -4,10 +4,6 @@ CPlayer::CPlayer()
 {
 }
 
-CPlayer::~CPlayer()
-{
-}
-
 void CPlayer::Draw(HDC mDC)
 {
 }
