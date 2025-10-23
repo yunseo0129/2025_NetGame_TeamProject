@@ -1,5 +1,6 @@
 ﻿#include "CPlayer.h"
 #include "Default.h"
+#include "CLevelManager.h"
 #include "CBmpMgr.h"
 
 CPlayer player1;
@@ -140,6 +141,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		ssystem->createSound("1_menu.wav", FMOD_LOOP_NORMAL, 0, &clickSound);
 		ssystem->createSound("737_item.wav", FMOD_LOOP_NORMAL, 0, &itemSound);
 		PlaySound(TEXT("787_music555.wav"), NULL, SND_ASYNC | SND_LOOP);
+
+		//CLevelManager::GetInstance()->Initialize();
 
 		SetTimer(hWnd, 3, 100, NULL); // 애니메이션 타이머 (200ms 간격)
 		break;

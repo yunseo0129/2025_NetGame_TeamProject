@@ -3,7 +3,7 @@
 #include "CObject.h"
 #include "CBase.h"
 
-class CLevel abstract : CBase
+class CLevel abstract : public CBase
 {
 public:
 	CLevel() = default;
@@ -12,8 +12,8 @@ public:
 public:
     virtual void Initialize() = 0;
 
-    virtual void Update(HWND hWnd);                     // 입력 처리 포함
-    virtual void Draw(HDC hDC, HDC mDC, HDC BMPmDC);
+    virtual void Update();                     // 입력 처리 포함
+    virtual void Draw(HDC mDC);
 
     virtual void Free();
 
@@ -28,6 +28,7 @@ public:
 	{
 		return m_ObjList[_eID];
 	}
+
 protected:
 	std::list<CObject*>		m_ObjList[OBJ_END];
 };
