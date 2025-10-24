@@ -4,11 +4,6 @@ CBitmap::CBitmap()
 {
 }
 
-CBitmap::~CBitmap()
-{
-	Release();
-}
-
 void CBitmap::Load_Bmp(const TCHAR* pFilePath)
 {
 	HDC		hDC = GetDC(g_hWnd);

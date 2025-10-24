@@ -13,7 +13,7 @@ public:
 
 public:
 	virtual void Draw(HDC mDC) override;
-	virtual bool Update() override { return false; };
+	virtual bool Update() override;
 
 	// 충돌 처리를 위한 함수 추가
 	int GetTopY() const { return m_y; }

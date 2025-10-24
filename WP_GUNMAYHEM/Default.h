@@ -15,6 +15,10 @@
 #include "fmod.hpp"
 #include "fmod_errors.h"
 #include <list>
+#include <vector>
+
+
+#define         VK_MAX            0xff
 
 #include <map>
 #include <algorithm>

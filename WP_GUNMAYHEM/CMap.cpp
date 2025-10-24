@@ -16,6 +16,12 @@ void CMap::Draw(HDC mDC)
 	BitBlt(mDC, m_x - cameraX, m_y - 5 - cameraY, mapWidth, mapHeight, g_BMPmDC, 0, 0, SRCCOPY);
 }
 
+bool CMap::Update()
+{
+	return false;
+}
+
 void CMap::Free()
 {
+	//m_vMaps.clear();
 }
