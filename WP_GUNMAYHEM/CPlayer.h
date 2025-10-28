@@ -19,20 +19,25 @@ public:
 	~CPlayer() = default;
 
 public:
-	virtual void Draw(HDC mDC);
-
-private:
-	virtual void Free();
+	virtual void Draw(HDC mDC) override;
+	virtual void Free() override;       
+	virtual bool Update() override;     
 
 public:
 	void regen();
-	bool Update();
-
 	void reload();
 	void gunFire();
 	void update_bullet(CPlayer* pTarget);
 
+	// CPlayLevel 충돌처리용 함수
+	RECT GetRect() const { return { x, y, x + pWidth, y + pHeight }; }
+	void SetOnGround(int groundY);
+	void SetFalling();
+	void ApplyItem(int gunType);
+	
 public:
+	int playerType = 1;
+
 	int exist;			// dead or alive
 	int x;				   
 	int y;				   
@@ -74,5 +79,7 @@ public:
 	int gunType = 1;		// 1:pistol		2:snipe
 	int range = 300;		// 플레이어1의 사거리 (아이템을 먹으면 변화)
 	int maxBullet = 20;		// 1:pistol 20발, 2:snipe 10발
+
+	TCHAR lpOut[20];
 };
 

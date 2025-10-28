@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "CLevel.h"
 #include "CMainLevel.h"
+#include "CPlayLevel.h"
 // #include "CPauseLevel.h"
 
 enum LEVEL_ID
@@ -16,7 +17,7 @@ class CLevelManager
 {
 private:
 	CLevelManager();
-	~CLevelManager() = default;
+	~CLevelManager();
 
 private:
 	static CLevelManager* m_pInstance;
@@ -30,6 +31,7 @@ public:
 	void Initialize()
 	{
 		m_pLevel[LEVEL_MAIN] = new CMainLevel();
+		m_pLevel[LEVEL_PLAY] = new CPlayLevel();
 		m_eCurrentLevel = LEVEL_MAIN;
 	}
 	void ChangeLevel(LEVEL_ID _eNewLevelID);			// 레벨 전환
@@ -41,5 +43,12 @@ public:
 		if (nullptr == m_pInstance)
 			m_pInstance = new CLevelManager();
 		return m_pInstance;
+	}
+	static void DestroyInstance()
+	{
+		if (m_pInstance) {
+			delete m_pInstance;
+			m_pInstance = nullptr;
+		}
 	}
 };

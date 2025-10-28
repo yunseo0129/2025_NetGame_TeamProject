@@ -144,6 +144,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="CItem.cpp" />
     <ClCompile Include="CLevel.cpp" />
     <ClCompile Include="CLevelManager.cpp" />
     <ClCompile Include="CMainLevel.cpp" />
@@ -153,14 +154,17 @@
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPlayLevel.cpp" />
     <ClCompile Include="Default.cpp" />
-    <ClCompile Include="KeyMgr.cpp" />
-    <ClCompile Include="WP_FINAL.cpp" />
+    <ClCompile Include="WP_FINAL.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CBase.h" />
     <ClInclude Include="CBitmap.h" />
     <ClInclude Include="CBmpMgr.h" />
     <ClInclude Include="CBullet.h" />
+    <ClInclude Include="CItem.h" />
     <ClInclude Include="CLevel.h" />
     <ClInclude Include="CLevelManager.h" />
     <ClInclude Include="CMainLevel.h" />

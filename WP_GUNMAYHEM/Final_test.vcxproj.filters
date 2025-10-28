@@ -34,6 +34,9 @@
     <Filter Include="소스 파일\Level_Inherited">
       <UniqueIdentifier>{eb820730-510e-4252-8b4e-073b4b9042df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\CObject\CItem">
+      <UniqueIdentifier>{eac14eac-5835-43e2-be71-cc50bad8b570}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WP_FINAL.cpp">
@@ -72,6 +75,18 @@
     <ClCompile Include="CPlayLevel.cpp">
       <Filter>소스 파일\Level_Inherited</Filter>
     </ClCompile>
+    <ClCompile Include="CBitmap.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CBmpMgr.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CItem.cpp">
+      <Filter>소스 파일\CObject\CItem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -109,6 +124,15 @@
     </ClInclude>
     <ClInclude Include="CPlayLevel.h">
       <Filter>소스 파일\Level_Inherited</Filter>
+    </ClInclude>
+    <ClInclude Include="CBitmap.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CBmpMgr.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CItem.h">
+      <Filter>소스 파일\CObject\CItem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

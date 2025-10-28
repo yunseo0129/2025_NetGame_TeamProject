@@ -9,8 +9,8 @@ void CLevel::Update()
 			int iResult = (*iter)->Update();
 			if (true == iResult)
 			{
-				// Safe_Delete<CObject*>(*iter);
-				// iter = m_ObjList[i].erase(iter);
+				delete (*iter); // 1. 객체 삭제 (메모리 누수 방지)
+				iter = m_ObjList[i].erase(iter); // 2. 리스트에서 포인터 제거
 			}
 			else
 				++iter;
@@ -35,7 +35,10 @@ void CLevel::Free()
 	{
 		for (auto& obj : m_ObjList[i])
 		{
-			// Safe_Delete<CObject*>(obj);
+			if (obj != nullptr) {
+				delete obj;			// 포인터가 가리키는 객체를 삭제
+				obj = nullptr;		// 리스트에 저장된 포인터를 nullptr로 변경
+			}
 		}
 		m_ObjList[i].clear();
 	}
