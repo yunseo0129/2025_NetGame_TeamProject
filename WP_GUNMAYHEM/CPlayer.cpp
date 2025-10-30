@@ -1,4 +1,5 @@
 ﻿#include "CPlayer.h"
+#include "CBmpMgr.h"
 
 CPlayer::CPlayer()
 {
@@ -36,7 +37,7 @@ void CPlayer::Draw(HDC mDC)
 		switch (looking) {
 		case 0: // Left
 			if (isMoving) hBitmapToDraw = BMP_player1_left_walk[anim_frame];
-			else hBitmapToDraw = BMP_player1_left_stand;
+			else hBitmapToDraw = CBmpMgr::GetInstance()->Find_Bmp(L"1SL");
 			break;
 		case 1: // Right
 			if (isMoving) hBitmapToDraw = BMP_player1_right_walk[anim_frame];

@@ -9,7 +9,7 @@ public:
 
 public:
 	HDC Get_MDC() { return m_hMDC; }
-	void Load_Bmp(const TCHAR* pFilePath);
+	void Load_Bmp(int i);
 	void Free();
 
 private:

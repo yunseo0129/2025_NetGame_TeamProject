@@ -12,8 +12,8 @@ private:
 	~CBmpMgr() = default;
 
 public:
-	void		Insert_Bmp(const TCHAR* pFilePath, const TCHAR* pImgKey);
-	HDC			Find_Img(const TCHAR* pImgKey);
+	void		Insert_Bmp(int BmpName, const TCHAR* pImgKey);
+	HDC			Find_Bmp(const TCHAR* pImgKey);
 	void		Free();
 
 public:
