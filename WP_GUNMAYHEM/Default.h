@@ -1,4 +1,19 @@
 ﻿#pragma once
+// <TCP/IP>=====================================================================
+#define _CRT_SECURE_NO_WARNINGS // 구형 C 함수 사용 시 경고 끄기
+#define _WINSOCK_DEPRECATED_NO_WARNINGS // 구형 소켓 API 사용 시 경고 끄기
+#include <winsock2.h> // 윈속2 메인 헤더
+#include <ws2tcpip.h> // 윈속2 확장 헤더
+
+#pragma comment(lib, "ws2_32") // ws2_32.lib 링크
+
+#define SERVERPORT 9000
+#define BUFSIZE     4096    
+//#define FILE_NAME_MAX 256
+
+//char* SERVERIP = (char*)"127.0.0.1";
+//==============================================================================
+
 #pragma comment(lib, "Msimg32.lib")
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "fmod_vc.lib")
@@ -17,13 +32,23 @@
 #include <list>
 #include <vector>
 
-
 #define         VK_MAX            0xff
-
 #include <map>
 #include <algorithm>
 
 bool CheckRectCollision(const RECT& rect1, const RECT& rect2);
+
+enum ACTION {
+	ACTION_NONE,
+	ACTION_MOVE_R,
+	ACTION_MOVE_L,
+	ACTION_JUMP_UP,
+	ACTION_JUMP_DOWN,
+	ACTION_FIRE
+};
+struct ClientPlay {
+	ACTION eAction = ACTION_NONE;
+};
 
 extern HWND g_hWnd;
 extern int g_mapType;

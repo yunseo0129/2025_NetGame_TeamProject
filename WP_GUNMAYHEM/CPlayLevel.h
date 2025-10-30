@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include "CLevel.h"
 #include "CPlayer.h"
 #include "CMap.h"
@@ -34,4 +35,7 @@ private:
 
 	CPlayer* m_pPlayer1 = nullptr;
 	CPlayer* m_pPlayer2 = nullptr;
+
+private:
+	int retval;
 };

@@ -1,5 +1,7 @@
 ﻿#include "CPlayLevel.h"
 
+const char* SERVERIP = (char*)"127.0.0.1";
+
 CPlayLevel::CPlayLevel()
 {
 }
