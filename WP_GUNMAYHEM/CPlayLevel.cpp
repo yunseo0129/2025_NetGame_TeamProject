@@ -27,7 +27,7 @@ void CPlayLevel::Initialize()
     retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
     if (retval == SOCKET_ERROR) 
         OutputDebugString(L"err - connect()\n");
-    OutputDebugString(L"connect 성공\n");
+    else OutputDebugString(L"connect 성공\n");
 
     // === 타이머 초기화 ===
     m_prevTime = GetTickCount64(); // 현재 시간
