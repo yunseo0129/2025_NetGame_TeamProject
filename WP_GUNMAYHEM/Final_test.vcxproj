@@ -152,6 +152,7 @@
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPlayLevel.cpp" />
     <ClCompile Include="Default.cpp" />
+    <ClCompile Include="KeyMgr.cpp" />
     <ClCompile Include="WP_FINAL.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
