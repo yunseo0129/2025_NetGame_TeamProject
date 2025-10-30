@@ -1,4 +1,5 @@
 ﻿#include "CPlayLevel.h"
+#include "KeyMgr.h"
 
 const char* SERVERIP = (char*)"127.0.0.1";
 
@@ -136,12 +137,12 @@ void CPlayLevel::Update()
 
     // === 2. 입력 처리 (Input) ===
     // -- Player 1 --
-    if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
+    if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LEFT)) {
         m_pPlayer1->looking = 0;
         if (m_pPlayer1->isMoving && m_pPlayer1->speed > 0) m_pPlayer1->speed -= FRICTION;
         else { m_pPlayer1->acceleration = -ACCELERATION; m_pPlayer1->isMoving = TRUE; }
     } 
-    else if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
+    else if (CKeyMgr::Get_Instance()->Key_Pressing(VK_RIGHT)) {
         m_pPlayer1->looking = 1;
         if (m_pPlayer1->isMoving && m_pPlayer1->speed < 0) m_pPlayer1->speed += FRICTION;
         else { m_pPlayer1->acceleration = ACCELERATION; m_pPlayer1->isMoving = TRUE; }
@@ -150,7 +151,7 @@ void CPlayLevel::Update()
         m_pPlayer1->isMoving = FALSE;
     }
     
-    if (GetAsyncKeyState(VK_UP) & 0x8001) { // 점프
+    if (CKeyMgr::Get_Instance()->Key_Down(VK_UP)) { // 점프
         if (m_pPlayer1->jumpCount < 2) {
             m_pPlayer1->jumpCount++;
             m_pPlayer1->jumpTime = 0.f;
@@ -160,7 +161,7 @@ void CPlayLevel::Update()
             m_pPlayer1->falling = FALSE;
         }
     }
-    if (GetAsyncKeyState(VK_DOWN) & 0x8001) { // 아래 점프
+    if (CKeyMgr::Get_Instance()->Key_Down(VK_DOWN)) { // 아래 점프
         if (m_pPlayer1->downCount == 0 && !m_pPlayer1->falling && !m_pPlayer1->jumping) {
             m_pPlayer1->downCount = 1;
             m_pPlayer1->downTime = 0;
@@ -169,7 +170,7 @@ void CPlayLevel::Update()
             m_pPlayer1->falling = TRUE;
         }
     }
-    if (GetAsyncKeyState(VK_SPACE) & 0x8001) { m_pPlayer1->gunFire(); }
+    if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE)) { m_pPlayer1->gunFire(); }
 
 	// === 3. 부모 클래스의 Update 호출 ===
     CLevel::Update();
