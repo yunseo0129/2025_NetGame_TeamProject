@@ -1,7 +1,6 @@
 ﻿#include "CPlayer.h"
 #include "Default.h"
 #include "CLevelManager.h"
-#include "CBmpMgr.h"
 
 PAINTSTRUCT ps;
 HDC hDC;
@@ -59,7 +58,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	case WM_CREATE:
 	{
 		GetClientRect(hWnd, &rt);
-		CBmpMgr::GetInstance()->Insert_Bmp(IDB_P1LEFT_STAND, L"1SL");
 		BMP_player1_left_stand = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P1LEFT_STAND));
 		BMP_player1_left_walk[0] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P1LEFT_WALK1));
 		BMP_player1_left_walk[1] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P1LEFT_STAND));
