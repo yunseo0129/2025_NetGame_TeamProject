@@ -15,8 +15,6 @@ public:
 	virtual void Draw(HDC mDC) override;
 	virtual bool Update() override;
 
-	// 충돌 처리를 위한 함수 추가
-	void StopFalling(int groundY);
 	bool IsFalling() const { return m_falling; }
 	RECT GetRect() const { return { m_x, m_y, m_x + iWidth, m_y + iHeight }; }
 

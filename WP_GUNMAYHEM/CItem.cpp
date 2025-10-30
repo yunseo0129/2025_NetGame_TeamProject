@@ -27,27 +27,7 @@ void CItem::Draw(HDC mDC)
 
 bool CItem::Update()
 {
-	// 충돌 처리는 플레이 레벨에서 수행
-
-	// 낙하 처리만 수행
-	if (m_exist == true) {
-		if (m_falling == true) {
-			m_downHeight = (m_downTime * (m_downTime / 2)) * 4.f;
-			m_downTime += 0.2f;
-			m_y = (m_fstartY + (int)m_downHeight);
-		}
-	}
-	if (m_y > rt.bottom + 200) {
-		m_exist = false;
-	}
-
-	return !m_exist;	// 죽었으면 true 반환
-}
-
-void CItem::StopFalling(int groundY)
-{
-	m_falling = false;
-	m_y = groundY - iHeight; // 땅 위에 정확히 안착
+	return false;
 }
 
 void CItem::Free()

@@ -39,9 +39,9 @@ void CPlayLevel::Initialize()
 
 void CPlayLevel::update_camera()
 {
-    if (m_pPlayer1 && m_pPlayer2) {
-        int playerCenterX = (m_pPlayer1->x + m_pPlayer2->x) / 2;
-        int playerCenterY = (m_pPlayer1->y + m_pPlayer2->y) / 2;
+    if (m_pPlayer1) {
+        int playerCenterX = (m_pPlayer1->x + 0);
+        int playerCenterY = (m_pPlayer1->y + 0);
 
         cameraX = playerCenterX - cameraWidth / 2;
         cameraY = playerCenterY - cameraHeight / 2 + 100;
@@ -112,12 +112,12 @@ void CPlayLevel::Update()
 
     // === 2. 입력 처리 (Input) ===
     // -- Player 1 --
-    if (GetAsyncKeyState('A') & 0x8000) {
+    if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
         m_pPlayer1->looking = 0;
         if (m_pPlayer1->isMoving && m_pPlayer1->speed > 0) m_pPlayer1->speed -= FRICTION;
         else { m_pPlayer1->acceleration = -ACCELERATION; m_pPlayer1->isMoving = TRUE; }
     } 
-    else if (GetAsyncKeyState('D') & 0x8000) {
+    else if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
         m_pPlayer1->looking = 1;
         if (m_pPlayer1->isMoving && m_pPlayer1->speed < 0) m_pPlayer1->speed += FRICTION;
         else { m_pPlayer1->acceleration = ACCELERATION; m_pPlayer1->isMoving = TRUE; }
@@ -126,7 +126,7 @@ void CPlayLevel::Update()
         m_pPlayer1->isMoving = FALSE;
     }
     
-    if (GetAsyncKeyState('W') & 0x8001) { // 점프
+    if (GetAsyncKeyState(VK_UP) & 0x8001) { // 점프
         if (m_pPlayer1->jumpCount < 2) {
             m_pPlayer1->jumpCount++;
             m_pPlayer1->jumpTime = 0.f;
@@ -136,7 +136,7 @@ void CPlayLevel::Update()
             m_pPlayer1->falling = FALSE;
         }
     }
-    if (GetAsyncKeyState('S') & 0x8001) { // 아래 점프
+    if (GetAsyncKeyState(VK_DOWN) & 0x8001) { // 아래 점프
         if (m_pPlayer1->downCount == 0 && !m_pPlayer1->falling && !m_pPlayer1->jumping) {
             m_pPlayer1->downCount = 1;
             m_pPlayer1->downTime = 0;
@@ -147,109 +147,12 @@ void CPlayLevel::Update()
     }
     if (GetAsyncKeyState(VK_SPACE) & 0x8001) { m_pPlayer1->gunFire(); }
 
-    // -- Player 2 --
-    if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
-        m_pPlayer2->looking = 0;
-        if (m_pPlayer2->isMoving && m_pPlayer2->speed > 0) m_pPlayer2->speed -= FRICTION;
-        else { m_pPlayer2->acceleration = -ACCELERATION; m_pPlayer2->isMoving = TRUE; }
-    } 
-    else if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
-        m_pPlayer2->looking = 1;
-        if (m_pPlayer2->isMoving && m_pPlayer2->speed < 0) m_pPlayer2->speed += FRICTION;
-        else { m_pPlayer2->acceleration = ACCELERATION; m_pPlayer2->isMoving = TRUE; }
-    } 
-    else {
-        m_pPlayer2->isMoving = FALSE;
-    }
-
-    if (GetAsyncKeyState(VK_UP) & 0x8001) { 
-        if (m_pPlayer2->jumpCount < 2) {
-            m_pPlayer2->jumpCount++;
-            m_pPlayer2->jumpTime = 0.f;
-            m_pPlayer2->jumpHeight = 0;
-            m_pPlayer2->jstartY = m_pPlayer2->y;
-            m_pPlayer2->jumping = TRUE;
-            m_pPlayer2->falling = FALSE;
-        }
-    }
-    if (GetAsyncKeyState(VK_DOWN) & 0x8001) { 
-        if (m_pPlayer2->downCount == 0 && !m_pPlayer2->falling && !m_pPlayer2->jumping) {
-            m_pPlayer2->downCount = 1;
-            m_pPlayer2->downTime = 0;
-            m_pPlayer2->downHeight = 0;
-            m_pPlayer2->fstartY = m_pPlayer2->y;
-            m_pPlayer2->falling = TRUE;
-        }
-    }
-    if (GetAsyncKeyState(VK_OEM_4) & 0x8001) { m_pPlayer2->gunFire(); } // '[' 키
-
 	// === 3. 부모 클래스의 Update 호출 ===
     CLevel::Update();
-
-    // === 4. 아이템 생성 타이머 ===
-    m_itemSpawnTimer += m_deltaTime;
-    if (m_itemSpawnTimer >= m_itemSpawnDelay) {
-        m_itemSpawnTimer = 0.f;
-        if (GetGroupObject(OBJ_ITEMBOX).size() < MAX_ITEM) {
-            AddObject(new CItem(), OBJ_ITEMBOX);
-        }
-    }
-
-    // ========== 5. 물리 및 충돌 처리 ==========
-    // 아이템 vs 맵
-    const auto& maps = GetGroupObject(OBJ_MAP);
-    auto& items = GetGroupObject(OBJ_ITEMBOX); // (수정 가능해야 하므로 const 아님)
-    for (auto* pItemObj : items) {
-        CItem* pItem = static_cast<CItem*>(pItemObj); // CItem으로 캐스팅
-
-        if (!pItem->IsFalling()) continue; // 이미 땅에 닿았으면 스킵
-
-        RECT itemRect = pItem->GetRect();
-
-        for (auto* pMapObj : maps) {
-            CMap* pMap = static_cast<CMap*>(pMapObj);
-            RECT mapRect = pMap->GetRect();
-
-            // 아이템의 "발밑" 부분만 체크
-            RECT itemFeet = { itemRect.left, itemRect.bottom - 10, itemRect.right, itemRect.bottom };
-
-            if (CheckRectCollision(itemFeet, mapRect)) {
-                pItem->StopFalling(pMap->GetTopY()); // 아이템 낙하 중지
-                break; // 이 아이템은 땅을 찾았으므로 다음 아이템으로
-            }
-        }
-    }
 
     // 플레이어 vs 맵
     ProcessPlayerPhysics(m_pPlayer1);
     ProcessPlayerPhysics(m_pPlayer2);
-
-    // 플레이어 vs 아이템
-    RECT p1Rect = m_pPlayer1->GetRect();
-    RECT p2Rect = m_pPlayer2->GetRect();
-
-    for (auto* pItemObj : items) {
-        CItem* pItem = static_cast<CItem*>(pItemObj);
-
-        // 이미 이번 프레임에 죽었으면 건너뛰기
-        if (pItem->IsDead()) continue;
-
-        RECT itemRect = pItem->GetRect();
-
-        if (CheckRectCollision(p1Rect, itemRect)) {
-            pItem->SetDead(); 
-            m_pPlayer1->ApplyItem(pItem->GetGunType()); // P1에게 아이템 효과 적용
-        }
-
-        if (CheckRectCollision(p2Rect, itemRect)) {
-            pItem->SetDead(); 
-            m_pPlayer2->ApplyItem(pItem->GetGunType()); // P2에게 아이템 효과 적용
-        }
-    }
-
-    // 총알 vs 플레이어
-    m_pPlayer1->update_bullet(m_pPlayer2); // P1 총알이 P2를 맞추는지
-    m_pPlayer2->update_bullet(m_pPlayer1); // P2 총알이 P1을 맞추는지
 
     if (m_pPlayer1->y > rt.bottom + 100) m_pPlayer1->regen();
     if (m_pPlayer2->y > rt.bottom + 100) m_pPlayer2->regen();
@@ -260,25 +163,14 @@ void CPlayLevel::Update()
 
 void CPlayLevel::Draw(HDC mDC)
 {
-    // 1. 배경 그리기 (Test.cpp의 WM_PAINT에서 가져옴)
-    // (g_BMPmDC, BMP_map1 등 전역 비트맵 핸들 사용)
-    switch (g_mapType) {
-    case 0:
-        SelectObject(g_BMPmDC, BMP_map1);
-        BitBlt(mDC, 0, 0, 900, 650, g_BMPmDC, 900 - cameraX / 5, 650 - cameraY / 5, SRCCOPY);
-        break;
-    case 1:
-        SelectObject(g_BMPmDC, BMP_map2);
-        BitBlt(mDC, 0, 0, 900, 650, g_BMPmDC, 900 - cameraX / 5, 650 - cameraY / 5, SRCCOPY);
-        break;
-    }
+    // 1. 배경 그리기 
+    // 맵 하나만 사용
+    SelectObject(g_BMPmDC, BMP_map1);
+    BitBlt(mDC, 0, 0, 900, 650, g_BMPmDC, 900 - cameraX / 5, 650 - cameraY / 5, SRCCOPY);
 
     // 2. 부모 클래스의 Draw 호출
     // (이 코드가 m_ObjList의 모든 객체(CMap, CItem)의 Draw를 호출)
     CLevel::Draw(mDC);
-
-    // 3. 플레이어 정보창 등 UI 그리기
-    // (추후 CPlayer 구현 후 여기에 추가)
 }
 
 void CPlayLevel::Free()
