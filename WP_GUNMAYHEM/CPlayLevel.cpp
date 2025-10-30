@@ -8,6 +8,27 @@ CPlayLevel::CPlayLevel()
 
 void CPlayLevel::Initialize()
 {
+	// === 윈속 초기화 ===
+	OutputDebugString(L"CPlayLevel::Initialize()\n");
+    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+		exit(1);
+
+    // 소켓 생성
+    sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock == INVALID_SOCKET) 
+        OutputDebugString(L"err - socket()\n");
+
+    // connect()
+    sockaddr_in serveraddr;
+    memset(&serveraddr, 0, sizeof(serveraddr));
+    serveraddr.sin_family = AF_INET;
+    inet_pton(AF_INET, SERVERIP, &serveraddr.sin_addr);
+    serveraddr.sin_port = htons(SERVERPORT);
+    retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
+    if (retval == SOCKET_ERROR) 
+        OutputDebugString(L"err - connect()\n");
+    OutputDebugString(L"connect 성공\n");
+
     // === 타이머 초기화 ===
     m_prevTime = GetTickCount64(); // 현재 시간
     m_itemSpawnTimer = 0.f;

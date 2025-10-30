@@ -37,5 +37,8 @@ private:
 	CPlayer* m_pPlayer2 = nullptr;
 
 private:
-	int retval;
+	int retval; 
+	WSADATA wsa;
+	SOCKET sock;
+	struct sockaddr_in serveraddr;
 };
