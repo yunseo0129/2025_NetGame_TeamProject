@@ -12,39 +12,32 @@ const float FRICTION = 0.05f;      // 마찰력(감속)
 
 //const int anim_max_frame;
 
-class CPlayer final : CObject 
+class CPlayer final : public CObject 
 {
 public:
 	CPlayer();
-	~CPlayer();
+	~CPlayer() = default;
 
 public:
-	virtual void Draw(HDC BMPmDC, HDC mDC);
-
-private:
-	virtual void Free();
+	virtual void Draw(HDC mDC) override;
+	virtual void Free() override;       
+	virtual bool Update() override;     
 
 public:
 	void regen();
-	void update();
-
 	void reload();
 	void gunFire();
-	void update_bullet();
+	void update_bullet(CPlayer* pTarget);
 
-	// 외부에서 충돌 체크를 위해 필요한 정보 제공 함수
-	RECT GetRect() const;
-	CBullet* GetBullets();		// 총알 배열 포인터 반환
-
-	// 외부에서 충돌이 발생했을때 알려주는 함수
-	void OnHit(const CBullet& bullet);
-
-	// 총알 비활성화 함수
-	void DeactivateBullet(int index);
-
+	// CPlayLevel 충돌처리용 함수
+	RECT GetRect() const { return { x, y, x + pWidth, y + pHeight }; }
+	void SetOnGround(int groundY);
+	void SetFalling();
+	void ApplyItem(int gunType);
 	
-
 public:
+	int playerType = 1;
+
 	int exist;			// dead or alive
 	int x;				   
 	int y;				   
@@ -79,12 +72,13 @@ public:
 	int anim_timer;
 
 public:
-	CBullet bullet[30];
-	int bullet_count = 0;	// 현재 발사된 총알 수
-
+	//CBullet bullet[30];
+	//int bullet_count = 0;	// 현재 발사된 총알 수
+	
 	// 총기 관련 (먹은 아이템에 따라 변화)
 	int gunType = 1;		// 1:pistol		2:snipe
 	int range = 300;		// 플레이어1의 사거리 (아이템을 먹으면 변화)
 	int maxBullet = 20;		// 1:pistol 20발, 2:snipe 10발
-};
 
+	TCHAR lpOut[20];
+};

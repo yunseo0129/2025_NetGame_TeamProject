@@ -1,4 +1,19 @@
 ﻿#pragma once
+// <TCP/IP>=====================================================================
+#define _CRT_SECURE_NO_WARNINGS // 구형 C 함수 사용 시 경고 끄기
+#define _WINSOCK_DEPRECATED_NO_WARNINGS // 구형 소켓 API 사용 시 경고 끄기
+#include <winsock2.h> // 윈속2 메인 헤더
+#include <ws2tcpip.h> // 윈속2 확장 헤더
+
+#pragma comment(lib, "ws2_32") // ws2_32.lib 링크
+
+#define SERVERPORT 9000
+#define BUFSIZE     4096    
+//#define FILE_NAME_MAX 256
+
+//char* SERVERIP = (char*)"127.0.0.1";
+//==============================================================================
+
 #pragma comment(lib, "Msimg32.lib")
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "fmod_vc.lib")
@@ -14,6 +29,30 @@
 #include "resource.h"
 #include "fmod.hpp"
 #include "fmod_errors.h"
+#include <list>
+#include <vector>
+
+#define         VK_MAX            0xff
+#include <map>
+#include <algorithm>
+
+bool CheckRectCollision(const RECT& rect1, const RECT& rect2);
+
+enum ACTION {
+	ACTION_NONE,
+	ACTION_MOVE_R,
+	ACTION_MOVE_L,
+	ACTION_JUMP_UP,
+	ACTION_JUMP_DOWN,
+	ACTION_FIRE
+};
+struct ClientPlay {
+	ACTION eAction = ACTION_NONE;
+};
+
+extern HWND g_hWnd;
+extern int g_mapType;
+extern HDC g_BMPmDC; // 더블버퍼링을 위한 mDC
 
 // extern 키워드를 사용하여 전역 변수들을 선언(Declaration)으로 변경
 constexpr int GUN_TYPE_PISTOL = 1;
@@ -65,32 +104,7 @@ extern FMOD_RESULT result;
 extern void* extradriverdata;
 
 
-// 아이템 =====================================================================
-#define iWidth 40
-#define iHeight 40
-#define MAX_ITEM 5
-typedef struct {
-	int exist;
-	int x;
-	int y;
 
-	//낙하변수
-	int fstartY;
-	float downTime;
-	float downHeight;
-	BOOL falling;
-
-	int type; //0: 총알 10개, 사거리 600,		1: 총알 20개, 사거리 300
-}ITEMBOX;
-extern ITEMBOX item[MAX_ITEM];
-extern int item_count;
-
-// 맵(사각형) =====================================================================
-#define mapWidth 200
-#define mapHeight 30
-#define mapCount 5
-typedef struct {
-	int x;
-	int y;
-}MAPS;
-extern MAPS maps[mapCount];
+//extern ITEMBOX item[MAX_ITEM];
+//extern int item_count;
+//extern MAPS maps[mapCount];
