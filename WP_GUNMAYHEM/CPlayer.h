@@ -27,7 +27,7 @@ public:
 	void regen();
 	void reload();
 	void gunFire();
-	void update_bullet(CPlayer* pTarget);
+	void update_bullet();
 
 	// CPlayLevel 충돌처리용 함수
 	RECT GetRect() const { return { x, y, x + pWidth, y + pHeight }; }
