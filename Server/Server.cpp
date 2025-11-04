@@ -1,5 +1,9 @@
 ﻿#include "Server.h"
 
+// 게임 레벨에 사용하는 변수
+Player g_Players[3]; // 최대 3명 접속 가능
+std::vector
+
 int main(int argc, char* argv[])
 {
     int retval;

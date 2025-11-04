@@ -20,6 +20,20 @@ enum PLAYER_STATE { STATE_NONE, STATE_IDLE, STATE_WALK, STATE_JUMP };
 enum PLAYER_ACTION { ACTION_NONE, ACTION_MOVE_L, ACTION_MOVE_R, ACTION_JUMP_UP, ACTION_JUMP_DOWN, ACTION_SHOOT };
 struct vec2 { float x = 0.f; float y = 0.f; };
 
+// 관리용----------------------------------------------------------------------------
+struct Player {
+	SOCKET			socket;						// 소켓
+	bool			isConnected = false;		// 연결 상태
+	PlayerInfo		info;						// 플레이어 정보
+	vec2			vDirPow;					// 현재 받고있는 가속도 벡터
+};
+
+struct Bullet {
+	BulletInfo      vInfo;						// 총알 정보
+	bool			isDead = false;				// 삭제 플래그
+};
+
+// 통신용----------------------------------------------------------------------------
 struct PlayerInfo {
 	vec2			vPosition;					// 위치
 	PLAYER_STATE	eState = STATE_NONE;		// 현재 상태
@@ -31,6 +45,7 @@ struct PlayerInfo {
 struct BulletInfo {
 	vec2			vStarting;					// 시작 위치
 	vec2			vPosition;					// 현재 위치
+	ITEMTYPE		eType;						// 총알 타입 (사거리 계산용)
 };
 
 struct ItemBoxInfo {
