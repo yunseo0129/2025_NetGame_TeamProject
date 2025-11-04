@@ -28,7 +28,8 @@ void CPlayLevel::Initialize()
     retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
     if (retval == SOCKET_ERROR) 
         OutputDebugString(L"err - connect()\n");
-    else OutputDebugString(L"connect 성공\n");
+    else 
+        OutputDebugString(L"connect 성공\n");
 
     // === 타이머 초기화 ===
     m_prevTime = GetTickCount64(); // 현재 시간
@@ -129,12 +130,12 @@ void CPlayLevel::ProcessPlayerPhysics(CPlayer* player)
 
 void CPlayLevel::Update()
 {
-    // === 1. DeltaTime 계산 ===
+    // === DeltaTime 계산 ===
     ULONGLONG curTime = GetTickCount64();
     m_deltaTime = (float)(curTime - m_prevTime);
     m_prevTime = curTime;
 
-    // === 2. 입력 처리 (Input) ===
+    // === 입력 처리 (Input) ===
     // -- Player 1 --
     if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LEFT)) {
 		myAction = ACTION_MOVE_L;
@@ -185,7 +186,13 @@ void CPlayLevel::Update()
         m_pPlayer1->gunFire(); 
     }
 
-	// === 3. 부모 클래스의 Update 호출 ===
+	// === TCP/IP로 액션 전송 ===
+	retval = send(sock, (const char*)&myAction, sizeof(myAction), 0);
+    if (retval == SOCKET_ERROR) {
+		OutputDebugString(L"err - send()\n");
+    }
+
+	// === 부모 클래스의 Update 호출 ===
     CLevel::Update();
 
     // 플레이어 vs 맵
@@ -195,7 +202,7 @@ void CPlayLevel::Update()
     if (m_pPlayer1->y > rt.bottom + 100) m_pPlayer1->regen();
     if (m_pPlayer2->y > rt.bottom + 100) m_pPlayer2->regen();
 
-	// === 6. 카메라 업데이트 ===
+	// === 카메라 업데이트 ===
 	update_camera();
 }
 
