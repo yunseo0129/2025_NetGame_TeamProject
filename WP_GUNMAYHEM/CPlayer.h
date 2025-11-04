@@ -81,4 +81,7 @@ public:
 	int maxBullet = 20;		// 1:pistol 20발, 2:snipe 10발
 
 	TCHAR lpOut[20];
+
+public:
+	PlayerInfo pInfo;
 };

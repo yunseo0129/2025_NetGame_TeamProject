@@ -189,6 +189,11 @@ void CPlayer::regen()
 
 bool CPlayer::Update()
 {
+	// 서버로 부터 받은 정보로 플레이어 상태 업데이트
+	// x = pInfo.vPosition.x;
+	// y = pInfo.vPosition.y;
+	// gunType = pInfo.eItemType;
+
 	// 1. 마찰력 적용 (항상)		// (isMoving과 관계없이 현재 속도에 대해 마찰을 먼저 계산)
 	if (!jumping && !falling)	// 지상에 있을 때만 마찰 적용 (옵션)
 	{
@@ -250,97 +255,22 @@ bool CPlayer::Update()
 			comboTime = 0;
 		}
 	}
-
-	//// 총알 이동 및 사거리 체크
-	//for (int i = 0; i < MAX_BULLET; i++) {
-	//	if (bullet[i].exist == TRUE) {
-	//		bullet[i].x += bullet[i].vx * 13; // 총알 속도
-	//		bullet[i].travelDistance += 13;    // 이동 거리
-	//		if (bullet[i].c < 30) {
-	//			bullet[i].c++;
-	//		}
-
-	//		// 사거리 도달 시
-	//		if (bullet[i].travelDistance > range) {
-	//			bullet[i].exist = FALSE;
-	//			bullet[i].c = 0; // (재사용을 위해 c도 0으로)
-	//		}
-	//	}
-	//}
-
-	// 아이템/맵 충돌 검사는 CPlayLevel::Update()에서 수행
 	return false;
 }
 
 void CPlayer::reload()
 {
-	//bullet_count = 0;
-	//for (CBullet& b : bullet) {
-	//	if (b.exist == FALSE)
-	//		b.c = 0;
-	//}
+
 }
 
 void CPlayer::gunFire()
 {
-	//불렛카운트 -> 불렛 카운트가 맥스불렛을 넘으면 발사가 안됨 (총알 없음)
-	//불렛 카운트가 탄약 갯수를 넘지 않음 -> 총을 쏨 (비활성화인 총알 하나를 활성화 시킴) -> 불렛 카운트 증가
-	//if (bullet_count < maxBullet) {
-	//	for (int i = 0; i < MAX_BULLET; i++) {
-	//		if (bullet[i].exist == FALSE && bullet[i].c == 0) {
-	//			bullet[i].exist = TRUE;
-	//			bullet[i].x = x + pWidth / 2;
-	//			bullet[i].y = y + pHeight / 2;
-	//			bullet[i].travelDistance = 0; // 초기화
-	//			//총알 방향 계산
-	//			switch (looking) {
-	//			case 0:
-	//				bullet[i].vx = -1;
-	//				bullet[i].vy = 0;
-	//				break;
-	//			case 1:
-	//				bullet[i].vx = 1;
-	//				bullet[i].vy = 0;
-	//				break;
-	//			}
-	//			bullet_count++;
-	//			channel->stop();
-	//			switch (gunType) {
-	//			case GUN_TYPE_PISTOL:
-	//				sound1->setMode(FMOD_LOOP_OFF);
-	//				ssystem->playSound(sound1, 0, false, &channel); //--- 1번 사운드 재생
-	//				break;
-	//			case GUN_TYPE_SNIPE:
-	//				sound2->setMode(FMOD_LOOP_OFF);
-	//				ssystem->playSound(sound2, 0, false, &channel); //--- 2번 사운드 재생
-	//				break;
-	//			}
-	//			break; 
-	//		}
-	//	}
-	//}
+
 }
 
 void CPlayer::update_bullet()
 {
-	//// 총알 vs 적 충돌 체크
-	//for (int i = 0; i < MAX_BULLET; i++) {
-	//	if (bullet[i].exist == TRUE) {
-	//		// CPlayer::GetRect()를 사용하도록 수정
-	//		RECT bulletRect = { bullet[i].x - BULLET_SIZE, bullet[i].y - BULLET_SIZE,
-	//							bullet[i].x + BULLET_SIZE, bullet[i].y + BULLET_SIZE };
-	//		RECT enemyRect = Enemy->GetRect();
-
-	//		if (CheckRectCollision(bulletRect, enemyRect)) {
-	//			Enemy->combo++;
-	//			Enemy->comboTime = 0; // 콤보 타이머 리셋
-	//			Enemy->speed = (7 * Enemy->combo) * bullet[i].vx; // 넉백
-	//			bullet[i].exist = FALSE;
-	//			bullet[i].c = 0;
-	//		}
-	//	}
-	//}
-	//// 콤보 초기화 로직은 CPlayer::Update()로 이동
+	
 }
 
 

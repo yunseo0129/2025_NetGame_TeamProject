@@ -44,4 +44,6 @@ private:
 	WSADATA wsa;
 	SOCKET sock;
 	struct sockaddr_in serveraddr;
+
+	SendData recvData;	// 서버로부터 받은 데이터
 };
