@@ -317,7 +317,7 @@ void CPlayer::gunFire()
 	//}
 }
 
-void CPlayer::update_bullet(CPlayer* Enemy)
+void CPlayer::update_bullet()
 {
 	//// 총알 vs 적 충돌 체크
 	//for (int i = 0; i < MAX_BULLET; i++) {

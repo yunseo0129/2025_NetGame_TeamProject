@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 
     // 소켓 생성
     SOCKET listen_sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (listen_sock == INVALID_SOCKET) printf("err - socket()\n");
+	if (listen_sock == INVALID_SOCKET) err_quit("socket()");
 
     // bind()
     struct sockaddr_in serveraddr;
@@ -25,11 +25,11 @@ int main(int argc, char* argv[])
     serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
     serveraddr.sin_port = htons(SERVERPORT);
     retval = bind(listen_sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
-    if (retval == SOCKET_ERROR) printf("err - bind()\n");
+	if (retval == SOCKET_ERROR) err_quit("bind()");
 
     //listen()
     retval = listen(listen_sock, SOMAXCONN);
-    if (retval == SOCKET_ERROR) printf("err - listen()\n");
+	if (retval == SOCKET_ERROR) err_quit("listen()");
 
     // 데이터 통신에 사용할 변수
     SOCKET client_sock;
@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
         addrlen = sizeof(clientaddr);
         client_sock = accept(listen_sock, (struct sockaddr*)&clientaddr, &addrlen);
         if (client_sock == INVALID_SOCKET) {
-            printf("err - accept()\n");
+			err_quit("accept()");
             break;
         }
 
@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
             PLAYER_ACTION clientPlay;
             retval = recv(client_sock, (char*)&clientPlay, sizeof(clientPlay), 0);
             if (retval == SOCKET_ERROR) {
-                printf("err - recv()\n");
+				err_quit("recv()");
                 break;
             }
             // 받은 액션 출력
