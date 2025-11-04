@@ -15,7 +15,7 @@ CBullet::~CBullet()
 {
 }
 
-void CBullet::Draw(HDC BMPmDC, HDC mDC)
+void CBullet::Draw(HDC mDC)
 {
 }
 
@@ -23,6 +23,7 @@ void CBullet::Free()
 {
 }
 
-void CBullet::update()
+bool CBullet::Update()
 {
+	return false;
 }

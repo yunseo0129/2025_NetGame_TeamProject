@@ -28,8 +28,20 @@
     <Filter Include="소스 파일\CBase">
       <UniqueIdentifier>{0e793972-aad0-4935-b916-426583635403}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Level">
-      <UniqueIdentifier>{05532fc3-ea20-4373-af77-533a23424771}</UniqueIdentifier>
+    <Filter Include="소스 파일\CObject\CItem">
+      <UniqueIdentifier>{eac14eac-5835-43e2-be71-cc50bad8b570}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Engine">
+      <UniqueIdentifier>{5293ed89-ef6f-4fb5-8388-323c089272e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Engine\Level">
+      <UniqueIdentifier>{9135c208-2f24-432b-b70e-f3c522f1e190}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Engine\Level_Inherited">
+      <UniqueIdentifier>{eb820730-510e-4252-8b4e-073b4b9042df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Engine\KeyMgr">
+      <UniqueIdentifier>{36d14921-5126-4119-a35b-7d3f57d44714}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +66,27 @@
     <ClCompile Include="Default.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="CLevel.cpp">
+      <Filter>소스 파일\Engine\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelManager.cpp">
+      <Filter>소스 파일\Engine\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CMainLevel.cpp">
+      <Filter>소스 파일\Engine\Level_Inherited</Filter>
+    </ClCompile>
+    <ClCompile Include="CPauseLevel.cpp">
+      <Filter>소스 파일\Engine\Level_Inherited</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayLevel.cpp">
+      <Filter>소스 파일\Engine\Level_Inherited</Filter>
+    </ClCompile>
+    <ClCompile Include="CItem.cpp">
+      <Filter>소스 파일\CObject\CItem</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyMgr.cpp">
+      <Filter>소스 파일\Engine\KeyMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -76,6 +109,27 @@
     </ClInclude>
     <ClInclude Include="CBullet.h">
       <Filter>소스 파일\CObject\CBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevel.h">
+      <Filter>소스 파일\Engine\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelManager.h">
+      <Filter>소스 파일\Engine\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CMainLevel.h">
+      <Filter>소스 파일\Engine\Level_Inherited</Filter>
+    </ClInclude>
+    <ClInclude Include="CPauseLevel.h">
+      <Filter>소스 파일\Engine\Level_Inherited</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayLevel.h">
+      <Filter>소스 파일\Engine\Level_Inherited</Filter>
+    </ClInclude>
+    <ClInclude Include="CItem.h">
+      <Filter>소스 파일\CObject\CItem</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyMgr.h">
+      <Filter>소스 파일\Engine\KeyMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

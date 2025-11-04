@@ -8,19 +8,15 @@ const int BULLET_SIZE = 2;		// 권총		가로 및 세로의 길이
 const int BULLET_SIZE2 = 4;		// 저격총	가로길이 - 세로는 권총과 동일
 const int MAX_BULLET = 20;		// 총알 최대 개수
 
-class CBullet final : CObject {
+class CBullet final : public CObject {
 public:
 	CBullet();
 	~CBullet();
 
 public:
-	virtual void Draw(HDC BMPmDC, HDC mDC);
-
-private:
-	virtual void Free();
-
-public:
-	void update();
+	virtual void Draw(HDC mDC) override;
+	virtual void Free() override;
+	virtual bool Update() override;
 
 public:
 	int exist;	// 존재여부 (TRUE/FALSE)
