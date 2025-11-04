@@ -25,7 +25,7 @@ public:
 	void ProcessPlayerPhysics(CPlayer* player);
 
 public:
-	ACTION myAction = ACTION_NONE;
+	PLAYER_ACTION myAction = ACTION_NONE;
 
 private:
 	// 아이템 생성 타이머

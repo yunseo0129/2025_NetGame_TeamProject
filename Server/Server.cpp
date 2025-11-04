@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
         // 접속한 클라이언트에게 액션 받기 테스트
         while(1)
         {
-            ACTION clientPlay;
+            PLAYER_ACTION clientPlay;
             retval = recv(client_sock, (char*)&clientPlay, sizeof(clientPlay), 0);
             if (retval == SOCKET_ERROR) {
                 printf("err - recv()\n");
@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
             case ACTION_JUMP_DOWN:
                 printf("Client Action: JUMP DOWN\n");
                 break;
-            case ACTION_FIRE:
+            case ACTION_SHOOT:
                 printf("Client Action: FIRE\n");
                 break;
             default:

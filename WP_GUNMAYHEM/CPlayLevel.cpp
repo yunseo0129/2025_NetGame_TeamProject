@@ -181,7 +181,7 @@ void CPlayLevel::Update()
         }
     }
     if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE)) { 
-		myAction = ACTION_FIRE;
+		myAction = ACTION_SHOOT;
 
         m_pPlayer1->gunFire(); 
     }
