@@ -12,8 +12,23 @@
 
 #pragma comment(lib, "ws2_32") // ws2_32.lib 링크
 
+// 소켓 함수 오류 출력 후 종료
+void err_quit(const char* msg)
+{
+	LPVOID lpMsgBuf;
+	FormatMessageA(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+		NULL, WSAGetLastError(),
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(char*)&lpMsgBuf, 0, NULL);
+	MessageBoxA(NULL, (const char*)lpMsgBuf, msg, MB_ICONERROR);
+	LocalFree(lpMsgBuf);
+	exit(1);
+}
+
 #define SERVERPORT 9000
-#define BUFSIZE 4096    
+#define BUFSIZE 4096
+#define MAX_PLAYER_COUNT 3
 
 enum ITEMTYPE { ITEM_NONE, ITEM_PISTOL, ITEM_SNIPER };
 enum PLAYER_STATE { STATE_NONE, STATE_IDLE, STATE_WALK, STATE_JUMP };
@@ -52,3 +67,14 @@ struct PlayerInput {
 	PLAYER_ACTION eAction = ACTION_NONE; // 플레이어 액션
 };
 // CLIENT -> SERVER ------------------------------------------------------------------
+
+
+// 동기화를 위한 전역 크리티컬 섹션
+CRITICAL_SECTION g_cs_Inputs;
+CRITICAL_SECTION g_cs_WorldStatus;
+
+// 클라이언트 스레드에 소켓, ID 전달을 위한 구조체
+struct ThreadParam {
+	SOCKET		hClientSock;
+	int			iPlayerID;
+};
