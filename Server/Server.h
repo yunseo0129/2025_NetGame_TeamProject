@@ -33,6 +33,16 @@ struct Bullet {
 	bool			isDead = false;				// 삭제 플래그
 };
 
+struct ItemBox {
+	vec2			vPosition;					// 위치
+	ITEMTYPE		eItemType;					// 아이템 타입
+	bool			isDead = false;				// 삭제 플래그
+};
+
+struct CollisionBox {
+	RECT			rtBox;						// 충돌 박스
+};
+
 // 통신용----------------------------------------------------------------------------
 struct PlayerInfo {
 	vec2			vPosition;					// 위치

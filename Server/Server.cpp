@@ -2,7 +2,8 @@
 
 // 게임 레벨에 사용하는 변수
 Player g_Players[3]; // 최대 3명 접속 가능
-std::vector
+std::vector<Bullet> vecBullets; // 총알들
+std::vector<ItemBox> vecItemBoxes; // 아이템 박스들
 
 int main(int argc, char* argv[])
 {
