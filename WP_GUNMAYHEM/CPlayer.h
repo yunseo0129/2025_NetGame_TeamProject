@@ -7,8 +7,8 @@ const int pHeight = 67;
 const int MAXLIFE = 3;
 
 const float MAX_SPEED = 5.0f;      // 최대 속도
-const float ACCELERATION = 0.1f;   // 가속도
-const float FRICTION = 0.05f;      // 마찰력(감속)
+const float ACCELERATION = 0.2f;   // 가속도
+const float FRICTION = 0.02f;      // 마찰력(감속)
 
 //const int anim_max_frame;
 

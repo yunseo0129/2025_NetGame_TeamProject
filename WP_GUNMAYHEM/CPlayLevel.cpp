@@ -138,23 +138,23 @@ void CPlayLevel::Update()
     // === 입력 처리 (Input) ===
     // -- Player 1 --
     if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LEFT)) {
-		myAction = ACTION_MOVE_L;
+        myAction = ACTION_MOVE_L;
 
         m_pPlayer1->looking = 0;
-        if (m_pPlayer1->isMoving && m_pPlayer1->speed > 0) m_pPlayer1->speed -= FRICTION;
-        else { m_pPlayer1->acceleration = -ACCELERATION; m_pPlayer1->isMoving = TRUE; }
-    } 
-    else if (CKeyMgr::Get_Instance()->Key_Pressing(VK_RIGHT)) {
-		myAction = ACTION_MOVE_R;
+        m_pPlayer1->acceleration = -ACCELERATION; 
+        m_pPlayer1->isMoving = TRUE;            
+
+    } else if (CKeyMgr::Get_Instance()->Key_Pressing(VK_RIGHT)) {
+        myAction = ACTION_MOVE_R;
 
         m_pPlayer1->looking = 1;
-        if (m_pPlayer1->isMoving && m_pPlayer1->speed < 0) m_pPlayer1->speed += FRICTION;
-        else { m_pPlayer1->acceleration = ACCELERATION; m_pPlayer1->isMoving = TRUE; }
-    } 
-    else {
-		myAction = ACTION_NONE;
+        m_pPlayer1->acceleration = ACCELERATION;
+        m_pPlayer1->isMoving = TRUE;          
 
-        m_pPlayer1->isMoving = FALSE;
+    } else {
+        myAction = ACTION_NONE;
+        
+        m_pPlayer1->isMoving = FALSE; // 키를 뗐을 때만 '이동 멈춤'으로 설정
     }
     
     if (CKeyMgr::Get_Instance()->Key_Down(VK_UP)) { // 점프
@@ -181,8 +181,8 @@ void CPlayLevel::Update()
         }
     }
     if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE)) { 
-		myAction = ACTION_SHOOT;
-
+        myAction = ACTION_SHOOT;
+        
         m_pPlayer1->gunFire(); 
     }
 

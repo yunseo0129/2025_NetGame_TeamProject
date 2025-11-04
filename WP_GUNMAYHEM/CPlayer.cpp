@@ -189,22 +189,26 @@ void CPlayer::regen()
 
 bool CPlayer::Update()
 {
-	// update speed :  player
-	if (isMoving) {
-		// 가속도를 속도에 적용
-		speed += acceleration;
-		// 속도가 최대 속도를 초과하지 않도록 조정
-		speed = max(-MAX_SPEED, min(speed, MAX_SPEED));
-	} else {
-		// 마찰력을 적용하여 점차 멈춤
-		if (speed > 0) {
+	// 1. 마찰력 적용 (항상)		// (isMoving과 관계없이 현재 속도에 대해 마찰을 먼저 계산)
+	if (!jumping && !falling)	// 지상에 있을 때만 마찰 적용 (옵션)
+	{
+		if (speed > 0.0f) {
 			speed = max(0.0f, speed - FRICTION);
-		} else if (speed < 0) {
+		} else if (speed < 0.0f) {
 			speed = min(0.0f, speed + FRICTION);
 		}
 	}
-	// 속도에 따라 플레이어 위치 업데이트
-	x += speed;
+
+	// 2. 가속도 적용 (isMoving == true 일 때, 즉 키가 눌렸을 때)
+	if (isMoving) {
+		speed += acceleration;
+	}
+
+	// 3. 속도 제한 (마찰과 가속이 모두 적용된 최종 속도를 제한)
+	speed = max(-MAX_SPEED, min(speed, MAX_SPEED));
+
+	// 4. 최종 속도를 위치에 적용
+	x += (int)speed;
 
 	// jumping or falling
 	// 땅 충돌 검사는 CPlayLevel에서 수행
