@@ -130,28 +130,36 @@ void CPlayLevel::ProcessPlayerPhysics(CPlayer* player)
 
 void CPlayLevel::Update()
 {
-    // === 1. DeltaTime 계산 ===
+    // === DeltaTime 계산 ===
     ULONGLONG curTime = GetTickCount64();
     m_deltaTime = (float)(curTime - m_prevTime);
     m_prevTime = curTime;
 
-    // === 2. 입력 처리 (Input) ===
+    // === 입력 처리 (Input) ===
     // -- Player 1 --
     if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LEFT)) {
+		myAction = ACTION_MOVE_L;
+
         m_pPlayer1->looking = 0;
         if (m_pPlayer1->isMoving && m_pPlayer1->speed > 0) m_pPlayer1->speed -= FRICTION;
         else { m_pPlayer1->acceleration = -ACCELERATION; m_pPlayer1->isMoving = TRUE; }
     } 
     else if (CKeyMgr::Get_Instance()->Key_Pressing(VK_RIGHT)) {
+		myAction = ACTION_MOVE_R;
+
         m_pPlayer1->looking = 1;
         if (m_pPlayer1->isMoving && m_pPlayer1->speed < 0) m_pPlayer1->speed += FRICTION;
         else { m_pPlayer1->acceleration = ACCELERATION; m_pPlayer1->isMoving = TRUE; }
     } 
     else {
+		myAction = ACTION_NONE;
+
         m_pPlayer1->isMoving = FALSE;
     }
     
     if (CKeyMgr::Get_Instance()->Key_Down(VK_UP)) { // 점프
+		myAction = ACTION_JUMP_UP;
+
         if (m_pPlayer1->jumpCount < 2) {
             m_pPlayer1->jumpCount++;
             m_pPlayer1->jumpTime = 0.f;
@@ -162,6 +170,8 @@ void CPlayLevel::Update()
         }
     }
     if (CKeyMgr::Get_Instance()->Key_Down(VK_DOWN)) { // 아래 점프
+		myAction = ACTION_JUMP_DOWN;
+
         if (m_pPlayer1->downCount == 0 && !m_pPlayer1->falling && !m_pPlayer1->jumping) {
             m_pPlayer1->downCount = 1;
             m_pPlayer1->downTime = 0;
@@ -170,9 +180,19 @@ void CPlayLevel::Update()
             m_pPlayer1->falling = TRUE;
         }
     }
-    if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE)) { m_pPlayer1->gunFire(); }
+    if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE)) { 
+		myAction = ACTION_SHOOT;
 
-	// === 3. 부모 클래스의 Update 호출 ===
+        m_pPlayer1->gunFire(); 
+    }
+
+	// === TCP/IP로 액션 전송 ===
+	retval = send(sock, (const char*)&myAction, sizeof(myAction), 0);
+    if (retval == SOCKET_ERROR) {
+		OutputDebugString(L"err - send()\n");
+    }
+
+	// === 부모 클래스의 Update 호출 ===
     CLevel::Update();
 
     // 플레이어 vs 맵
@@ -182,7 +202,7 @@ void CPlayLevel::Update()
     if (m_pPlayer1->y > rt.bottom + 100) m_pPlayer1->regen();
     if (m_pPlayer2->y > rt.bottom + 100) m_pPlayer2->regen();
 
-	// === 6. 카메라 업데이트 ===
+	// === 카메라 업데이트 ===
 	update_camera();
 }
 

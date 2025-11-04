@@ -49,9 +49,45 @@ int main(int argc, char* argv[])
         //// 쓰레드 생성
         //hThread = CreateThread(NULL, 0, ProcessClient, (LPVOID)client_sock, 0, NULL);
         //if (hThread == NULL) { closesocket(client_sock); } else { CloseHandle(hThread); }
+
+        // 접속한 클라이언트에게 액션 받기 테스트
+        while(1)
+        {
+            PLAYER_ACTION clientPlay;
+            retval = recv(client_sock, (char*)&clientPlay, sizeof(clientPlay), 0);
+            if (retval == SOCKET_ERROR) {
+                printf("err - recv()\n");
+                break;
+            }
+            // 받은 액션 출력
+            switch (clientPlay) {
+            case ACTION_NONE:
+                printf("Client Action: NONE\n");
+                break;
+            case ACTION_MOVE_R:
+                printf("Client Action: MOVE RIGHT\n");
+                break;
+            case ACTION_MOVE_L:
+                printf("Client Action: MOVE LEFT\n");
+                break;
+            case ACTION_JUMP_UP:
+                printf("Client Action: JUMP UP\n");
+                break;
+            case ACTION_JUMP_DOWN:
+                printf("Client Action: JUMP DOWN\n");
+                break;
+            case ACTION_SHOOT:
+                printf("Client Action: FIRE\n");
+                break;
+            default:
+                printf("Client Action: UNKNOWN\n");
+                break;
+            }
+        }
     }
 
     // 소켓 닫기 및 윈속 종료
+    closesocket(client_sock);
     closesocket(listen_sock);
     WSACleanup();
 
