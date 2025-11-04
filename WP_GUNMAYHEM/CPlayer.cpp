@@ -339,6 +339,7 @@ void CPlayer::update_bullet()
 	//// 콤보 초기화 로직은 CPlayer::Update()로 이동
 }
 
+
 void CPlayer::SetOnGround(int groundY)
 {
 	falling = FALSE;

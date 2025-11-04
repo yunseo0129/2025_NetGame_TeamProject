@@ -28,7 +28,7 @@ void err_quit(const char* msg)
 
 #define SERVERPORT 9000
 #define BUFSIZE 4096
-#define MAX_PLAYER_COUNT 3
+#define MAX_PLAYERS 3
 
 enum ITEMTYPE { ITEM_NONE, ITEM_PISTOL, ITEM_SNIPER };
 enum PLAYER_STATE { STATE_NONE, STATE_IDLE, STATE_WALK, STATE_JUMP };
@@ -71,7 +71,7 @@ struct PlayerInput {
 
 // 동기화를 위한 전역 크리티컬 섹션
 CRITICAL_SECTION g_cs_Inputs;
-CRITICAL_SECTION g_cs_WorldStatus;
+CRITICAL_SECTION g_World_CS;
 
 // 클라이언트 스레드에 소켓, ID 전달을 위한 구조체
 struct ThreadParam {
