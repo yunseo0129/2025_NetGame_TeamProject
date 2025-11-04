@@ -24,6 +24,9 @@ public:
 	void update_camera();
 	void ProcessPlayerPhysics(CPlayer* player);
 
+public:
+	ACTION myAction = ACTION_NONE;
+
 private:
 	// 아이템 생성 타이머
 	float m_itemSpawnTimer = 0.f;
