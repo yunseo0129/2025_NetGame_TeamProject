@@ -190,30 +190,36 @@ void CPlayer::regen()
 bool CPlayer::Update()
 {
 	// 서버로 부터 받은 정보로 플레이어 상태 업데이트
-	// x = pInfo.vPosition.x;
-	// y = pInfo.vPosition.y;
-	// gunType = pInfo.eItemType;
 
-	// 1. 마찰력 적용 (항상)		// (isMoving과 관계없이 현재 속도에 대해 마찰을 먼저 계산)
-	if (!jumping && !falling)	// 지상에 있을 때만 마찰 적용 (옵션)
+	if (false)
 	{
-		if (speed > 0.0f) {
-			speed = max(0.0f, speed - FRICTION);
-		} else if (speed < 0.0f) {
-			speed = min(0.0f, speed + FRICTION);
-		}
+		x = pInfo.vPosition.x;
+		y = pInfo.vPosition.y;
+		gunType = pInfo.eItemType;
 	}
+	else
+	{
+		 // 1. 마찰력 적용 (항상)		// (isMoving과 관계없이 현재 속도에 대해 마찰을 먼저 계산)
+		 if (!jumping && !falling)	// 지상에 있을 때만 마찰 적용 (옵션)
+		 {
+			 if (speed > 0.0f) {
+				 speed = max(0.0f, speed - FRICTION);
+			 } else if (speed < 0.0f) {
+				 speed = min(0.0f, speed + FRICTION);
+			 }
+		 }
 
-	// 2. 가속도 적용 (isMoving == true 일 때, 즉 키가 눌렸을 때)
-	if (isMoving) {
-		speed += acceleration;
-	}
+		 // 2. 가속도 적용 (isMoving == true 일 때, 즉 키가 눌렸을 때)
+		 if (isMoving) {
+			 speed += acceleration;
+		 }
 
-	// 3. 속도 제한 (마찰과 가속이 모두 적용된 최종 속도를 제한)
-	speed = max(-MAX_SPEED, min(speed, MAX_SPEED));
+		 // 3. 속도 제한 (마찰과 가속이 모두 적용된 최종 속도를 제한)
+		 speed = max(-MAX_SPEED, min(speed, MAX_SPEED));
 
-	// 4. 최종 속도를 위치에 적용
-	x += (int)speed;
+		 // 4. 최종 속도를 위치에 적용
+		 x += (int)speed;
+	 }
 
 	// jumping or falling
 	// 땅 충돌 검사는 CPlayLevel에서 수행
