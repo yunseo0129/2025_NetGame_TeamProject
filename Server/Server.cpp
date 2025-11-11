@@ -7,11 +7,21 @@ std::vector<ItemBox> vecItemBoxes; // 아이템 박스들
 bool g_running = true;
 
 DWORD WINAPI AcceptThread(LPVOID arg);
-
 DWORD WINAPI ProcessClient(LPVOID arg);
+
+bool Initializer();
 
 int main(int argc, char* argv[])
 {
+    auto pre = std::chrono::high_resolution_clock::now();
+    double timedelta = 0.0;
+
+    if (Initializer())
+    {
+        printf("초기화 오류");
+        return 0;
+    }
+
     // 윈속 초기화
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
@@ -48,11 +58,22 @@ int main(int argc, char* argv[])
     bool isGameEnd = false;
     while (!isGameEnd)
     {
-        // 게임 루프
+        // 메인스레드가 30fps를 고정으로 갖게하는 코드임
         int i = 0;
-        if (GetAsyncKeyState(VK_ESCAPE))
+        auto now = std::chrono::high_resolution_clock::now();
+        timedelta += std::chrono::duration<double>(now - pre).count();
+        pre = now;
+        //////////////////////////////////////////
+
+        if (timedelta >= (1.0 / 30.0))
         {
-            break;
+            // 실제 게임 로직 여기에 구현
+            if (GetAsyncKeyState(VK_ESCAPE))
+            {
+                break;
+            }
+            
+            timedelta = 0.0;
         }
     }
 
@@ -169,4 +190,12 @@ DWORD WINAPI ProcessClient(LPVOID arg)
     }
 
     return 0;
+}
+
+bool Initializer()
+{
+    // 맵, 플레이어 등 초기화, 실패시 false 반환
+    
+
+    return true;
 }
