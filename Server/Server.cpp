@@ -65,7 +65,6 @@ int main(int argc, char* argv[])
         auto now = std::chrono::high_resolution_clock::now();
         timedelta += std::chrono::duration<double>(now - pre).count();
         pre = now;
-        //////////////////////////////////////////
 
         if (timedelta >= (1.0 / 60.0))
         {
