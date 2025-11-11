@@ -6,24 +6,21 @@ CPlayLevel::CPlayLevel()
 {
 }
 
+
+
 void CPlayLevel::Initialize()
 {
-	// 소켓 생성
-	sock = socket(AF_INET, SOCK_STREAM, 0);
-	if (sock == INVALID_SOCKET) 
-		OutputDebugString(L"err - socket()\n");
 
-	// connect()
-	sockaddr_in serveraddr;
-	memset(&serveraddr, 0, sizeof(serveraddr));
-	serveraddr.sin_family = AF_INET;
-	inet_pton(AF_INET, SERVERIP, &serveraddr.sin_addr);
-	serveraddr.sin_port = htons(SERVERPORT);
-	retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
-	if (retval == SOCKET_ERROR) 
-		OutputDebugString(L"err - connect()\n");
-	else 
-		OutputDebugString(L"connect 성공\n");
+	// === 소켓 생성 및 서버 연결 ===
+	HANDLE hThread = CreateThread(NULL, 0, ClientThread, NULL, 0, NULL);
+	if (hThread == NULL)
+	{
+		OutputDebugString(L"스레드 생성 실패\n");
+	}
+	else
+	{
+		CloseHandle(hThread);
+	}
 
 	// === 타이머 초기화 ===
 	m_itemSpawnTimer = 0.f;
@@ -104,4 +101,46 @@ void CPlayLevel::Free()
 	// 부모 클래스의 Free()를 호출하여
 	// m_ObjList에 있는 모든 객체 (CMap, CItem)를 delete 합니다.
 	CLevel::Free();
+}
+
+DWORD WINAPI ClientThread(LPVOID arg)
+{
+	int retval;
+	SOCKET sock = INVALID_SOCKET;
+
+	// 소켓 생성
+	sock = socket(AF_INET, SOCK_STREAM, 0);
+	if (sock == INVALID_SOCKET)
+		OutputDebugString(L"err - socket()\n");
+
+	// connect()
+	sockaddr_in serveraddr;
+	memset(&serveraddr, 0, sizeof(serveraddr));
+	serveraddr.sin_family = AF_INET;
+	inet_pton(AF_INET, SERVERIP, &serveraddr.sin_addr);
+	serveraddr.sin_port = htons(SERVERPORT);
+	retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
+	if (retval == SOCKET_ERROR)
+		OutputDebugString(L"err - connect()\n");
+	else
+		OutputDebugString(L"connect 성공\n");
+
+	while (1) {
+		// 서버로부터 데이터 수신
+		// 정보를 받으면 각 객체(플레이어)들은 그 정보를 바탕으로 자신의 상태를 각각 업데이트
+		SendData recvData;
+		retval = recv(sock, (char*)&recvData, sizeof(recvData), 0);
+		if (retval == SOCKET_ERROR) {
+			OutputDebugString(L"err - recv()\n");
+		}
+		else {
+			// 플레이어 정보 업데이트
+			/*CPlayLevel* pPlayLevel = (CPlayLevel*)CLevelManager::GetInstance()->GetCurrentLevel();
+			if (pPlayLevel) {
+				if (pPlayLevel->m_pPlayer1)
+					pPlayLevel->m_pPlayer1->pInfo = recvData.playerInfo[0];
+				if (pPlayLevel->m_pPlayer2)
+					pPlayLevel->m_pPlayer2->pInfo = recvData.playerInfo[1];
+			}*/
+		}
 }
