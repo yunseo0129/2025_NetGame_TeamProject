@@ -59,7 +59,6 @@ struct ItemBoxInfo {
 // 관리용----------------------------------------------------------------------------
 struct Player {
 	SOCKET			socket;						// 소켓
-	bool			isConnected = false;		// 연결 상태
 	PlayerInfo		info;						// 플레이어 정보
 	vec2			vDirPow;					// 현재 받고있는 가속도 벡터
 	CollisionBox	rtBox;						// 충돌 박스

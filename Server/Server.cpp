@@ -1,7 +1,7 @@
 ﻿#include "Server.h"
 
 // 게임 레벨에 사용하는 변수
-Player g_Players[3]; // 최대 3명 접속 가능
+Player Players[3]; // 최대 3명 접속 가능
 std::vector<Bullet> vecBullets; // 총알들
 std::vector<ItemBox> vecItemBoxes; // 아이템 박스들
 bool g_running = true;
@@ -113,6 +113,15 @@ DWORD WINAPI AcceptThread(LPVOID arg)
         // 3명까지만 접속 허용
         if (g_player_count < MAX_PLAYERS)
         {
+            // 플레이어 초기화
+            Players[g_player_count].socket = client_sock[g_player_count];
+            Players[g_player_count].info.isConnected = true;
+            Players[g_player_count].info.iLife = 3;
+            Players[g_player_count].info.eItemType = ITEM_PISTOL;
+            Players[g_player_count].info.eState = STATE_IDLE;
+            Players[g_player_count].info.vPosition.x = 330;
+            Players[g_player_count].info.vPosition.y = 70;
+            
             // 스레드에 소켓과 ID를 넘겨주기 위해 구조체 사용
             ThreadParam* pArgs = new ThreadParam;
             pArgs->hClientSock = client_sock[g_player_count];
@@ -123,6 +132,7 @@ DWORD WINAPI AcceptThread(LPVOID arg)
                 closesocket(client_sock[g_player_count - 1]);
                 delete pArgs; // 스레드 생성 실패 시 메모리 해제
                 g_player_count--; // 카운트 복구
+                Players[g_player_count].info.isConnected = false;
             }
             else {
                 CloseHandle(hThread); // 스레드 핸들 정리
@@ -217,5 +227,18 @@ bool Initializer()
     block[4].rtBox.top = 420 - 30;
     block[4].rtBox.bottom = 420 + 30;
 
+    // 플레이어 충돌체 위치 초기화
+    for (int i = 0; i < 3; ++i)
+    {
+        Players[i].rtBox.rtBox.left = -45;
+        Players[i].rtBox.rtBox.right = 45;
+        Players[i].rtBox.rtBox.top = -67;
+        Players[i].rtBox.rtBox.bottom = 67;
+    }
+
+    // 벡터 크기 예약
+    vecBullets.reserve(100);
+    vecItemBoxes.reserve(10);
+   
     return false;
 }
