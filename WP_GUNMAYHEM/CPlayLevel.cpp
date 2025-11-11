@@ -10,20 +10,17 @@ CPlayLevel::CPlayLevel()
 
 void CPlayLevel::Initialize()
 {
+	InitializeCriticalSection(&m_cs);
+
+	m_bIsRunning = true; // 스레드 실행 플래그 설정
 
 	// === 소켓 생성 및 서버 연결 ===
-	HANDLE hThread = CreateThread(NULL, 0, ClientThread, NULL, 0, NULL);
-	if (hThread == NULL)
+	m_hThread = CreateThread(NULL, 0, ClientThread, this, 0, NULL);
+	if (m_hThread == NULL)
 	{
-		OutputDebugString(L"스레드 생성 실패\n");
+		OutputDebugString(L"[CPlayLevel] : 스레드 생성 실패\n");
+		m_bIsRunning = false;
 	}
-	else
-	{
-		CloseHandle(hThread);
-	}
-
-	// === 타이머 초기화 ===
-	m_itemSpawnTimer = 0.f;
 
 	// === 플레이어 생성 ===
 	m_pPlayer1 = new CPlayer();
@@ -65,7 +62,35 @@ void CPlayLevel::update_camera()
 
 void CPlayLevel::Update()
 {
-	
+	// 네트워크 패킷 처리
+	SendData recvData;
+	bool bPacketProcessed = false;
+
+	EnterCriticalSection(&m_cs); 
+	if (!m_recvQueue.empty()) {
+		recvData = m_recvQueue.front();
+		m_recvQueue.pop();
+		bPacketProcessed = true;
+	}
+	LeaveCriticalSection(&m_cs);
+
+	if (bPacketProcessed) {
+		if (m_pPlayer1)
+			m_pPlayer1->pInfo = recvData.playerInfo[0]; // pInfo : 위치, 상태, 아이템, 목숨, 연결 여부 등
+		if (m_pPlayer2)
+			m_pPlayer2->pInfo = recvData.playerInfo[1];
+	}
+
+	// 키 입력 처리
+	ProcessInput(); 
+	if (b_keyAct && m_sock != INVALID_SOCKET) {
+		// 입력을 서버로 전송
+		int retval = send(m_sock, (const char*)&myAction, sizeof(myAction), 0);
+		if (retval == SOCKET_ERROR) {
+			OutputDebugString(L"[CPlayLevel] : err - send()\n");
+		}
+	}
+
 	// === 부모 클래스의 Update 호출 ===
 	CLevel::Update();
 
@@ -87,10 +112,9 @@ void CPlayLevel::Draw(HDC mDC)
 
 void CPlayLevel::Free()
 {
-	closesocket(sock);
-	// 부모 클래스의 Free()를 호출하여
-	// m_ObjList에 있는 모든 객체 (CMap, CItem)를 delete 합니다.
-
+	closesocket(m_sock);
+	CloseHandle(m_hThread);
+	DeleteCriticalSection(&m_cs);
 
 	CLevel::Free();
 }
@@ -141,43 +165,52 @@ void CPlayLevel::ProcessInput()
 	}
 }
 
-DWORD WINAPI ClientThread(LPVOID arg)
+DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 {
+	CPlayLevel* pThis = static_cast<CPlayLevel*>(pArg);
 	int retval;
-	SOCKET sock = INVALID_SOCKET;
 
-	// 소켓 생ㅡ
-	sock = socket(AF_INET, SOCK_STREAM, 0);
-	if (sock == INVALID_SOCKET)
-		OutputDebugString(L"err - socket()\n");
+	// 소켓 생성
+	pThis->m_sock = socket(AF_INET, SOCK_STREAM, 0);
+	if (pThis->m_sock == INVALID_SOCKET) {
+		OutputDebugString(L"[ClientThread] : err - socket()\n");
+		return 1;
+	}
+
 	// connect()
 	sockaddr_in serveraddr;
 	memset(&serveraddr, 0, sizeof(serveraddr));
 	serveraddr.sin_family = AF_INET;
 	inet_pton(AF_INET, SERVERIP, &serveraddr.sin_addr);
 	serveraddr.sin_port = htons(SERVERPORT);
-	retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
+	retval = connect(pThis->m_sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
 	if (retval == SOCKET_ERROR)
-		OutputDebugString(L"err - connect()\n");
-	else
-		OutputDebugString(L"connect 성공\n");
+	{
+		OutputDebugString(L"[ClientThread] : err - connect()\n");
+		closesocket(pThis->m_sock);
+		pThis->m_sock = INVALID_SOCKET;
+		return 1;
+	}
+	OutputDebugString(L"[ClientThread] : connect 성공\n");
 
-	while (1) {
+	while (pThis->m_bIsRunning) {
 		// 서버로부터 데이터 수신
 		// 정보를 받으면 각 객체(플레이어)들은 그 정보를 바탕으로 자신의 상태를 각각 업데이트
-		SendData recvData
-		retval = recv(sock, (char*)&recvData, sizeof(recvData), 0);
-		if (retval == SOCKET_ERROR) {
-			OutputDebugString(L"err - recv()\n");
-		} else {
-			// 플레이어 정보 업데이트
-			/*CPlayLevel* pPlayLevel = (CPlayLevel*)CLevelManager::GetInstance()->GetCurrentLevel();
-			if (pPlayLevel) {
-				if (pPlayLevel->m_pPlayer1)
-					pPlayLevel->m_pPlayer1->pInfo = recvData.playerInfo[0];
-				if (pPlayLevel->m_pPlayer2)
-					pPlayLevel->m_pPlayer2->pInfo = recvData.playerInfo[1];
-			}*/
-		}
+		SendData recvData;
+		retval = recv(pThis->m_sock, (char*)&recvData, sizeof(recvData), 0);
+		if (retval == SOCKET_ERROR || retval == 0) {
+			OutputDebugString(L"[ClientThread] : err - recv() or connection closed\n");
+			pThis->m_bIsRunning = false; // 루프 탈출
+			break;
+		} 
+
+		// 데이터 수신 성공 - 큐에 저장
+		EnterCriticalSection(&pThis->m_cs);
+		pThis->m_recvQueue.push(recvData); // 2. 큐에 데이터 삽입
+		LeaveCriticalSection(&pThis->m_cs);
 	}
+
+	// 스레드 종료
+	OutputDebugString(L"[ClientThread] : 종료\n");
+	return 0;
 }
