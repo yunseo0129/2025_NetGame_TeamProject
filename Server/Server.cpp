@@ -58,16 +58,17 @@ int main(int argc, char* argv[])
     bool isGameEnd = false;
     while (!isGameEnd)
     {
-        // 메인스레드가 30fps를 고정으로 갖게하는 코드임
+        // 메인스레드가 60fps를 고정으로 갖게하는 코드임
         int i = 0;
         auto now = std::chrono::high_resolution_clock::now();
         timedelta += std::chrono::duration<double>(now - pre).count();
         pre = now;
         //////////////////////////////////////////
 
-        if (timedelta >= (1.0 / 30.0))
+        if (timedelta >= (1.0 / 60.0))
         {
             // 실제 게임 로직 여기에 구현
+            // 여기에서 큐에서 하나씩 꺼내서 적용해주면 됨
             if (GetAsyncKeyState(VK_ESCAPE))
             {
                 break;
