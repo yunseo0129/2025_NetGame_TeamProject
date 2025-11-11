@@ -7,13 +7,20 @@ std::vector<ItemBox> vecItemBoxes; // 아이템 박스들
 bool g_running = true;
 
 DWORD WINAPI AcceptThread(LPVOID arg);
-
 DWORD WINAPI ProcessClient(LPVOID arg);
+
+bool Initializer();
 
 int main(int argc, char* argv[])
 {
     auto pre = std::chrono::high_resolution_clock::now();
     double timedelta = 0.0;
+
+    if (Initializer())
+    {
+        printf("초기화 오류");
+        return 0;
+    }
 
     // 윈속 초기화
     WSADATA wsa;
@@ -183,4 +190,12 @@ DWORD WINAPI ProcessClient(LPVOID arg)
     }
 
     return 0;
+}
+
+bool Initializer()
+{
+    // 맵, 플레이어 등 초기화, 실패시 false 반환
+    
+
+    return true;
 }
