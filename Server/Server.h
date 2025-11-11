@@ -35,7 +35,15 @@ void err_quit(const char* msg)
 
 enum ITEMTYPE { ITEM_NONE, ITEM_PISTOL, ITEM_SNIPER };
 enum PLAYER_STATE { STATE_NONE, STATE_IDLE, STATE_WALK, STATE_JUMP };
-enum PLAYER_ACTION { ACTION_NONE, ACTION_MOVE_L, ACTION_MOVE_R, ACTION_JUMP_UP, ACTION_JUMP_DOWN, ACTION_SHOOT };
+
+struct PLAYER_ACTION {
+	bool left = false;
+	bool right = false;
+	bool up = false;
+	bool down = false;
+	bool space = false;
+};
+
 struct vec2 { float x = 0.f; float y = 0.f; };
 
 // 통신용----------------------------------------------------------------------------
@@ -62,7 +70,7 @@ struct Player {
 	SOCKET			socket;						// 소켓
 	PlayerInfo		info;						// 플레이어 정보
 	vec2			vDirPow;					// 현재 받고있는 가속도 벡터
-	CollisionBox	rtBox;						// 충돌 박스
+	//CollisionBox	rtBox;						// 충돌 박스
 };
 
 struct Bullet {
@@ -96,9 +104,9 @@ struct SendData {
 // SERVER -> CLIENT ------------------------------------------------------------------
 
 // CLIENT -> SERVER ------------------------------------------------------------------
-struct PlayerInput {
-	PLAYER_ACTION eAction = ACTION_NONE; // 플레이어 액션
-};
+//struct PlayerInput {
+//	PLAYER_ACTION eAction = ACTION_NONE; // 플레이어 액션
+//};
 // CLIENT -> SERVER ------------------------------------------------------------------
 
 

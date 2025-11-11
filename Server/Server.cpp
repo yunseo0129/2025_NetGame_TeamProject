@@ -174,43 +174,22 @@ DWORD WINAPI ProcessClient(LPVOID arg)
 
     int retval;
     PLAYER_ACTION clientPlay;
+	PLAYER_ACTION nullPlay = { false, false, false, false, false };
+
     Action act;
     act.iPlayerNum = my_id;
     while (true)
     {
         retval = recv(client_sock, (char*)&clientPlay, sizeof(clientPlay), 0);
-
-        if (clientPlay != ACTION_NONE)
+        if (retval != SOCKET_ERROR && retval != 0)
         {
             act.eAct = clientPlay;
             ActionQue.push(act);
         }
 
-        // 입력 수신 로그
-        switch (clientPlay) {
-        case ACTION_NONE:
-            printf("Client Action: NONE\n");
-            break;
-        case ACTION_MOVE_R:
-            printf("Client Action: MOVE RIGHT\n");
-            break;
-        case ACTION_MOVE_L:
-            printf("Client Action: MOVE LEFT\n");
-            break;
-        case ACTION_JUMP_UP:
-            printf("Client Action: JUMP UP\n");
-            break;
-        case ACTION_JUMP_DOWN:
-            printf("Client Action: JUMP DOWN\n");
-            break;
-        case ACTION_SHOOT:
-            printf("Client Action: FIRE\n");
-            break;
-        default:
-            printf("Client Action: UNKNOWN\n");
-            break;
-        }
-
+        // 데이터 출력 테스트
+        printf("[Player %d] Action - L:%d R:%d U:%d D:%d S:%d\n", my_id,
+			   clientPlay.left, clientPlay.right, clientPlay.up, clientPlay.down, clientPlay.space);
     }
 
     return 0;
@@ -241,14 +220,14 @@ bool Initializer()
     block[4].rtBox.top = 420 - 30;
     block[4].rtBox.bottom = 420 + 30;
 
-    // 플레이어 충돌체 위치 초기화
-    for (int i = 0; i < 3; ++i)
-    {
-        Players[i].rtBox.rtBox.left = -45;
-        Players[i].rtBox.rtBox.right = 45;
-        Players[i].rtBox.rtBox.top = -67;
-        Players[i].rtBox.rtBox.bottom = 67;
-    }
+    //// 플레이어 충돌체 위치 초기화
+    //for (int i = 0; i < 3; ++i)
+    //{
+    //    Players[i].rtBox.rtBox.left = -45;
+    //    Players[i].rtBox.rtBox.right = 45;
+    //    Players[i].rtBox.rtBox.top = -67;
+    //    Players[i].rtBox.rtBox.bottom = 67;
+    //}
 
     // 벡터 크기 예약
     vecBullets.reserve(100);

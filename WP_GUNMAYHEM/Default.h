@@ -133,7 +133,7 @@ struct SendData {
 // SERVER -> CLIENT ------------------------------------------------------------
 
 // CLIENT -> SERVER ------------------------------------------------------------
-struct PlayerInput {
-	PLAYER_ACTION myAction; // 플레이어 액션
-};
+//struct PlayerInput {
+//	PLAYER_ACTION myAction; // 플레이어 액션
+//};
 // CLIENT -> SERVER ------------------------------------------------------------
