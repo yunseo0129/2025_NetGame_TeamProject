@@ -50,6 +50,7 @@ int main(int argc, char* argv[])
     {
         // 게임 루프
         int i = 0;
+        
         if (GetAsyncKeyState(VK_ESCAPE))
         {
             break;
