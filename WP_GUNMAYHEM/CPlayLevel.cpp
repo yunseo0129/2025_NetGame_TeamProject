@@ -71,18 +71,9 @@ void CPlayLevel::Update()
 	// 서버로부터 데이터 수신
 	// 정보를 받으면 각 객체(플레이어)들은 그 정보를 바탕으로 자신의 상태를 각각 업데이트
 	// 정보를 수정하기 위해 CPlayer에서 playerInfo 멤버 변수를 추가
-
-	//retval = recv(sock, (char*)&recvData, sizeof(recvData), 0);
-	//if (retval == SOCKET_ERROR) {
-	//	OutputDebugString(L"err - recv()\n");
-	//}
-	//else {
-	//	m_pPlayer1->pInfo = recvData.playerInfo[0];
-	//	m_pPlayer2->pInfo = recvData.playerInfo[1];
-	//}  
-	//
-	//// === 부모 클래스의 Update 호출 ===
-	//CLevel::Update();
+	
+	// === 부모 클래스의 Update 호출 ===
+	CLevel::Update();
 
 	// 플레이어 vs 맵
 	//ProcessPlayerPhysics(m_pPlayer1);
