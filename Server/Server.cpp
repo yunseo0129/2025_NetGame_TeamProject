@@ -194,8 +194,28 @@ DWORD WINAPI ProcessClient(LPVOID arg)
 
 bool Initializer()
 {
-    // 맵, 플레이어 등 초기화, 실패시 false 반환
-    
+    // 맵 충돌체 위치 초기화
+    CollisionBox block[5];
+    block[0].rtBox.left = 330 - 200;
+    block[0].rtBox.right = 330 + 200;
+    block[0].rtBox.top = 170 - 30;
+    block[0].rtBox.bottom = 170 + 30;
+    block[1].rtBox.left = 160 - 200;
+    block[1].rtBox.right = 160 + 200;
+    block[1].rtBox.top = 300 - 30;
+    block[1].rtBox.bottom = 300 + 30;
+    block[2].rtBox.left = 510 - 200;
+    block[2].rtBox.right = 510 + 200;
+    block[2].rtBox.top = 300 - 30;
+    block[2].rtBox.bottom = 300 + 30;
+    block[3].rtBox.left = 70 - 200;
+    block[3].rtBox.right = 70 + 200;
+    block[3].rtBox.top = 420 - 30;
+    block[3].rtBox.bottom = 420 + 30;
+    block[4].rtBox.left = 600 - 200;
+    block[4].rtBox.right = 600 + 200;
+    block[4].rtBox.top = 420 - 30;
+    block[4].rtBox.bottom = 420 + 30;
 
-    return true;
+    return false;
 }
