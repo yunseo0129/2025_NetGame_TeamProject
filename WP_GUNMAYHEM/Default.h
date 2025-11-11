@@ -8,7 +8,7 @@
 #pragma comment(lib, "ws2_32") // ws2_32.lib 링크
 
 #define SERVERPORT 9000
-#define BUFSIZE     4096    
+#define BUFSIZE     4096
 //#define FILE_NAME_MAX 256
 
 //char* SERVERIP = (char*)"127.0.0.1";
@@ -137,3 +137,21 @@ struct SendData {
 //	PLAYER_ACTION myAction; // 플레이어 액션
 //};
 // CLIENT -> SERVER ------------------------------------------------------------
+
+constexpr int MAX_PLAYERS = 3;
+
+// ==========================================================
+// 1. (임시) PlayerState - 플레이어 한 명의 핵심 상태
+// ==========================================================
+struct PlayerState {
+	bool  isConnected = false;
+	float x = 0.f;
+	float y = 0.f;
+};
+
+// ==========================================================
+// 2. (임시) MovementData - 서버가 클라이언트에 보낼 이동 데이터 묶음
+// ==========================================================
+struct MovementData {
+	PlayerState players[MAX_PLAYERS];
+};

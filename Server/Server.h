@@ -94,13 +94,13 @@ struct Action {
 };
 
 // SERVER -> CLIENT ------------------------------------------------------------------
-struct SendData {
-	PlayerInfo				playerInfo[3];		// 플레이어 정보
-	int						iBulletCount;		// 총알 개수
-	int						iItemBoxCount;		// 아이템 박스 개수
-	std::vector<BulletInfo>	vecBullets;			// 총알 정보
-	std::vector<ItemBoxInfo> vecItemBoxs;		// 아이템 박스 정보
-};
+//struct SendData {
+//	PlayerInfo				playerInfo[3];		// 플레이어 정보
+//	int						iBulletCount;		// 총알 개수
+//	int						iItemBoxCount;		// 아이템 박스 개수
+//	std::vector<BulletInfo>	vecBullets;			// 총알 정보
+//	std::vector<ItemBoxInfo> vecItemBoxs;		// 아이템 박스 정보
+//};
 // SERVER -> CLIENT ------------------------------------------------------------------
 
 // CLIENT -> SERVER ------------------------------------------------------------------
@@ -118,4 +118,21 @@ CRITICAL_SECTION g_World_CS;
 struct ThreadParam {
 	SOCKET		hClientSock;
 	int			iPlayerID;
+};
+
+
+// ==========================================================
+// 1. (임시) PlayerState - 플레이어 상태
+// ==========================================================
+struct PlayerState {
+	bool  isConnected = false;
+	float x = 0.f;
+	float y = 0.f;
+};
+
+// ==========================================================
+// 2. (임시) MovementData - 서버가 클라이언트에 보낼 이동 데이터
+// ==========================================================
+struct MovementData {
+	PlayerState players[MAX_PLAYERS];
 };

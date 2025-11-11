@@ -63,7 +63,8 @@ void CPlayLevel::update_camera()
 void CPlayLevel::Update()
 {
 	// 네트워크 패킷 처리
-	SendData recvData;
+	//SendData recvData;
+	MovementData recvData;
 	bool bPacketProcessed = false;
 
 	EnterCriticalSection(&m_cs); 
@@ -75,10 +76,22 @@ void CPlayLevel::Update()
 	LeaveCriticalSection(&m_cs);
 
 	if (bPacketProcessed) {
-		if (m_pPlayer1)
-			m_pPlayer1->pInfo = recvData.playerInfo[0]; // pInfo : 위치, 상태, 아이템, 목숨, 연결 여부 등
-		if (m_pPlayer2)
-			m_pPlayer2->pInfo = recvData.playerInfo[1];
+		//if (m_pPlayer1)
+		//	m_pPlayer1->pInfo = recvData.playerInfo[0]; // pInfo : 위치, 상태, 아이템, 목숨, 연결 여부 등
+		//if (m_pPlayer2)
+		//	m_pPlayer2->pInfo = recvData.playerInfo[1];
+
+		// 임시 - 위치 정보만 업데이트
+		if (m_pPlayer1) {
+			m_pPlayer1->x = (int)recvData.players[0].x;
+			m_pPlayer1->y = (int)recvData.players[0].y;
+			// m_pPlayer1->exist = recvData.players[0].isConnected; 
+		}
+		if (m_pPlayer2) {
+			m_pPlayer2->x = (int)recvData.players[1].x; // P2는 인덱스 1
+			m_pPlayer2->y = (int)recvData.players[1].y;
+			// m_pPlayer2->exist = recvData.players[1].isConnected;
+		}
 	}
 
 	// 키 입력 처리
@@ -196,7 +209,7 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 	while (pThis->m_bIsRunning) {
 		// 서버로부터 데이터 수신
 		// 정보를 받으면 각 객체(플레이어)들은 그 정보를 바탕으로 자신의 상태를 각각 업데이트
-		SendData recvData;
+		MovementData recvData;
 		retval = recv(pThis->m_sock, (char*)&recvData, sizeof(recvData), 0);
 		if (retval == SOCKET_ERROR || retval == 0) {
 			OutputDebugString(L"[ClientThread] : err - recv() or connection closed\n");

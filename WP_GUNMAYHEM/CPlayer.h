@@ -71,6 +71,10 @@ public:
 	int anim_frame;
 	int anim_timer;
 
+	// === 추가된 변수 ===
+	int prevX = 0; // 애니메이션 추론을 위한 이전 x좌표
+	// === === === ===
+
 public:
 	//CBullet bullet[30];
 	//int bullet_count = 0;	// 현재 발사된 총알 수

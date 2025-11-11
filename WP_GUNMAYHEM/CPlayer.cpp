@@ -191,50 +191,109 @@ bool CPlayer::Update()
 {
 	// 서버로 부터 받은 정보로 플레이어 상태 업데이트
 
-	if (false)
-	{
-		x = pInfo.vPosition.x;
-		y = pInfo.vPosition.y;
-		gunType = pInfo.eItemType;
+	//if (false)
+	//{
+	//	x = pInfo.vPosition.x;
+	//	y = pInfo.vPosition.y;
+	//	gunType = pInfo.eItemType;
+	//}
+	//else
+	//{
+	//	 // 1. 마찰력 적용 (항상)		// (isMoving과 관계없이 현재 속도에 대해 마찰을 먼저 계산)
+	//	 if (!jumping && !falling)	// 지상에 있을 때만 마찰 적용 (옵션)
+	//	 {
+	//		 if (speed > 0.0f) {
+	//			 speed = max(0.0f, speed - FRICTION);
+	//		 } else if (speed < 0.0f) {
+	//			 speed = min(0.0f, speed + FRICTION);
+	//		 }
+	//	 }
+
+	//	 // 2. 가속도 적용 (isMoving == true 일 때, 즉 키가 눌렸을 때)
+	//	 if (isMoving) {
+	//		 speed += acceleration;
+	//	 }
+
+	//	 // 3. 속도 제한 (마찰과 가속이 모두 적용된 최종 속도를 제한)
+	//	 speed = max(-MAX_SPEED, min(speed, MAX_SPEED));
+
+	//	 // 4. 최종 속도를 위치에 적용
+	//	 x += (int)speed;
+	// }
+
+	//// jumping or falling
+	//// 땅 충돌 검사는 CPlayLevel에서 수행
+	//if (jumping == TRUE) {
+	//	jumpHeight = (jumpTime * jumpTime - jumpPower * jumpTime) * 4.f;
+	//	jumpTime += 0.2f;
+	//	y = (jstartY + (int)jumpHeight);
+	//}
+	//else if (falling == TRUE) { // jumping이 FALSE일 때만 낙하
+	//	downHeight = (downTime * (downTime / 2)) * 4.f;
+	//	downTime += 0.2f;
+	//	y = (fstartY + (int)downHeight);
+	//}
+
+	//// 다운카운트 -> 0이면 증가 x / 0이 아닐때 증가 시작 / N도달시 0으로 초기화
+	//if (downCount > 0) {
+	//	downCount++;
+	//	if (downCount > 30) {
+	//		downCount = 0;
+	//	}
+	//}
+
+	//// 애니메이션 프레임
+	//anim_timer++;
+	//if (anim_timer > 5) { // 5프레임마다 
+	//	anim_timer = 0;
+	//	if (isMoving) {
+	//		anim_frame = (anim_frame + 1) % 4;
+	//	} else {
+	//		anim_frame = 0; // 멈추면 0번 프레임
+	//	}
+	//}
+
+	//// 콤보 타이머
+	//if (combo > 0) {
+	//	comboTime++;
+	//	if (comboTime > 200) { // 200 프레임 (약 3.3초)
+	//		combo = 0;
+	//		comboTime = 0;
+	//	}
+	//}
+	//return false;
+
+
+	// 서버로부터 받은 정보(x, y)는 CPlayLevel::Update()에서 이미 적용됨,
+	// 여기서는 클라이언트 측 물리 로직을 모두 제거
+
+	// === 1. 상태 추론 (애니메이션용) ===
+	// x좌표가 변했는지 감지하여 isMoving 상태 결정
+	if (x != prevX) {
+		isMoving = TRUE;
 	}
-	else
-	{
-		 // 1. 마찰력 적용 (항상)		// (isMoving과 관계없이 현재 속도에 대해 마찰을 먼저 계산)
-		 if (!jumping && !falling)	// 지상에 있을 때만 마찰 적용 (옵션)
-		 {
-			 if (speed > 0.0f) {
-				 speed = max(0.0f, speed - FRICTION);
-			 } else if (speed < 0.0f) {
-				 speed = min(0.0f, speed + FRICTION);
-			 }
-		 }
-
-		 // 2. 가속도 적용 (isMoving == true 일 때, 즉 키가 눌렸을 때)
-		 if (isMoving) {
-			 speed += acceleration;
-		 }
-
-		 // 3. 속도 제한 (마찰과 가속이 모두 적용된 최종 속도를 제한)
-		 speed = max(-MAX_SPEED, min(speed, MAX_SPEED));
-
-		 // 4. 최종 속도를 위치에 적용
-		 x += (int)speed;
-	 }
-
-	// jumping or falling
-	// 땅 충돌 검사는 CPlayLevel에서 수행
-	if (jumping == TRUE) {
-		jumpHeight = (jumpTime * jumpTime - jumpPower * jumpTime) * 4.f;
-		jumpTime += 0.2f;
-		y = (jstartY + (int)jumpHeight);
-	}
-	else if (falling == TRUE) { // jumping이 FALSE일 때만 낙하
-		downHeight = (downTime * (downTime / 2)) * 4.f;
-		downTime += 0.2f;
-		y = (fstartY + (int)downHeight);
+	else {
+		isMoving = FALSE;
 	}
 
-	// 다운카운트 -> 0이면 증가 x / 0이 아닐때 증가 시작 / N도달시 0으로 초기화
+	// x좌표 변화 방향으로 바라보는 방향(looking) 결정
+	if (x < prevX) {
+		looking = 0; // Left
+	}
+	else if (x > prevX) {
+		looking = 1; // Right
+	}
+	// (좌표가 같으면 이전 방향 유지)
+
+	// 현재 x좌표를 다음 프레임을 위해 저장
+	prevX = x;
+
+
+	// === 2. 기존 로직 유지 (물리 외) ===
+
+	// (기존 점프/낙하 로직은 모두 삭제)
+
+	// 다운카운트 (이 로직은 서버에서 처리해야 하지만, 일단 유지)
 	if (downCount > 0) {
 		downCount++;
 		if (downCount > 30) {
@@ -242,13 +301,14 @@ bool CPlayer::Update()
 		}
 	}
 
-	// 애니메이션 프레임
+	// 애니메이션 프레임 (위에서 추론한 isMoving 사용)
 	anim_timer++;
 	if (anim_timer > 5) { // 5프레임마다 
 		anim_timer = 0;
 		if (isMoving) {
 			anim_frame = (anim_frame + 1) % 4;
-		} else {
+		}
+		else {
 			anim_frame = 0; // 멈추면 0번 프레임
 		}
 	}

@@ -68,13 +68,50 @@ int main(int argc, char* argv[])
 
         if (timedelta >= (1.0 / 60.0))
         {
-            if (!ActionQue.empty())
+            // === 1. 입력 처리 (큐에 쌓인 모든 액션 처리) ===
+            // (주의: 락을 걸지 않았으므로, 100% 스레드 세이프하지는 않으나 
+            //  간단한 이동 구현을 위해 임시로 사용)
+            while (!ActionQue.empty())
             {
                 Action next = ActionQue.front();
                 ActionQue.pop();
-                // 여기에 구현
+
+                // === 이동 로직 구현 ===
+                int id = next.iPlayerNum;
+                PLAYER_ACTION act = next.eAct;
+                float speed = 5.0f; // 임시 이동 속도
+
+                if (act.left)  Players[id].info.vPosition.x -= speed;
+                if (act.right) Players[id].info.vPosition.x += speed;
+                if (act.up)    Players[id].info.vPosition.y -= speed; // (Y좌표계에 따라 +)
+                if (act.down)  Players[id].info.vPosition.y += speed; // (Y좌표계에 따라 -)
             }
 
+            // === 2. 월드 상태 업데이트 ===
+            //
+
+            // === 3. 모든 클라이언트에게 상태 브로드캐스트 ===
+            MovementData dataToSend;
+            for (int i = 0; i < MAX_PLAYERS; i++)
+            {
+                dataToSend.players[i].isConnected = Players[i].info.isConnected;
+                dataToSend.players[i].x = Players[i].info.vPosition.x;
+                dataToSend.players[i].y = Players[i].info.vPosition.y;
+            }
+
+            for (int i = 0; i < MAX_PLAYERS; i++)
+            {
+                if (Players[i].info.isConnected)
+                {
+                    int retval = send(Players[i].socket, (char*)&dataToSend, sizeof(dataToSend), 0);
+                    if (retval == SOCKET_ERROR) {
+						err_quit("send()");
+                        closesocket(Players[i].socket);
+                    }
+                }
+            }
+
+            // === 4. 루프 탈출 ===
             if (GetAsyncKeyState(VK_ESCAPE))
             {
                 break;
@@ -181,11 +218,19 @@ DWORD WINAPI ProcessClient(LPVOID arg)
     while (true)
     {
         retval = recv(client_sock, (char*)&clientPlay, sizeof(clientPlay), 0);
-        if (retval != SOCKET_ERROR && retval != 0)
+
+        // === 접속 종료 처리 ===
+        if (retval == SOCKET_ERROR || retval == 0)
         {
-            act.eAct = clientPlay;
-            ActionQue.push(act);
+            printf("[Player %d] 클라이언트 접속 종료.\n", my_id);
+            Players[my_id].info.isConnected = false; // 플래그 설정
+            closesocket(client_sock);
+            break; // 스레드 종료
         }
+
+        // === 데이터 수신 성공: 큐에 삽입 ===
+        act.eAct = clientPlay;
+        ActionQue.push(act);
 
         // 데이터 출력 테스트
         printf("[Player %d] Action - L:%d R:%d U:%d D:%d S:%d\n", my_id,
