@@ -12,6 +12,9 @@ DWORD WINAPI ProcessClient(LPVOID arg);
 
 int main(int argc, char* argv[])
 {
+    auto pre = std::chrono::high_resolution_clock::now();
+    double timedelta = 0.0;
+
     // 윈속 초기화
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
@@ -50,10 +53,18 @@ int main(int argc, char* argv[])
     {
         // 게임 루프
         int i = 0;
-        
-        if (GetAsyncKeyState(VK_ESCAPE))
+        auto now = std::chrono::high_resolution_clock::now();
+        timedelta += std::chrono::duration<double>(now - pre).count();
+        pre = now;
+        if (timedelta >= (1.0 / 30.0))
         {
-            break;
+            // 게임 루프
+            if (GetAsyncKeyState(VK_ESCAPE))
+            {
+                break;
+            }
+            
+            timedelta = 0.0;
         }
     }
 
