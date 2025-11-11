@@ -1,5 +1,4 @@
 ﻿#include "CPlayLevel.h"
-#include "KeyMgr.h"
 
 const char* SERVERIP = (char*)"127.0.0.1";
 
@@ -9,11 +8,6 @@ CPlayLevel::CPlayLevel()
 
 void CPlayLevel::Initialize()
 {
-	// === 윈속 초기화 ===
-	OutputDebugString(L"CPlayLevel::Initialize()\n");
-	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
-		exit(1);
-
 	// 소켓 생성
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock == INVALID_SOCKET) 
@@ -72,61 +66,6 @@ void CPlayLevel::update_camera()
 	}
 }
 
-// 플레이어 물리/충돌 처리
-void CPlayLevel::ProcessPlayerPhysics(CPlayer* player)
-{
-	if (player->jumping) {
-		// 점프 중일 때 땅에 닿았는지 검사
-		if (player->jumpHeight <= (player->jumpTime * player->jumpTime - player->jumpPower * player->jumpTime) * 4.f) { // 점프 정점 찍고 하강 중일 때만
-			const auto& maps = GetGroupObject(OBJ_MAP);
-			RECT playerFeet = player->GetRect();
-			playerFeet.top = playerFeet.bottom - 10; // 발밑 10픽셀
-
-			for (auto* pMapObj : maps) {
-				CMap* pMap = static_cast<CMap*>(pMapObj);
-				if (CheckRectCollision(playerFeet, pMap->GetRect())) {
-					player->SetOnGround(pMap->GetTopY());
-					return; // 땅 찾음
-				}
-			}
-		}
-	} else if (player->falling) {
-		// 낙하 중일 때 땅에 닿았는지 검사
-		if (player->downCount == 0) { // 아래점프 무적 아닐 때만
-			const auto& maps = GetGroupObject(OBJ_MAP);
-			RECT playerFeet = player->GetRect();
-			playerFeet.top = playerFeet.bottom - 10;
-
-			for (auto* pMapObj : maps) {
-				CMap* pMap = static_cast<CMap*>(pMapObj);
-				if (CheckRectCollision(playerFeet, pMap->GetRect())) {
-					player->SetOnGround(pMap->GetTopY());
-					return; // 땅 찾음
-				}
-			}
-		}
-	} else {
-		// 점프/낙하 중이 아닐 때 (땅 위에 서 있을 때)
-		// 발밑에 땅이 사라졌는지 검사
-		const auto& maps = GetGroupObject(OBJ_MAP);
-		RECT playerFeet = player->GetRect();
-		playerFeet.top = playerFeet.bottom; // 발 바로 밑
-		playerFeet.bottom += 5;             // 5픽셀 아래까지
-
-		bool bOnGround = false;
-		for (auto* pMapObj : maps) {
-			CMap* pMap = static_cast<CMap*>(pMapObj);
-			if (CheckRectCollision(playerFeet, pMap->GetRect())) {
-				bOnGround = true;
-				break;
-			}
-		}
-		if (!bOnGround) {
-			player->SetFalling(); // 밟고 있던 땅이 없어짐 -> 낙하
-		}
-	}
-}
-
 void CPlayLevel::Update()
 {
 	// 서버로부터 데이터 수신
@@ -138,76 +77,16 @@ void CPlayLevel::Update()
 	//	OutputDebugString(L"err - recv()\n");
 	//}
 	//else {
-	//	OutputDebugString(L"recv() 됨\n");
 	//	m_pPlayer1->pInfo = recvData.playerInfo[0];
 	//	m_pPlayer2->pInfo = recvData.playerInfo[1];
-	//}
-
-	// === 입력 처리 (Input) ===
-	// -- Player 1 --
-	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LEFT)) {
-		myAction = ACTION_MOVE_L;
-
-		m_pPlayer1->looking = 0;
-		m_pPlayer1->acceleration = -ACCELERATION; 
-		m_pPlayer1->isMoving = TRUE;            
-
-	} 
-	else if (CKeyMgr::Get_Instance()->Key_Pressing(VK_RIGHT)) {
-		myAction = ACTION_MOVE_R;
-
-		m_pPlayer1->looking = 1;
-		m_pPlayer1->acceleration = ACCELERATION;
-		m_pPlayer1->isMoving = TRUE;          
-
-	} 
-	else {
-		myAction = ACTION_NONE;
-		
-		m_pPlayer1->isMoving = FALSE; // 키를 뗐을 때만 '이동 멈춤'으로 설정
-	}
-	
-	if (CKeyMgr::Get_Instance()->Key_Down(VK_UP)) { // 점프
-		myAction = ACTION_JUMP_UP;
-
-		if (m_pPlayer1->jumpCount < 2) {
-			m_pPlayer1->jumpCount++;
-			m_pPlayer1->jumpTime = 0.f;
-			m_pPlayer1->jumpHeight = 0;
-			m_pPlayer1->jstartY = m_pPlayer1->y;
-			m_pPlayer1->jumping = TRUE;
-			m_pPlayer1->falling = FALSE;
-		}
-	}
-	if (CKeyMgr::Get_Instance()->Key_Down(VK_DOWN)) { // 아래 점프
-		myAction = ACTION_JUMP_DOWN;
-
-		if (m_pPlayer1->downCount == 0 && !m_pPlayer1->falling && !m_pPlayer1->jumping) {
-			m_pPlayer1->downCount = 1;
-			m_pPlayer1->downTime = 0;
-			m_pPlayer1->downHeight = 0;
-			m_pPlayer1->fstartY = m_pPlayer1->y;
-			m_pPlayer1->falling = TRUE;
-		}
-	}
-	if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE)) { 
-		myAction = ACTION_SHOOT;
-		
-		m_pPlayer1->gunFire(); 
-	}
-
-	// === TCP/IP로 액션 전송 ===
-	retval = send(sock, (const char*)&myAction, sizeof(myAction), 0);
-	if (retval == SOCKET_ERROR) {
-		OutputDebugString(L"err - send()\n");
-	}
-
-	// === 부모 클래스의 Update 호출 ===
-	CLevel::Update();
+	//}  
+	//
+	//// === 부모 클래스의 Update 호출 ===
+	//CLevel::Update();
 
 	// 플레이어 vs 맵
-	ProcessPlayerPhysics(m_pPlayer1);
-	ProcessPlayerPhysics(m_pPlayer2);
+	//ProcessPlayerPhysics(m_pPlayer1);
+	//ProcessPlayerPhysics(m_pPlayer2);
 
 	if (m_pPlayer1->y > rt.bottom + 100) m_pPlayer1->regen();
 	if (m_pPlayer2->y > rt.bottom + 100) m_pPlayer2->regen();
@@ -218,7 +97,6 @@ void CPlayLevel::Update()
 
 void CPlayLevel::Draw(HDC mDC)
 {
-
 	// 1. 배경 그리기 
 	// 맵 하나만 사용
 	SelectObject(g_BMPmDC, BMP_map1);

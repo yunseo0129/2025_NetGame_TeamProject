@@ -1,13 +1,22 @@
 ﻿#include "CPlayer.h"
 #include "Default.h"
 #include "CLevelManager.h"
+#include "KeyMgr.h"
 
 PAINTSTRUCT ps;
 HDC hDC;
+void ProcessInput();
+PLAYER_ACTION myAction { ACTION_NONE };
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpszCmdParam, _In_ int nCmdShow)
 {
+	WSADATA wsa;
+	// === 윈속 초기화 ===
+	OutputDebugString(L"CPlayLevel::Initialize()\n");
+	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+		exit(1);
+
 	srand(time(0));
 	WNDCLASSEX WndClass;
 	g_hInst = hInstance;
@@ -48,6 +57,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
+	int retval;
+
 	// 더블버퍼링용 변수
 	HDC mDC;
 	HBITMAP hBitmap;
@@ -122,26 +133,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	// 입력 처리는 CLevel::Update 에서 처리하도록 하기
 	case WM_CHAR:
 	case WM_KEYDOWN:
+		ProcessInput();
+		break;
 	case WM_KEYUP:
 	case WM_LBUTTONDOWN:
-	{
-		// 모든 입력 로직 제거
-		// CLevelManager::GetInstance()->UpdateLevel() 에서 처리
-		// -> CMainLevel::Update(), CPlayLevel::Update() 등
-		break;
-	}
 	case WM_TIMER:
 	{
 		// === 게임 로직 업데이트 및 화면 갱신 요청 ===
-		switch (wParam) {
-		case 1: // 메인 게임 루프 타이머
-			CLevelManager::GetInstance()->UpdateLevel();
-			InvalidateRect(g_hWnd, NULL, FALSE);
-			break;
-
-			//case 2: // 애니메이션 타이머 (나중에 CPlayLevel로 이동)
-			// 	break;
-		}
+		// 메인 게임 루프 타이머
+		CLevelManager::GetInstance()->UpdateLevel();
+		InvalidateRect(g_hWnd, NULL, FALSE);
 		break;
 	}
 	case WM_PAINT:
@@ -172,6 +173,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	}
 	case WM_DESTROY:
 	{
+		WSACleanup();
+		
 		// ==== 리소스 해제 작업 ====
 		DeleteDC(g_BMPmDC);
 		DeleteObject(BMP_player1_left_stand);
@@ -197,4 +200,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	}
 	}
 	return DefWindowProc(hWnd, iMsg, wParam, lParam);
+}
+
+void ProcessInput()
+{
+	PLAYER_ACTION myAction = ACTION_NONE;
+
+	// === 입력 처리 (Input) ===
+	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LEFT))
+		myAction = ACTION_MOVE_L;
+	else if (CKeyMgr::Get_Instance()->Key_Pressing(VK_RIGHT))
+		myAction = ACTION_MOVE_R;
+
+	if (CKeyMgr::Get_Instance()->Key_Down(VK_UP)) // 점프
+		myAction = ACTION_JUMP_UP;
+	if (CKeyMgr::Get_Instance()->Key_Down(VK_DOWN)) // 아래 점프
+		myAction = ACTION_JUMP_DOWN;
+
+	if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE))
+		myAction = ACTION_SHOOT;
+
+	g_Action = myAction;
 }

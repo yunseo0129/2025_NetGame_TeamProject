@@ -1,5 +1,7 @@
 ﻿#include "Default.h"
 
+PLAYER_ACTION g_Action { ACTION_NONE };
+
 // 사각형 충돌 유틸리티 함수
 bool CheckRectCollision(const RECT& rect1, const RECT& rect2)
 {
@@ -9,7 +11,6 @@ bool CheckRectCollision(const RECT& rect1, const RECT& rect2)
     }
     return false;
 }
-
 
 // Default.h에 extern으로 선언된 모든 전역 변수들의 정의(Definition) 및 초기화
 int g_mapType;

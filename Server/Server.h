@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <vector>
+#include <Windows.h>
+#include <chrono>
 
 #pragma comment(lib, "ws2_32") // ws2_32.lib 링크
 
