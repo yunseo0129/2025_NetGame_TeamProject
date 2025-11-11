@@ -4,6 +4,8 @@
 Player Players[3]; // 최대 3명 접속 가능
 std::vector<Bullet> vecBullets; // 총알들
 std::vector<ItemBox> vecItemBoxes; // 아이템 박스들
+std::queue<Action> ActionQue;
+
 bool g_running = true;
 
 DWORD WINAPI AcceptThread(LPVOID arg);
@@ -67,8 +69,13 @@ int main(int argc, char* argv[])
 
         if (timedelta >= (1.0 / 60.0))
         {
-            // 실제 게임 로직 여기에 구현
-            // 여기에서 큐에서 하나씩 꺼내서 적용해주면 됨
+            if (!ActionQue.empty())
+            {
+                Action next = ActionQue.front();
+                ActionQue.pop();
+                // 여기에 구현
+            }
+
             if (GetAsyncKeyState(VK_ESCAPE))
             {
                 break;
@@ -168,10 +175,17 @@ DWORD WINAPI ProcessClient(LPVOID arg)
 
     int retval;
     PLAYER_ACTION clientPlay;
-
+    Action act;
+    act.iPlayerNum = my_id;
     while (true)
     {
         retval = recv(client_sock, (char*)&clientPlay, sizeof(clientPlay), 0);
+
+        if (clientPlay != ACTION_NONE)
+        {
+            act.eAct = clientPlay;
+            ActionQue.push(act);
+        }
 
         // 입력 수신 로그
         switch (clientPlay) {

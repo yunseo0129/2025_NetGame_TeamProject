@@ -11,6 +11,7 @@
 #include <vector>
 #include <Windows.h>
 #include <chrono>
+#include <queue>
 
 #pragma comment(lib, "ws2_32") // ws2_32.lib 링크
 
@@ -77,6 +78,11 @@ struct ItemBox {
 
 struct CollisionBox {
 	RECT			rtBox;						// 충돌 박스
+};
+
+struct Action {
+	PLAYER_ACTION	eAct;
+	int				iPlayerNum;
 };
 
 // SERVER -> CLIENT ------------------------------------------------------------------
