@@ -1,11 +1,11 @@
 ﻿#include "CPlayLevel.h"
+#include "KeyMgr.h"
 
 const char* SERVERIP = (char*)"127.0.0.1";
 
 CPlayLevel::CPlayLevel()
 {
 }
-
 
 
 void CPlayLevel::Initialize()
@@ -65,19 +65,9 @@ void CPlayLevel::update_camera()
 
 void CPlayLevel::Update()
 {
-	// 서버로부터 데이터 수신
-	// 정보를 받으면 각 객체(플레이어)들은 그 정보를 바탕으로 자신의 상태를 각각 업데이트
-	// 정보를 수정하기 위해 CPlayer에서 playerInfo 멤버 변수를 추가
 	
 	// === 부모 클래스의 Update 호출 ===
 	CLevel::Update();
-
-	// 플레이어 vs 맵
-	//ProcessPlayerPhysics(m_pPlayer1);
-	//ProcessPlayerPhysics(m_pPlayer2);
-
-	if (m_pPlayer1->y > rt.bottom + 100) m_pPlayer1->regen();
-	if (m_pPlayer2->y > rt.bottom + 100) m_pPlayer2->regen();
 
 	// === 카메라 업데이트 ===
 	update_camera();
@@ -100,7 +90,55 @@ void CPlayLevel::Free()
 	closesocket(sock);
 	// 부모 클래스의 Free()를 호출하여
 	// m_ObjList에 있는 모든 객체 (CMap, CItem)를 delete 합니다.
+
+
 	CLevel::Free();
+}
+
+void CPlayLevel::ProcessInput()
+{
+	b_keyAct = false;						// 키 입력이 있었는지 여부
+	myAction = PLAYER_ACTION { false, };	// 보낼 액션 초기화
+
+	// 키 다운 처리
+	if (CKeyMgr::Get_Instance()->Key_Down(VK_LEFT)) {
+		b_keyAct = true;
+		myAction.left = true;
+	}
+	if (CKeyMgr::Get_Instance()->Key_Down(VK_RIGHT)) {
+		b_keyAct = true;
+		myAction.right = true;
+	}
+	if (CKeyMgr::Get_Instance()->Key_Down(VK_UP)) {
+		b_keyAct = true;
+		myAction.up = true;
+	}
+	if (CKeyMgr::Get_Instance()->Key_Down(VK_DOWN)) {
+		b_keyAct = true;
+		myAction.down = true;
+	}
+	if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE)) {
+		b_keyAct = true;
+		myAction.space = true;
+	}
+
+	// 키 업 처리
+	if (CKeyMgr::Get_Instance()->Key_Up(VK_LEFT)) {
+		b_keyAct = true;
+		myAction.left = false;
+	}
+	if (CKeyMgr::Get_Instance()->Key_Up(VK_RIGHT)) {
+		b_keyAct = true;
+		myAction.right = false;
+	}
+	if (CKeyMgr::Get_Instance()->Key_Up(VK_UP)) {
+		b_keyAct = true;
+		myAction.up = false;
+	}
+	if (CKeyMgr::Get_Instance()->Key_Up(VK_DOWN)) {
+		b_keyAct = true;
+		myAction.down = false;
+	}
 }
 
 DWORD WINAPI ClientThread(LPVOID arg)
@@ -108,11 +146,10 @@ DWORD WINAPI ClientThread(LPVOID arg)
 	int retval;
 	SOCKET sock = INVALID_SOCKET;
 
-	// 소켓 생성
+	// 소켓 생ㅡ
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock == INVALID_SOCKET)
 		OutputDebugString(L"err - socket()\n");
-
 	// connect()
 	sockaddr_in serveraddr;
 	memset(&serveraddr, 0, sizeof(serveraddr));
@@ -128,12 +165,11 @@ DWORD WINAPI ClientThread(LPVOID arg)
 	while (1) {
 		// 서버로부터 데이터 수신
 		// 정보를 받으면 각 객체(플레이어)들은 그 정보를 바탕으로 자신의 상태를 각각 업데이트
-		SendData recvData;
+		SendData recvData
 		retval = recv(sock, (char*)&recvData, sizeof(recvData), 0);
 		if (retval == SOCKET_ERROR) {
 			OutputDebugString(L"err - recv()\n");
-		}
-		else {
+		} else {
 			// 플레이어 정보 업데이트
 			/*CPlayLevel* pPlayLevel = (CPlayLevel*)CLevelManager::GetInstance()->GetCurrentLevel();
 			if (pPlayLevel) {
@@ -143,4 +179,5 @@ DWORD WINAPI ClientThread(LPVOID arg)
 					pPlayLevel->m_pPlayer2->pInfo = recvData.playerInfo[1];
 			}*/
 		}
+	}
 }

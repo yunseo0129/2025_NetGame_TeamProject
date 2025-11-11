@@ -94,8 +94,14 @@ extern void* extradriverdata;
 //==============================================================================
 enum ITEMTYPE { ITEM_NONE, ITEM_PISTOL, ITEM_SNIPER };
 enum PLAYER_STATE { STATE_NONE, STATE_IDLE, STATE_WALK, STATE_JUMP };
-enum PLAYER_ACTION { ACTION_NONE, ACTION_MOVE_L, ACTION_MOVE_R, ACTION_JUMP_UP, ACTION_JUMP_DOWN, ACTION_SHOOT };
-extern PLAYER_ACTION g_Action;
+
+struct PLAYER_ACTION {
+	bool left = false;
+	bool right = false;
+	bool up = false;
+	bool down = false;
+	bool space = false;
+};
 
 struct vec2 { float x = 0.f; float y = 0.f; };
 
@@ -128,6 +134,6 @@ struct SendData {
 
 // CLIENT -> SERVER ------------------------------------------------------------
 struct PlayerInput {
-	PLAYER_ACTION eAction = ACTION_NONE; // 플레이어 액션
+	PLAYER_ACTION myAction; // 플레이어 액션
 };
 // CLIENT -> SERVER ------------------------------------------------------------

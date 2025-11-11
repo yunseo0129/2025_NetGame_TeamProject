@@ -10,6 +10,8 @@
 // Draw - 맵, 캐릭터, 캐릭터 정보, 총알은 그라데이션 신경쓰기
 // Update - 입력처리, 충돌처리, 아이템 생성, 캐릭터 이동, 총알 이동
 
+DWORD WINAPI ClientThread(LPVOID arg);
+
 class CPlayLevel final : public CLevel {
 public:
 	CPlayLevel();
@@ -21,10 +23,12 @@ public:
 	virtual void Draw(HDC mDC) override;
 	virtual void Free() override;
 
+	void ProcessInput();
 	void update_camera();
 
 public:
-	PLAYER_ACTION myAction = ACTION_NONE;
+	bool b_keyAct = false;
+	PLAYER_ACTION myAction { false, };
 
 private:
 	// 아이템 생성 타이머

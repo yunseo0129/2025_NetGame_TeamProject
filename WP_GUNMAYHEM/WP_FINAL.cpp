@@ -5,8 +5,6 @@
 
 PAINTSTRUCT ps;
 HDC hDC;
-void ProcessInput();
-PLAYER_ACTION myAction { ACTION_NONE };
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpszCmdParam, _In_ int nCmdShow)
@@ -131,12 +129,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	}
 
 	// 입력 처리는 CLevel::Update 에서 처리하도록 하기
-	case WM_CHAR:
-	case WM_KEYDOWN:
-		ProcessInput();
-		break;
-	case WM_KEYUP:
-	case WM_LBUTTONDOWN:
+	// case WM_CHAR:
+	// case WM_KEYDOWN:
+	// case WM_KEYUP:
+	// case WM_LBUTTONDOWN:
 	case WM_TIMER:
 	{
 		// === 게임 로직 업데이트 및 화면 갱신 요청 ===
@@ -200,25 +196,4 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	}
 	}
 	return DefWindowProc(hWnd, iMsg, wParam, lParam);
-}
-
-void ProcessInput()
-{
-	PLAYER_ACTION myAction = ACTION_NONE;
-
-	// === 입력 처리 (Input) ===
-	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LEFT))
-		myAction = ACTION_MOVE_L;
-	else if (CKeyMgr::Get_Instance()->Key_Pressing(VK_RIGHT))
-		myAction = ACTION_MOVE_R;
-
-	if (CKeyMgr::Get_Instance()->Key_Down(VK_UP)) // 점프
-		myAction = ACTION_JUMP_UP;
-	if (CKeyMgr::Get_Instance()->Key_Down(VK_DOWN)) // 아래 점프
-		myAction = ACTION_JUMP_DOWN;
-
-	if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE))
-		myAction = ACTION_SHOOT;
-
-	g_Action = myAction;
 }

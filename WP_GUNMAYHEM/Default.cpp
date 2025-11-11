@@ -1,7 +1,5 @@
 ﻿#include "Default.h"
 
-PLAYER_ACTION g_Action { ACTION_NONE };
-
 // 사각형 충돌 유틸리티 함수
 bool CheckRectCollision(const RECT& rect1, const RECT& rect2)
 {
