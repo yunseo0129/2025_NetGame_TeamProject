@@ -22,7 +22,6 @@ public:
 	virtual void Free() override;
 
 	void update_camera();
-	void ProcessPlayerPhysics(CPlayer* player);
 
 public:
 	PLAYER_ACTION myAction = ACTION_NONE;
@@ -40,10 +39,8 @@ private:
 	CPlayer* m_pPlayer2 = nullptr;
 
 private:
-	int retval; 
-	WSADATA wsa;
+	int retval;
 	SOCKET sock;
 	struct sockaddr_in serveraddr;
-
 	SendData recvData;	// 서버로부터 받은 데이터
 };
