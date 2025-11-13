@@ -192,6 +192,7 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 
 	// 네이글 끄기
 	DWORD NODELAY = 1;
+	setsockopt(pThis->m_sock, IPPROTO_TCP, TCP_NODELAY, (const char*)&NODELAY, sizeof(DWORD));
 
 	// connect()
 	sockaddr_in serveraddr;
