@@ -185,8 +185,7 @@ DWORD WINAPI AcceptThread(LPVOID arg)
             Players[g_player_count].info.iLife = 3;
             Players[g_player_count].info.eItemType = ITEM_PISTOL;
             Players[g_player_count].info.eState = STATE_IDLE;
-            Players[g_player_count].info.vPosition.x = 330;
-            Players[g_player_count].info.vPosition.y = 70;
+            Players[g_player_count].move(330, 70);
             
             // 스레드에 소켓과 ID를 넘겨주기 위해 구조체 사용
             ThreadParam* pArgs = new ThreadParam;
@@ -265,34 +264,36 @@ DWORD WINAPI ProcessClient(LPVOID arg)
 bool Initializer()
 {
     // 맵 충돌체 위치 초기화
-    block[0].left = 330 - 200;
-    block[0].right = 330 + 200;
-    block[0].top = 170 - 30;
-    block[0].bottom = 170 + 30;
-    block[1].left = 160 - 200;
-    block[1].right = 160 + 200;
-    block[1].top = 300 - 30;
-    block[1].bottom = 300 + 30;
-    block[2].left = 510 - 200;
-    block[2].right = 510 + 200;
-    block[2].top = 300 - 30;
-    block[2].bottom = 300 + 30;
-    block[3].left = 70 - 200;
-    block[3].right = 70 + 200;
-    block[3].top = 420 - 30;
-    block[3].bottom = 420 + 30;
-    block[4].left = 600 - 200;
-    block[4].right = 600 + 200;
-    block[4].top = 420 - 30;
-    block[4].bottom = 420 + 30;
+    float blockx = 200.f;
+    float blocky = 30.f;
+    block[0].left = 330;
+    block[0].right = 330 + blockx;
+    block[0].top = 170;
+    block[0].bottom = 170 + blocky;
+    block[1].left = 160;
+    block[1].right = 160 + blockx;
+    block[1].top = 300;
+    block[1].bottom = 300 + blocky;
+    block[2].left = 510;
+    block[2].right = 510 + blockx;
+    block[2].top = 300;
+    block[2].bottom = 300 + blocky;
+    block[3].left = 70;
+    block[3].right = 70 + blockx;
+    block[3].top = 420;
+    block[3].bottom = 420 + blocky;
+    block[4].left = 600;
+    block[4].right = 600 + blockx;
+    block[4].top = 420;
+    block[4].bottom = 420 + blocky;
 
     // 플레이어 충돌체 위치 초기화
     for (int i = 0; i < 3; ++i)
     {
-        Players[i].colBox.left = -45;
-        Players[i].colBox.right = 45;
-        Players[i].colBox.top = -67;
-        Players[i].colBox.bottom = 67;
+        Players[i].colBox.left = 10.f;
+        Players[i].colBox.right = 35.f;
+        Players[i].colBox.top = 0.f;
+        Players[i].colBox.bottom = 67.f;
     }
 
     // 벡터 크기 예약
