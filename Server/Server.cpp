@@ -215,7 +215,9 @@ DWORD WINAPI AcceptThread(LPVOID arg)
             Players[g_player_count].info.iLife = 3;
             Players[g_player_count].info.eItemType = ITEM_PISTOL;
             Players[g_player_count].info.eState = STATE_IDLE;
-            Players[g_player_count].move(330, 70);
+
+			int pX = 100 + (g_player_count * 200);
+            Players[g_player_count].move(pX, 70);
 
 			// 플레이어 이동 및 점프 상태 초기화
             Players[g_player_count].acceleration = 0.0f;
