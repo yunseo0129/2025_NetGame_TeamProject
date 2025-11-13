@@ -15,6 +15,10 @@ DWORD WINAPI ProcessClient(LPVOID arg);
 bool Initializer();
 void Collision();
 
+const float MAX_SPEED = 5.0f;      // 최대 속도
+const float ACCELERATION = 0.2f;   // 가속도
+const float FRICTION = 0.02f;      // 마찰력(감속)
+
 int main(int argc, char* argv[])
 {
     auto pre = std::chrono::high_resolution_clock::now();
@@ -82,12 +86,56 @@ int main(int argc, char* argv[])
                 int id = next.iPlayerNum;
                 PLAYER_ACTION act = next.eAct;
 
-                if (act.left)  Players[id].move(-speed, 0.f);
-                if (act.right) Players[id].move(speed, 0.f);
-                if (act.up)    Players[id].move(0.f, -speed); // (Y좌표계에 따라 +)
-                if (act.down)  Players[id].move(0.f, speed); // (Y좌표계에 따라 -)
-            }
+                //if (act.left)  Players[id].move(-1, 0.f);
+                //if (act.right) Players[id].move(1, 0.f);
+                //if (act.up)    Players[id].move(0.f, -1); // (Y좌표계에 따라 +)
+                //if (act.down)  Players[id].move(0.f, 1); // (Y좌표계에 따라 -)
 
+                // 1. 항상 마찰력 적용.
+                if (!Players[id].jumping && !Players[id].falling)
+                {
+                    if (Players[id].speed > 0.0f)
+                    {
+                        Players[id].speed = max(0.0f, Players[id].speed - FRICTION);
+                    }
+                    else if (Players[id].speed < 0.0f)
+                    {
+                        Players[id].speed = min(0.0f, Players[id].speed + FRICTION);
+                    }
+                }
+
+                // 2. 가속도 적용
+                if (Players[id].isMoving) {
+                    Players[id].speed += Players[id].acceleration;
+                }
+
+                // 3. 속도 제한
+                Players[id].speed = max(-MAX_SPEED, min(Players[id].speed, MAX_SPEED));
+
+                // 4. 최종 속도를 위치에 적용
+                Players[id].move(Players[id].speed, 0.f);
+
+                // jumping or falling
+                if (Players[id].jumping == TRUE) {
+                    Players[id].jumpHeight = (Players[id].jumpTime * Players[id].jumpTime - Players[id].jumpPower * Players[id].jumpTime) * 4.f;
+                    Players[id].jumpTime += 0.2f;
+                    Players[id].move(0.f, (Players[id].jstartY + (int)Players[id].jumpHeight) - Players[id].info.vPosition.y);
+                }
+                else if(Players[id].falling == TRUE) { 
+                    Players[id].downHeight = (Players[id].downTime * (Players[id].downTime / 2)) * 4.f;
+                    Players[id].downTime += 0.2f;
+                    Players[id].move(0.f, (Players[id].fstartY + (int)Players[id].downHeight) - Players[id].info.vPosition.y);
+				}
+
+				// 다운카운트 -> 0이면 증가 / 0이 아닐 때 증가 시작 / N 도달 시 0으로 초기화
+                if (Players[id].downCount > 0) {
+					Players[id].downCount++;
+                    if (Players[id].downCount > 30) {
+                        Players[id].downCount = 0;
+					}
+                }
+
+            }
             // === 2. 월드 상태 업데이트 ===
              
             
@@ -169,6 +217,22 @@ DWORD WINAPI AcceptThread(LPVOID arg)
             Players[g_player_count].info.eState = STATE_IDLE;
             Players[g_player_count].move(330, 70);
 
+			// 플레이어 이동 및 점프 상태 초기화
+            Players[g_player_count].acceleration = 0.0f;
+			Players[g_player_count].speed = 0.0f;
+			Players[g_player_count].isMoving = false;
+
+            // 뭐로 초기화해야하는지 모르겠음
+			//Players[g_player_count].jstartY = ?
+            //Players[g_player_count].fstartY = ?
+            //Players[g_player_count].downTime = ?
+            //Players[g_player_count].downHeight = ?
+
+			Players[g_player_count].downCount = 0;
+            Players[g_player_count].falling = 0;
+			Players[g_player_count].jumping = false;
+			Players[g_player_count].jumpCount = 0;
+			Players[g_player_count].jumpPower = 12.f;
 
             // 접속한 클라이언트에게 ID 부여
             int idToSend = g_player_count; // 현재 할당할 ID

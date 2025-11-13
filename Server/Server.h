@@ -86,11 +86,7 @@ struct Player {
 		colBox.bottom += _y;
 	}
 
-	// 플레이어 이동 관련 변수
-
-	const float MAX_SPEED = 5.0f;      // 최대 속도
-	const float ACCELERATION = 0.2f;   // 가속도
-	const float FRICTION = 0.02f;      // 마찰력(감속)
+	int downCount;		// 10번의 타이머 동안 땅 부딪힘 검사 x
 
 	// 낙하 및 점프 변수
 	int fstartY;
@@ -109,7 +105,6 @@ struct Player {
 	float acceleration;	// 현재 가속도
 	float speed;		// 현재 속도
 	bool isMoving;		// 이동 중인지 여부
-
 
 };
 

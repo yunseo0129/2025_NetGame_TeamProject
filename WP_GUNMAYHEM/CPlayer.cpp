@@ -7,6 +7,7 @@ CPlayer::CPlayer()
 	y = -200;
 	looking = 0;
 	life = MAXLIFE;
+	
 	downCount = 0;
 	falling = TRUE; // 처음엔 낙하 상태
 	jumping = FALSE;
@@ -15,6 +16,7 @@ CPlayer::CPlayer()
 	acceleration = 0.0f;
 	speed = 0.0f;
 	isMoving = FALSE;
+	
 	combo = 0;
 	comboTime = 0;
 	anim_frame = 0;
@@ -219,7 +221,7 @@ bool CPlayer::Update()
 
 	//	 // 4. 최종 속도를 위치에 적용
 	//	 x += (int)speed;
-	// }
+	//}
 
 	//// jumping or falling
 	//// 땅 충돌 검사는 CPlayLevel에서 수행
