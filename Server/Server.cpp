@@ -4,7 +4,7 @@
 Player Players[3]; // 최대 3명 접속 가능
 std::vector<Bullet> vecBullets; // 총알들
 std::vector<ItemBox> vecItemBoxes; // 아이템 박스들
-std::queue<Action> ActionQue;
+std::queue<Player_input> ActionQue;
 RECT block[5];
 
 bool g_running = true;
@@ -14,6 +14,9 @@ DWORD WINAPI ProcessClient(LPVOID arg);
 
 bool Initializer();
 void Collision();
+void Shooting(int id);
+void UpdatePlayer();
+void MovePlayer(int id);
 
 const float MAX_SPEED = 5.0f;      // 최대 속도
 const float ACCELERATION = 0.2f;   // 가속도
@@ -79,93 +82,115 @@ int main(int argc, char* argv[])
             //  간단한 이동 구현을 위해 임시로 사용)
             while (!ActionQue.empty())
             {
-                Action next = ActionQue.front();
+                Player_input next = ActionQue.front();
                 ActionQue.pop();
 
-                // === 이동 로직 구현 ===
-                int id = next.iPlayerNum;
-                PLAYER_ACTION act = next.eAct;
-
-                // 일단 가속도와 이동 상태를 초기화
-                Players[id].acceleration = 0.0f;
-                Players[id].isMoving = false;
-
-                // 왼쪽 입력 시
-                if (act.left) {
-                    Players[id].acceleration = -ACCELERATION; // 왼쪽 가속도 적용
-                    Players[id].isMoving = true;              // 이동 중 플래그 On
-                }
-                // 오른쪽 입력 시
-                if (act.right) {
-                    Players[id].acceleration = ACCELERATION;  // 오른쪽 가속도 적용
-                    Players[id].isMoving = true;              // 이동 중 플래그 On
-                }
-                if (act.left && act.right) {
-                    Players[id].acceleration = 0.0f;          // 양쪽 다 누르면 가속도 0
-				}
-
-                // 점프 입력 시 (땅에 있을 때만)
-                //if (act.space) {
-                //    if (!Players[id].jumping && !Players[id].falling) {
-                //        Players[id].jumping = true;
-                //        Players[id].jumpTime = 0.f;
-                //        Players[id].jstartY = Players[id].info.vPosition.y; // 현재 Y위치 저장
-                //        // Players[id].jumpCount = 0; // 필요하다면 초기화
-                //    }
-                //}
-
-                //if (act.left)  Players[id].move(-1, 0.f);
-                //if (act.right) Players[id].move(1, 0.f);
-                //if (act.up)    Players[id].move(0.f, -1); // (Y좌표계에 따라 +)
-                //if (act.down)  Players[id].move(0.f, 1); // (Y좌표계에 따라 -)
-
-                // 1. 항상 마찰력 적용.
-                if (!Players[id].jumping && !Players[id].falling)
+                // 키입력 처리
+                switch (next.key)
                 {
-                    if (Players[id].speed > 0.0f)
-                    {
-                        Players[id].speed = max(0.0f, Players[id].speed - FRICTION);
-                    }
-                    else if (Players[id].speed < 0.0f)
-                    {
-                        Players[id].speed = min(0.0f, Players[id].speed + FRICTION);
-                    }
+                case KEY_LEFT:
+                    Players[next.id].Act.left = next.isDown;
+                    break;
+                case KEY_RIGHT:
+                    Players[next.id].Act.right = next.isDown;
+                    break;
+                case KEY_JUMP:
+                    Players[next.id].Act.up = next.isDown;
+                    break;
+                case KEY_DOWNJUMP:
+                    Players[next.id].Act.down = 20;
+                    break;
+                case KEY_SHOOT:
+                    Players[next.id].Act.space += 1;
+                    break;
+                default:
+                    break;
                 }
 
-                // 2. 가속도 적용
-                if (Players[id].isMoving) {
-                    Players[id].speed += Players[id].acceleration;
-                }
+    //            // === 이동 로직 구현 ===
+    //            int id = next.iPlayerNum;
+    //            PLAYER_ACTION act = next.eAct;
 
-                // 3. 속도 제한
-                Players[id].speed = max(-MAX_SPEED, min(Players[id].speed, MAX_SPEED));
+    //            // 일단 가속도와 이동 상태를 초기화
+    //            Players[id].acceleration = 0.0f;
+    //            Players[id].isMoving = false;
 
-                // 4. 최종 속도를 위치에 적용
-                Players[id].move(Players[id].speed, 0.f);
+    //            // 왼쪽 입력 시
+    //            if (act.left) {
+    //                Players[id].acceleration = -ACCELERATION; // 왼쪽 가속도 적용
+    //                Players[id].isMoving = true;              // 이동 중 플래그 On
+    //            }
+    //            // 오른쪽 입력 시
+    //            if (act.right) {
+    //                Players[id].acceleration = ACCELERATION;  // 오른쪽 가속도 적용
+    //                Players[id].isMoving = true;              // 이동 중 플래그 On
+    //            }
+    //            if (act.left && act.right) {
+    //                Players[id].acceleration = 0.0f;          // 양쪽 다 누르면 가속도 0
+				//}
 
-                // jumping or falling
-                if (Players[id].jumping == TRUE) {
-                    Players[id].jumpHeight = (Players[id].jumpTime * Players[id].jumpTime - Players[id].jumpPower * Players[id].jumpTime) * 4.f;
-                    Players[id].jumpTime += 0.2f;
-                    Players[id].move(0.f, (Players[id].jstartY + (int)Players[id].jumpHeight) - Players[id].info.vPosition.y);
-                }
-                else if(Players[id].falling == TRUE) { 
-                    Players[id].downHeight = (Players[id].downTime * (Players[id].downTime / 2)) * 4.f;
-                    Players[id].downTime += 0.2f;
-                    Players[id].move(0.f, (Players[id].fstartY + (int)Players[id].downHeight) - Players[id].info.vPosition.y);
-				}
+    //            // 점프 입력 시 (땅에 있을 때만)
+    //            //if (act.space) {
+    //            //    if (!Players[id].jumping && !Players[id].falling) {
+    //            //        Players[id].jumping = true;
+    //            //        Players[id].jumpTime = 0.f;
+    //            //        Players[id].jstartY = Players[id].info.vPosition.y; // 현재 Y위치 저장
+    //            //        // Players[id].jumpCount = 0; // 필요하다면 초기화
+    //            //    }
+    //            //}
 
-				// 다운카운트 -> 0이면 증가 / 0이 아닐 때 증가 시작 / N 도달 시 0으로 초기화
-                if (Players[id].downCount > 0) {
-					Players[id].downCount++;
-                    if (Players[id].downCount > 30) {
-                        Players[id].downCount = 0;
-					}
-                }
+    //            //if (act.left)  Players[id].move(-1, 0.f);
+    //            //if (act.right) Players[id].move(1, 0.f);
+    //            //if (act.up)    Players[id].move(0.f, -1); // (Y좌표계에 따라 +)
+    //            //if (act.down)  Players[id].move(0.f, 1); // (Y좌표계에 따라 -)
+
+    //            // 1. 항상 마찰력 적용.
+    //            if (!Players[id].jumping && !Players[id].falling)
+    //            {
+    //                if (Players[id].speed > 0.0f)
+    //                {
+    //                    Players[id].speed = max(0.0f, Players[id].speed - FRICTION);
+    //                }
+    //                else if (Players[id].speed < 0.0f)
+    //                {
+    //                    Players[id].speed = min(0.0f, Players[id].speed + FRICTION);
+    //                }
+    //            }
+
+    //            // 2. 가속도 적용
+    //            if (Players[id].isMoving) {
+    //                Players[id].speed += Players[id].acceleration;
+    //            }
+
+    //            // 3. 속도 제한
+    //            Players[id].speed = max(-MAX_SPEED, min(Players[id].speed, MAX_SPEED));
+
+    //            // 4. 최종 속도를 위치에 적용
+    //            Players[id].move(Players[id].speed, 0.f);
+
+    //            // jumping or falling
+    //            if (Players[id].jumping == TRUE) {
+    //                Players[id].jumpHeight = (Players[id].jumpTime * Players[id].jumpTime - Players[id].jumpPower * Players[id].jumpTime) * 4.f;
+    //                Players[id].jumpTime += 0.2f;
+    //                Players[id].move(0.f, (Players[id].jstartY + (int)Players[id].jumpHeight) - Players[id].info.vPosition.y);
+    //            }
+    //            else if(Players[id].falling == TRUE) { 
+    //                Players[id].downHeight = (Players[id].downTime * (Players[id].downTime / 2)) * 4.f;
+    //                Players[id].downTime += 0.2f;
+    //                Players[id].move(0.f, (Players[id].fstartY + (int)Players[id].downHeight) - Players[id].info.vPosition.y);
+				//}
+
+				//// 다운카운트 -> 0이면 증가 / 0이 아닐 때 증가 시작 / N 도달 시 0으로 초기화
+    //            if (Players[id].downCount > 0) {
+				//	Players[id].downCount++;
+    //                if (Players[id].downCount > 30) {
+    //                    Players[id].downCount = 0;
+				//	}
+    //            }
 
             }
             // === 2. 월드 상태 업데이트 ===
-             
+            UpdatePlayer();
             
             // === 충돌 처리 ===
             Collision();
@@ -248,9 +273,9 @@ DWORD WINAPI AcceptThread(LPVOID arg)
             Players[g_player_count].move(pX, 70);
 
 			// 플레이어 이동 및 점프 상태 초기화
-            Players[g_player_count].acceleration = 0.0f;
+            /*Players[g_player_count].acceleration = 0.0f;
 			Players[g_player_count].speed = 0.0f;
-			Players[g_player_count].isMoving = false;
+			Players[g_player_count].isMoving = false;*/
 
             // 뭐로 초기화해야하는지 모르겠음
 			//Players[g_player_count].jstartY = ?
@@ -258,11 +283,11 @@ DWORD WINAPI AcceptThread(LPVOID arg)
             //Players[g_player_count].downTime = ?
             //Players[g_player_count].downHeight = ?
 
-			Players[g_player_count].downCount = 0;
+			/*Players[g_player_count].downCount = 0;
             Players[g_player_count].falling = 0;
 			Players[g_player_count].jumping = false;
 			Players[g_player_count].jumpCount = 0;
-			Players[g_player_count].jumpPower = 12.f;
+			Players[g_player_count].jumpPower = 12.f;*/
 
             // 접속한 클라이언트에게 ID 부여
             int idToSend = g_player_count; // 현재 할당할 ID
@@ -321,14 +346,15 @@ DWORD WINAPI ProcessClient(LPVOID arg)
     printf("[Player %d] 클라이언트 접속: %s:%d\n", my_id, addr, ntohs(clientaddr.sin_port));
 
     int retval;
-    PLAYER_ACTION clientPlay;
-	PLAYER_ACTION nullPlay = { false, false, false, false, false };
+    Player_input act;
+    // PLAYER_ACTION clientPlay;
+	// PLAYER_ACTION nullPlay = { false, false, false, false, false };
 
-    Action act;
-    act.iPlayerNum = my_id;
+    //Action act;
+    //act.iPlayerNum = my_id;
     while (true)
     {
-        retval = recv(client_sock, (char*)&clientPlay, sizeof(clientPlay), 0);
+        retval = recv(client_sock, (char*)&act, sizeof(act), 0);
 
         // === 접속 종료 처리 ===
         if (retval == SOCKET_ERROR || retval == 0)
@@ -340,12 +366,12 @@ DWORD WINAPI ProcessClient(LPVOID arg)
         }
 
         // === 데이터 수신 성공: 큐에 삽입 ===
-        act.eAct = clientPlay;
+        //act.eAct = clientPlay;
         ActionQue.push(act);
 
         // 데이터 출력 테스트
-        printf("[Player %d] Action - L:%d R:%d U:%d D:%d S:%d\n", my_id,
-			   clientPlay.left, clientPlay.right, clientPlay.up, clientPlay.down, clientPlay.space);
+       /* printf("[Player %d] Action - L:%d R:%d U:%d D:%d S:%d\n", my_id,
+			   clientPlay.left, clientPlay.right, clientPlay.up, clientPlay.down, clientPlay.space);*/
     }
 
     return 0;
@@ -400,15 +426,27 @@ void Collision()
     {
         if (Players[i].info.isConnected)
         {
-            RECT Pbox = Players[i].colBox;
-            for (int j = 0; j < 5; ++j)
+            Players[i].isOnBlock = false;
+
+            if (Players[i].Act.down > 0)
             {
-                RECT Mbox = block[j];
-                if (Pbox.right >= Mbox.left && Pbox.left <= Mbox.right)
+                Players[i].Act.down -= 1;
+            }
+            else
+            {
+                RECT Pbox = Players[i].colBox;
+                for (int j = 0; j < 5; ++j)
                 {
-                    if (Pbox.bottom >= Mbox.top && Pbox.bottom <= Mbox.bottom)
+                    RECT Mbox = block[j];
+                    if (Pbox.right >= Mbox.left && Pbox.left <= Mbox.right)
                     {
-                        Players[i].move(0.f, -(Pbox.bottom - Mbox.top));
+                        if (Pbox.bottom >= Mbox.top && Pbox.bottom <= Mbox.bottom)
+                        {
+                            Players[i].move(0.f, -(Pbox.bottom - Mbox.top));
+                            Players[i].isOnBlock = true;
+                            Players[i].fGravity = 0.f;
+                            Players[i].iJump = 0;
+                        }
                     }
                 }
             }
@@ -417,4 +455,78 @@ void Collision()
     // 2. 플레이어 vs 총알
 
     // 3. 플레이어 vs 아이템 박스
+}
+
+void Shooting(int id)
+{
+    for (int j = 0; j < Players[id].Act.space; ++j)
+    {
+        // 스페이스바 누른 만큼 총알 생성
+    }
+    Players[id].Act.space = 0;
+}
+
+void UpdatePlayer()
+{
+    for (int i = 0; i < MAX_PLAYERS; ++i)
+    {
+        if (Players[i].info.isConnected)
+        {
+            // 가속도 감소
+            if (Players[i].fAcc > 0.f)
+            {
+                Players[i].fAcc -= 1.f;
+                if (Players[i].fAcc < 0.f)
+                    Players[i].fAcc = 0.f;
+            }
+            else if (Players[i].fAcc < 0.f)
+            {
+                Players[i].fAcc += 1.f;
+                if (Players[i].fAcc > 0.f)
+                    Players[i].fAcc = 0.f;
+            }
+            // 중력 가속도 증가
+            if (!Players[i].isOnBlock)
+            {
+                Players[i].fGravity += 9.81f * 2.f * (1.f / 60.f);
+            }
+
+            // 점프
+            if (Players[i].Act.up)
+            {
+                if (Players[i].iJump < 2)
+                {
+                    Players[i].iJump += 1;
+                    Players[i].fGravity = -10.f;
+                }
+                
+                Players[i].Act.up = false;
+            }
+
+            if (Players[i].Act.left)
+            {
+                Players[i].fAcc -= 2.f;
+                if (Players[i].fAcc < -50.f)
+                    Players[i].fAcc = -50.f;
+            }
+            if (Players[i].Act.right)
+            {
+                Players[i].fAcc += 2.f;
+                if (Players[i].fAcc > 50.f)
+                    Players[i].fAcc = 50.f;
+            }
+            if (Players[i].Act.space > 0)
+            {
+                Shooting(i);
+            }
+            
+            // 실제 이동
+            MovePlayer(i);
+        }
+    }
+}
+
+void MovePlayer(int id)
+{
+    Players[id].move(Players[id].fAcc / 6.f, Players[id].fGravity);
 }
