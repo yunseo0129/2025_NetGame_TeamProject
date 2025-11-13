@@ -168,7 +168,9 @@ DWORD WINAPI AcceptThread(LPVOID arg)
             Players[g_player_count].info.iLife = 3;
             Players[g_player_count].info.eItemType = ITEM_PISTOL;
             Players[g_player_count].info.eState = STATE_IDLE;
-            Players[g_player_count].move(330, 70);
+
+			int pX = 100 + (g_player_count * 200);
+            Players[g_player_count].move(pX, 70);
 
 
             // 접속한 클라이언트에게 ID 부여
