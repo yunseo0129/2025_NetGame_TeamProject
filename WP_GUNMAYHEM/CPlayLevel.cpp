@@ -125,47 +125,55 @@ void CPlayLevel::Free()
 void CPlayLevel::ProcessInput()
 {
 	b_keyAct = false;						// 키 입력이 있었는지 여부
-	myAction = PLAYER_ACTION { false, };	// 보낼 액션 초기화
+	// myAction = PLAYER_ACTION { false, };	// 보낼 액션 초기화
 
 	// 키 다운 처리
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_LEFT)) {
 		b_keyAct = true;
-		myAction.left = true;
+		myAction.isDown = true;
+		myAction.key = KEY_LEFT;
 	}
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_RIGHT)) {
 		b_keyAct = true;
-		myAction.right = true;
+		myAction.isDown = true;
+		myAction.key = KEY_RIGHT;
 	}
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_UP)) {
 		b_keyAct = true;
-		myAction.up = true;
+		myAction.isDown = true;
+		myAction.key = KEY_JUMP;
 	}
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_DOWN)) {
 		b_keyAct = true;
-		myAction.down = true;
+		myAction.isDown = true;
+		myAction.key = KEY_DOWNJUMP;
 	}
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE)) {
 		b_keyAct = true;
-		myAction.space = true;
+		myAction.isDown = true;
+		myAction.key = KEY_SHOOT;
 	}
 
 	// 키 업 처리
 	if (CKeyMgr::Get_Instance()->Key_Up(VK_LEFT)) {
 		b_keyAct = true;
-		myAction.left = false;
+		myAction.isDown = false;
+		myAction.key = KEY_LEFT;
 	}
 	if (CKeyMgr::Get_Instance()->Key_Up(VK_RIGHT)) {
 		b_keyAct = true;
-		myAction.right = false;
+		myAction.isDown = false;
+		myAction.key = KEY_RIGHT;
 	}
-	if (CKeyMgr::Get_Instance()->Key_Up(VK_UP)) {
+	/*if (CKeyMgr::Get_Instance()->Key_Up(VK_UP)) {
 		b_keyAct = true;
-		myAction.up = false;
+		myAction.key = KEY_JUMP;
 	}
 	if (CKeyMgr::Get_Instance()->Key_Up(VK_DOWN)) {
 		b_keyAct = true;
-		myAction.down = false;
-	}
+		myAction.isDown = false;
+		myAction.key = KEY_DOWNJUMP;
+	}*/
 }
 
 DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)

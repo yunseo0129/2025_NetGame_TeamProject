@@ -37,13 +37,20 @@ void err_quit(const char* msg)
 
 enum ITEMTYPE { ITEM_NONE, ITEM_PISTOL, ITEM_SNIPER };
 enum PLAYER_STATE { STATE_NONE, STATE_IDLE, STATE_WALK, STATE_JUMP };
+enum PLAYER_INPUT_KEY { KEY_NONE, KEY_LEFT, KEY_RIGHT, KEY_JUMP, KEY_DOWNJUMP, KEY_SHOOT };
+
+struct Player_input {
+	bool isDown;
+	PLAYER_INPUT_KEY key = KEY_NONE;
+	int id;
+};
 
 struct PLAYER_ACTION {
 	bool left = false;
 	bool right = false;
 	bool up = false;
-	bool down = false;
-	bool space = false;
+	int down = 0;
+	int space = 0;
 };
 
 
@@ -76,6 +83,12 @@ struct Player {
 	PlayerInfo		info;						// 플레이어 정보
 	vec2			vDirPow;					// 현재 받고있는 가속도 벡터
 	RECT			colBox;						// 충돌 박스
+	PLAYER_ACTION	Act;						// 현재 키인풋
+
+	float			fAcc = 0.f;						// 가속도
+	int				iJump = 0;						// 점프 카운트
+	bool			isOnBlock = false;				// 지형위에 서있는지 체크
+	float			fGravity = 0.f;					// 중력 가속도
 
 	void move(float _x, float _y) {
 		info.vPosition.x += _x;
@@ -86,25 +99,25 @@ struct Player {
 		colBox.bottom += _y;
 	}
 
-	int downCount;		// 10번의 타이머 동안 땅 부딪힘 검사 x
+	// int downCount;		// 10번의 타이머 동안 땅 부딪힘 검사 x
 
 	// 낙하 및 점프 변수
-	int fstartY;
-	float downTime;
-	float downHeight;
-	BOOL falling;
+	//int fstartY;
+	//float downTime;
+	//float downHeight;
+	//BOOL falling;
 
-	int jstartY;		// 점프 시작 위치
-	float jumpTime;
-	float jumpHeight;
-	float jumpPower;
-	BOOL jumping;
-	int jumpCount = 0;	// 점프 횟수
+	//int jstartY;		// 점프 시작 위치
+	//float jumpTime;
+	//float jumpHeight;
+	//float jumpPower;
+	//BOOL jumping;
+	//int jumpCount = 0;	// 점프 횟수
 
-	// 속도, 가속도 변수
-	float acceleration;	// 현재 가속도
-	float speed;		// 현재 속도
-	bool isMoving;		// 이동 중인지 여부
+	//// 속도, 가속도 변수
+	//float acceleration;	// 현재 가속도
+	//float speed;		// 현재 속도
+	//bool isMoving;		// 이동 중인지 여부
 
 };
 
@@ -165,5 +178,5 @@ struct PlayerState {
 // 2. (임시) MovementData - 서버가 클라이언트에 보낼 이동 데이터
 // ==========================================================
 struct MovementData {
-	PlayerState players[MAX_PLAYERS];
+	PlayerState players[MAX_PLAYERS] = {};
 };

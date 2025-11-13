@@ -42,5 +42,5 @@ private:
 
 	// 키 입력 관련
 	bool b_keyAct = false;
-	PLAYER_ACTION myAction { false, };
+	Player_input myAction { false, };
 };

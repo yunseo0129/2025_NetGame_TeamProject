@@ -117,6 +117,14 @@ struct ItemBoxInfo {
 	vec2			vPosition;					// 위치
 };
 
+enum PLAYER_INPUT_KEY { KEY_NONE, KEY_LEFT, KEY_RIGHT, KEY_JUMP, KEY_DOWNJUMP, KEY_SHOOT };
+
+struct Player_input {
+	bool isDown;
+	PLAYER_INPUT_KEY key = KEY_NONE;
+	int id;
+};
+
 // SERVER -> CLIENT ------------------------------------------------------------
 struct SendData {
 	PlayerInfo				playerInfo[3];		// 플레이어 정보
