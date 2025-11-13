@@ -382,22 +382,27 @@ bool Initializer()
     // 맵 충돌체 위치 초기화
     float blockx = 200.f;
     float blocky = 30.f;
+
     block[0].left = 330;
     block[0].right = 330 + blockx;
     block[0].top = 170;
     block[0].bottom = 170 + blocky;
+
     block[1].left = 160;
     block[1].right = 160 + blockx;
     block[1].top = 300;
     block[1].bottom = 300 + blocky;
+
     block[2].left = 510;
     block[2].right = 510 + blockx;
     block[2].top = 300;
     block[2].bottom = 300 + blocky;
+
     block[3].left = 70;
     block[3].right = 70 + blockx;
     block[3].top = 420;
     block[3].bottom = 420 + blocky;
+
     block[4].left = 600;
     block[4].right = 600 + blockx;
     block[4].top = 420;
@@ -426,6 +431,8 @@ void Collision()
     {
         if (Players[i].info.isConnected)
         {
+            bool isCollided = false;
+
             if (Players[i].Act.down > 0)
             {
                 Players[i].Act.down -= 1;
@@ -440,16 +447,18 @@ void Collision()
                     {
                         if (Pbox.bottom >= Mbox.top && Pbox.bottom <= Mbox.bottom)
                         {
+                            isCollided = false;
+							// printf("플레이어 %d가 블록 %d에 착지함. 블록의 left:%d, right:%d\n", i, j, Mbox.left, Mbox.right);
+
                             Players[i].move(0.f, -(Pbox.bottom - Mbox.top));
                             Players[i].isOnBlock = true;
                             Players[i].fGravity = 0.f;
                             Players[i].iJump = 0;
                         }
-                        else
-                            Players[i].isOnBlock = false;
                     }
                 }
             }
+			Players[i].isOnBlock = isCollided;
         }
     }
     // 2. 플레이어 vs 총알

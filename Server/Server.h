@@ -97,6 +97,9 @@ struct Player {
 		info.vPosition.y += _y;
 		colBox.top += _y;
 		colBox.bottom += _y;
+
+		info.vPosition.x = (int)info.vPosition.x;
+		info.vPosition.y = (int)info.vPosition.y;
 	}
 
 	// int downCount;		// 10번의 타이머 동안 땅 부딪힘 검사 x
