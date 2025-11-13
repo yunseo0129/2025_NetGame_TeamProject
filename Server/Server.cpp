@@ -86,6 +86,34 @@ int main(int argc, char* argv[])
                 int id = next.iPlayerNum;
                 PLAYER_ACTION act = next.eAct;
 
+                // 일단 가속도와 이동 상태를 초기화
+                Players[id].acceleration = 0.0f;
+                Players[id].isMoving = false;
+
+                // 왼쪽 입력 시
+                if (act.left) {
+                    Players[id].acceleration = -ACCELERATION; // 왼쪽 가속도 적용
+                    Players[id].isMoving = true;              // 이동 중 플래그 On
+                }
+                // 오른쪽 입력 시
+                if (act.right) {
+                    Players[id].acceleration = ACCELERATION;  // 오른쪽 가속도 적용
+                    Players[id].isMoving = true;              // 이동 중 플래그 On
+                }
+                if (act.left && act.right) {
+                    Players[id].acceleration = 0.0f;          // 양쪽 다 누르면 가속도 0
+				}
+
+                // 점프 입력 시 (땅에 있을 때만)
+                //if (act.space) {
+                //    if (!Players[id].jumping && !Players[id].falling) {
+                //        Players[id].jumping = true;
+                //        Players[id].jumpTime = 0.f;
+                //        Players[id].jstartY = Players[id].info.vPosition.y; // 현재 Y위치 저장
+                //        // Players[id].jumpCount = 0; // 필요하다면 초기화
+                //    }
+                //}
+
                 //if (act.left)  Players[id].move(-1, 0.f);
                 //if (act.right) Players[id].move(1, 0.f);
                 //if (act.up)    Players[id].move(0.f, -1); // (Y좌표계에 따라 +)
