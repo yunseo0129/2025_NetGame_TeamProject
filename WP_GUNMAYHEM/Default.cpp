@@ -26,17 +26,11 @@ int cameraX = 0;   // 카메라의 좌상단 X 좌표
 int cameraY = 0;   // 카메라의 좌상단 Y 좌표
 
 // 애니메이션 비트맵 핸들
-HBITMAP BMP_player1_inform = NULL;
-HBITMAP BMP_player2_inform = NULL;
-HBITMAP BMP_player1_left_stand = NULL;
-HBITMAP BMP_player1_left_walk[4] = { NULL, NULL, NULL, NULL };
-HBITMAP BMP_player1_right_stand = NULL;
-HBITMAP BMP_player1_right_walk[4] = { NULL, NULL, NULL, NULL };
-
-HBITMAP BMP_player2_left_stand = NULL;
-HBITMAP BMP_player2_left_walk[4] = { NULL, NULL, NULL, NULL };
-HBITMAP BMP_player2_right_stand = NULL;
-HBITMAP BMP_player2_right_walk[4] = { NULL, NULL, NULL, NULL };
+HBITMAP BMP_player_inform[3] = { NULL, NULL, NULL };
+HBITMAP BMP_player_left_stand[3] = { NULL, NULL, NULL };
+HBITMAP BMP_player_left_walk[3][4] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
+HBITMAP BMP_player_right_stand[3] = { NULL, NULL, NULL };
+HBITMAP BMP_player_right_walk[3][4] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
 
 HBITMAP BMP_gun1_left = NULL;
 HBITMAP BMP_gun1_right = NULL;

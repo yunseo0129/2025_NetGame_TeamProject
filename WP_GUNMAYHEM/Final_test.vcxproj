@@ -203,6 +203,13 @@
     <Image Include="image\player2_right_stand.bmp" />
     <Image Include="image\player2_right_walk1.bmp" />
     <Image Include="image\player2_right_walk3.bmp" />
+    <Image Include="image\player3.bmp" />
+    <Image Include="image\player3_left_stand.bmp" />
+    <Image Include="image\player3_left_walk1.bmp" />
+    <Image Include="image\player3_left_walk3.bmp" />
+    <Image Include="image\player3_right_stand.bmp" />
+    <Image Include="image\player3_right_walk1.bmp" />
+    <Image Include="image\player3_right_walk3.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="개발일지.md" />

@@ -30,38 +30,16 @@ CPlayer::CPlayer()
 void CPlayer::Draw(HDC mDC)
 {
 	// 1. 플레이어 그리기 
-	HBITMAP hBitmapToDraw = BMP_player1_right_stand;
-	switch (playerType) {
-	case 1:
-	{
-		hBitmapToDraw = BMP_player1_right_stand;
-		switch (looking) {
-		case 0: // Left
-			if (isMoving) hBitmapToDraw = BMP_player1_left_walk[anim_frame];
-			else hBitmapToDraw = BMP_player1_left_stand;
-			break;
-		case 1: // Right
-			if (isMoving) hBitmapToDraw = BMP_player1_right_walk[anim_frame];
-			else hBitmapToDraw = BMP_player1_right_stand;
-			break;
-		}
+	HBITMAP hBitmapToDraw = BMP_player_right_stand[playerType];
+	switch (looking) {
+	case 0: // Left
+		if (isMoving) hBitmapToDraw = BMP_player_left_walk[playerType][anim_frame];
+		else hBitmapToDraw = BMP_player_left_stand[playerType];
 		break;
-	}
-	case 2:
-	{
-		hBitmapToDraw = BMP_player2_right_stand;
-		switch (looking) {
-		case 0: // Left
-			if (isMoving) hBitmapToDraw = BMP_player2_left_walk[anim_frame];
-			else hBitmapToDraw = BMP_player2_left_stand;
-			break;
-		case 1: // Right
-			if (isMoving) hBitmapToDraw = BMP_player2_right_walk[anim_frame];
-			else hBitmapToDraw = BMP_player2_right_stand;
-			break;
-		}
+	case 1: // Right
+		if (isMoving) hBitmapToDraw = BMP_player_right_walk[playerType][anim_frame];
+		else hBitmapToDraw = BMP_player_right_stand[playerType];
 		break;
-	}
 	}
 
 	SelectObject(g_BMPmDC, hBitmapToDraw);
@@ -198,6 +176,7 @@ bool CPlayer::Update()
 		x = pInfo.vPosition.x;
 		y = pInfo.vPosition.y;
 		gunType = pInfo.eItemType;
+		// looking = pInfo.looking;
 	}
 	//else
 	//{

@@ -27,7 +27,7 @@ void CPlayLevel::Initialize()
 	for (int i = 0; i < 3; ++i) {
 		m_pPlayer[i] = new CPlayer();
 		m_pPlayer[i]->x = 100 + i * 200; // 초기 위치
-		m_pPlayer[i]->playerType = i + 1;
+		m_pPlayer[i]->playerType = i;
 		AddObject(m_pPlayer[i], (i == 0) ? OBJ_PLAYER1 : OBJ_PLAYER2); // 레벨에 등록
 	}
 

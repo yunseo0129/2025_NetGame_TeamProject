@@ -213,6 +213,27 @@
     <Image Include="image\player2.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="image\player3.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\player3_left_stand.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\player3_left_walk1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\player3_left_walk3.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\player3_right_stand.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\player3_right_walk1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\player3_right_walk3.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="개발일지.md" />

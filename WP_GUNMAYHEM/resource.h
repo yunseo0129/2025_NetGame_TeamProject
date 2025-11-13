@@ -8,12 +8,14 @@
 #define IDB_P1RIGHT_STAND               104
 #define IDB_P1RIGHT_WALK1               105
 #define IDB_P1RIGHT_WALK3               106
+
 #define IDB_P2LEFT_STAND                107
 #define IDB_P2LEFT_WALK1                108
 #define IDB_P2LEFT_WALK3                109
 #define IDB_P2RIGHT_STAND               110
 #define IDB_P2RIGHT_WALK1               111
 #define IDB_P2RIGHT_WALK3               112
+
 #define IDB_GUN1LEFT                    113
 #define IDB_GUN1RIGHT                   114
 #define IDB_GUN2LEFT                    115

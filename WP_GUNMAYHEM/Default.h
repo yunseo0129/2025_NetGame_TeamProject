@@ -56,17 +56,12 @@ extern int cameraX;   // 카메라의 좌상단 X 좌표
 extern int cameraY;   // 카메라의 좌상단 Y 좌표
 
 // 애니메이션 비트맵 핸들
-extern HBITMAP BMP_player1_inform;
-extern HBITMAP BMP_player2_inform;
-extern HBITMAP BMP_player1_left_stand;
-extern HBITMAP BMP_player1_left_walk[4];
-extern HBITMAP BMP_player1_right_stand;
-extern HBITMAP BMP_player1_right_walk[4];
+extern HBITMAP BMP_player_inform[3];
+extern HBITMAP BMP_player_left_stand[3];
+extern HBITMAP BMP_player_left_walk[3][4];
+extern HBITMAP BMP_player_right_stand[3];
+extern HBITMAP BMP_player_right_walk[3][4];
 
-extern HBITMAP BMP_player2_left_stand;
-extern HBITMAP BMP_player2_left_walk[4];
-extern HBITMAP BMP_player2_right_stand;
-extern HBITMAP BMP_player2_right_walk[4];
 
 extern HBITMAP BMP_gun1_left;
 extern HBITMAP BMP_gun1_right;
