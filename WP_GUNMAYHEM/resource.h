@@ -8,14 +8,12 @@
 #define IDB_P1RIGHT_STAND               104
 #define IDB_P1RIGHT_WALK1               105
 #define IDB_P1RIGHT_WALK3               106
-
 #define IDB_P2LEFT_STAND                107
 #define IDB_P2LEFT_WALK1                108
 #define IDB_P2LEFT_WALK3                109
 #define IDB_P2RIGHT_STAND               110
 #define IDB_P2RIGHT_WALK1               111
 #define IDB_P2RIGHT_WALK3               112
-
 #define IDB_GUN1LEFT                    113
 #define IDB_GUN1RIGHT                   114
 #define IDB_GUN2LEFT                    115
@@ -30,12 +28,20 @@
 #define IDB_P1INFORM                    124
 #define IDB_BITMAP2                     125
 #define IDB_P2INFORM                    125
+#define IDB_P3INFORM                    126
+#define IDB_P3LEFT_STAND                128
+#define IDB_P3LEFT_WALK1                129
+#define IDB_P3LEFT_WALK3                130
+#define IDB_P3RIGHT_STAND               131
+#define IDB_P3RIGHT_WALK1               132
+#define IDB_BITMAP3                     133
+#define IDB_P3RIGHT_WALK3               133
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        126
+#define _APS_NEXT_RESOURCE_VALUE        134
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101

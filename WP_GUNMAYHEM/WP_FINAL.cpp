@@ -94,22 +94,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		BMP_player_right_walk[1][3] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P2RIGHT_STAND));
 
 		// p3
-		BMP_player_left_stand[2] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P2LEFT_STAND));
-		BMP_player_left_walk[2][0] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P2LEFT_WALK1));
-		BMP_player_left_walk[2][1] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P2LEFT_STAND));
-		BMP_player_left_walk[2][2] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P2LEFT_WALK3));
-		BMP_player_left_walk[2][3] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P2LEFT_STAND));
+		BMP_player_left_stand[2] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P3LEFT_STAND));
+		BMP_player_left_walk[2][0] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P3LEFT_WALK1));
+		BMP_player_left_walk[2][1] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P3LEFT_STAND));
+		BMP_player_left_walk[2][2] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P3LEFT_WALK3));
+		BMP_player_left_walk[2][3] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P3LEFT_STAND));
 
-		BMP_player_right_stand[2] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P2RIGHT_STAND));
-		BMP_player_right_walk[2][0] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P2RIGHT_WALK1));
-		BMP_player_right_walk[2][1] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P2RIGHT_STAND));
-		BMP_player_right_walk[2][2] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P2RIGHT_WALK3));
-		BMP_player_right_walk[2][3] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P2RIGHT_STAND));
+		BMP_player_right_stand[2] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P3RIGHT_STAND));
+		BMP_player_right_walk[2][0] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P3RIGHT_WALK1));
+		BMP_player_right_walk[2][1] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P3RIGHT_STAND));
+		BMP_player_right_walk[2][2] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P3RIGHT_WALK3));
+		BMP_player_right_walk[2][3] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P3RIGHT_STAND));
 
 		// inform
 		BMP_player_inform[0] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P1INFORM));
 		BMP_player_inform[1] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P2INFORM));
-		BMP_player_inform[2] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P2INFORM));
+		BMP_player_inform[2] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P3INFORM));
 
 		BMP_gun1_left = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_GUN1LEFT));
 		BMP_gun1_right = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_GUN1RIGHT));
