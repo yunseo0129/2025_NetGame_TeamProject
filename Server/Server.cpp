@@ -13,6 +13,7 @@ DWORD WINAPI AcceptThread(LPVOID arg);
 DWORD WINAPI ProcessClient(LPVOID arg);
 
 bool Initializer();
+void Collision();
 
 int main(int argc, char* argv[])
 {
@@ -92,25 +93,7 @@ int main(int argc, char* argv[])
              
             
             // === 충돌 처리 ===
-            // 1. 플레이어 vs 맵
-            for (int i = 0; i < MAX_PLAYERS; i++)
-            {
-                if (Players[i].info.isConnected)
-                {
-                    RECT Pbox = Players[i].colBox;
-                    for (int j = 0; j < 5; ++j)
-                    {
-                        RECT Mbox = block[j];
-                        if (Pbox.right >= Mbox.left && Pbox.left <= Mbox.right)
-                        {
-                            if (Pbox.bottom >= Mbox.top && Pbox.bottom <= Mbox.bottom)
-                            {
-                                Players[i].move(0.f, -(Pbox.bottom - Mbox.top));
-                            }
-                        }
-                    }
-                }
-            }
+            Collision();
 
             // === 3. 모든 클라이언트에게 상태 브로드캐스트 ===
             MovementData dataToSend;
@@ -301,4 +284,30 @@ bool Initializer()
     vecItemBoxes.reserve(10);
    
     return false;
+}
+
+void Collision()
+{
+    // 1. 플레이어 vs 맵
+    for (int i = 0; i < MAX_PLAYERS; i++)
+    {
+        if (Players[i].info.isConnected)
+        {
+            RECT Pbox = Players[i].colBox;
+            for (int j = 0; j < 5; ++j)
+            {
+                RECT Mbox = block[j];
+                if (Pbox.right >= Mbox.left && Pbox.left <= Mbox.right)
+                {
+                    if (Pbox.bottom >= Mbox.top && Pbox.bottom <= Mbox.bottom)
+                    {
+                        Players[i].move(0.f, -(Pbox.bottom - Mbox.top));
+                    }
+                }
+            }
+        }
+    }
+    // 2. 플레이어 vs 총알
+
+    // 3. 플레이어 vs 아이템 박스
 }
