@@ -191,7 +191,7 @@ bool CPlayer::Update()
 {
 	// 서버로 부터 받은 정보로 플레이어 상태 업데이트
 
-	if (false)
+	if (true)
 	{
 		x = pInfo.vPosition.x;
 		y = pInfo.vPosition.y;
