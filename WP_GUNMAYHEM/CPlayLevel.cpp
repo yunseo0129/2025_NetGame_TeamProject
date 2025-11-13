@@ -1,7 +1,8 @@
 ﻿#include "CPlayLevel.h"
 #include "KeyMgr.h"
 
-const char* SERVERIP = (char*)"192.168.71.174";
+//const char* SERVERIP = (char*)"192.168.71.174";
+const char* SERVERIP = (char*)"127.0.0.1";
 
 CPlayLevel::CPlayLevel()
 {
@@ -209,6 +210,26 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 		return 1;
 	}
 	OutputDebugString(L"[ClientThread] : connect 성공\n");
+
+	// =================================================
+	// 접속 직후 서버로부터 "내 ID"를 먼저 받는다.
+	// 서버는 접속되자마자 int형 데이터(0 또는 1)를 보내줘야 함
+	// =================================================
+
+	int myID = -1;
+	retval = recv(pThis->m_sock, (char*)&myID, sizeof(int), 0);
+
+	if (retval == SOCKET_ERROR || retval == 0) {
+		OutputDebugString(L"ID 수신 실패\n");
+		pThis->m_bIsRunning = false;
+	} else {
+		pThis->m_myPlayerID = myID; // 내 ID 저장!
+
+		// 디버그용 출력
+		wchar_t buf[100];
+		wsprintf(buf, L"내 ID 할당됨: %d\n", myID);
+		OutputDebugString(buf);
+	}
 
 	while (pThis->m_bIsRunning) {
 		// 서버로부터 데이터 수신

@@ -191,12 +191,12 @@ bool CPlayer::Update()
 {
 	// 서버로 부터 받은 정보로 플레이어 상태 업데이트
 
-	//if (false)
-	//{
-	//	x = pInfo.vPosition.x;
-	//	y = pInfo.vPosition.y;
-	//	gunType = pInfo.eItemType;
-	//}
+	if (false)
+	{
+		x = pInfo.vPosition.x;
+		y = pInfo.vPosition.y;
+		gunType = pInfo.eItemType;
+	}
 	//else
 	//{
 	//	 // 1. 마찰력 적용 (항상)		// (isMoving과 관계없이 현재 속도에 대해 마찰을 먼저 계산)
