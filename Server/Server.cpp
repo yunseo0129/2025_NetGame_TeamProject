@@ -5,6 +5,7 @@ Player Players[3]; // 최대 3명 접속 가능
 std::vector<Bullet> vecBullets; // 총알들
 std::vector<ItemBox> vecItemBoxes; // 아이템 박스들
 std::queue<Action> ActionQue;
+RECT block[5];
 
 bool g_running = true;
 
@@ -81,14 +82,35 @@ int main(int argc, char* argv[])
                 PLAYER_ACTION act = next.eAct;
                 float speed = 5.0f; // 임시 이동 속도
 
-                if (act.left)  Players[id].info.vPosition.x -= speed;
-                if (act.right) Players[id].info.vPosition.x += speed;
-                if (act.up)    Players[id].info.vPosition.y -= speed; // (Y좌표계에 따라 +)
-                if (act.down)  Players[id].info.vPosition.y += speed; // (Y좌표계에 따라 -)
+                if (act.left)  Players[id].move(-speed, 0.f);
+                if (act.right) Players[id].move(speed, 0.f);
+                if (act.up)    Players[id].move(0.f, -speed); // (Y좌표계에 따라 +)
+                if (act.down)  Players[id].move(0.f, speed); // (Y좌표계에 따라 -)
             }
 
             // === 2. 월드 상태 업데이트 ===
-            //
+             
+            
+            // === 충돌 처리 ===
+            // 1. 플레이어 vs 맵
+            for (int i = 0; i < MAX_PLAYERS; i++)
+            {
+                if (Players[i].info.isConnected)
+                {
+                    RECT Pbox = Players[i].colBox;
+                    for (int j = 0; j < 5; ++j)
+                    {
+                        RECT Mbox = block[j];
+                        if (Pbox.right >= Mbox.left && Pbox.left <= Mbox.right)
+                        {
+                            if (Pbox.bottom >= Mbox.top && Pbox.bottom <= Mbox.bottom)
+                            {
+                                Players[i].move(0.f, -(Pbox.bottom - Mbox.top));
+                            }
+                        }
+                    }
+                }
+            }
 
             // === 3. 모든 클라이언트에게 상태 브로드캐스트 ===
             MovementData dataToSend;
@@ -163,8 +185,7 @@ DWORD WINAPI AcceptThread(LPVOID arg)
             Players[g_player_count].info.iLife = 3;
             Players[g_player_count].info.eItemType = ITEM_PISTOL;
             Players[g_player_count].info.eState = STATE_IDLE;
-            Players[g_player_count].info.vPosition.x = 330;
-            Players[g_player_count].info.vPosition.y = 70;
+            Players[g_player_count].move(330, 70);
             
             // 스레드에 소켓과 ID를 넘겨주기 위해 구조체 사용
             ThreadParam* pArgs = new ThreadParam;
@@ -243,36 +264,37 @@ DWORD WINAPI ProcessClient(LPVOID arg)
 bool Initializer()
 {
     // 맵 충돌체 위치 초기화
-    CollisionBox block[5];
-    block[0].rtBox.left = 330 - 200;
-    block[0].rtBox.right = 330 + 200;
-    block[0].rtBox.top = 170 - 30;
-    block[0].rtBox.bottom = 170 + 30;
-    block[1].rtBox.left = 160 - 200;
-    block[1].rtBox.right = 160 + 200;
-    block[1].rtBox.top = 300 - 30;
-    block[1].rtBox.bottom = 300 + 30;
-    block[2].rtBox.left = 510 - 200;
-    block[2].rtBox.right = 510 + 200;
-    block[2].rtBox.top = 300 - 30;
-    block[2].rtBox.bottom = 300 + 30;
-    block[3].rtBox.left = 70 - 200;
-    block[3].rtBox.right = 70 + 200;
-    block[3].rtBox.top = 420 - 30;
-    block[3].rtBox.bottom = 420 + 30;
-    block[4].rtBox.left = 600 - 200;
-    block[4].rtBox.right = 600 + 200;
-    block[4].rtBox.top = 420 - 30;
-    block[4].rtBox.bottom = 420 + 30;
+    float blockx = 200.f;
+    float blocky = 30.f;
+    block[0].left = 330;
+    block[0].right = 330 + blockx;
+    block[0].top = 170;
+    block[0].bottom = 170 + blocky;
+    block[1].left = 160;
+    block[1].right = 160 + blockx;
+    block[1].top = 300;
+    block[1].bottom = 300 + blocky;
+    block[2].left = 510;
+    block[2].right = 510 + blockx;
+    block[2].top = 300;
+    block[2].bottom = 300 + blocky;
+    block[3].left = 70;
+    block[3].right = 70 + blockx;
+    block[3].top = 420;
+    block[3].bottom = 420 + blocky;
+    block[4].left = 600;
+    block[4].right = 600 + blockx;
+    block[4].top = 420;
+    block[4].bottom = 420 + blocky;
 
-    //// 플레이어 충돌체 위치 초기화
-    //for (int i = 0; i < 3; ++i)
-    //{
-    //    Players[i].rtBox.rtBox.left = -45;
-    //    Players[i].rtBox.rtBox.right = 45;
-    //    Players[i].rtBox.rtBox.top = -67;
-    //    Players[i].rtBox.rtBox.bottom = 67;
-    //}
+    // 플레이어 충돌체 위치 초기화
+    for (int i = 0; i < 3; ++i)
+    {
+        Players[i].colBox.left = 10.f;
+        Players[i].colBox.right = 35.f;
+        Players[i].colBox.top = 0.f;
+        Players[i].colBox.bottom = 67.f;
+    }
 
     // 벡터 크기 예약
     vecBullets.reserve(100);

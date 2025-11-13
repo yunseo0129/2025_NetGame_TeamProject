@@ -44,6 +44,7 @@ struct PLAYER_ACTION {
 	bool space = false;
 };
 
+
 struct vec2 { float x = 0.f; float y = 0.f; };
 
 // 통신용----------------------------------------------------------------------------
@@ -70,7 +71,16 @@ struct Player {
 	SOCKET			socket;						// 소켓
 	PlayerInfo		info;						// 플레이어 정보
 	vec2			vDirPow;					// 현재 받고있는 가속도 벡터
-	//CollisionBox	rtBox;						// 충돌 박스
+	RECT			colBox;						// 충돌 박스
+
+	void move(float _x, float _y) {
+		info.vPosition.x += _x;
+		colBox.left += _x;
+		colBox.right += _x;
+		info.vPosition.y += _y;
+		colBox.top += _y;
+		colBox.bottom += _y;
+	}
 };
 
 struct Bullet {
@@ -82,10 +92,6 @@ struct ItemBox {
 	vec2			vPosition;					// 위치
 	ITEMTYPE		eItemType;					// 아이템 타입
 	bool			isDead = false;				// 삭제 플래그
-};
-
-struct CollisionBox {
-	RECT			rtBox;						// 충돌 박스
 };
 
 struct Action {
