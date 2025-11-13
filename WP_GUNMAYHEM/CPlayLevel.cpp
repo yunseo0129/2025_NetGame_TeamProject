@@ -1,7 +1,8 @@
 ﻿#include "CPlayLevel.h"
 #include "KeyMgr.h"
 
-const char* SERVERIP = (char*)"192.168.71.174";
+//const char* SERVERIP = (char*)"192.168.71.174";
+const char* SERVERIP = (char*)"127.0.0.1";
 
 CPlayLevel::CPlayLevel()
 {
@@ -23,15 +24,12 @@ void CPlayLevel::Initialize()
 	}
 
 	// === 플레이어 생성 ===
-	m_pPlayer1 = new CPlayer();
-	m_pPlayer1->x = 150;                // P1 시작 위치
-	m_pPlayer1->playerType = 1;
-	AddObject(m_pPlayer1, OBJ_PLAYER1); // 레벨에 등록
-
-	m_pPlayer2 = new CPlayer();
-	m_pPlayer2->x = 650;                // P2 시작 위치
-	m_pPlayer2->playerType = 2;
-	AddObject(m_pPlayer2, OBJ_PLAYER2); // 레벨에 등록
+	for (int i = 0; i < 3; ++i) {
+		m_pPlayer[i] = new CPlayer();
+		m_pPlayer[i]->x = 100 + i * 200; // 초기 위치
+		m_pPlayer[i]->playerType = i + 1;
+		AddObject(m_pPlayer[i], (i == 0) ? OBJ_PLAYER1 : OBJ_PLAYER2); // 레벨에 등록
+	}
 
 	if (g_mapType == 0) {
 		AddObject(new CMap(330, 170), OBJ_MAP);  // 1단
@@ -51,13 +49,14 @@ void CPlayLevel::Initialize()
 
 void CPlayLevel::update_camera()
 {
-	if (m_pPlayer1) {
-		int playerCenterX = (m_pPlayer1->x + 0);
-		int playerCenterY = (m_pPlayer1->y + 0);
+	// 아직 ID를 못 받았거나, 플레이어가 생성되지 않았으면 리턴
+	if (m_myPlayerID == -1) return;
 
-		cameraX = playerCenterX - cameraWidth / 2;
-		cameraY = playerCenterY - cameraHeight / 2 + 100;
-	}
+	int targetX = m_pPlayer[m_myPlayerID]->x;
+	int targetY = m_pPlayer[m_myPlayerID]->y;
+
+	cameraX = targetX - cameraWidth / 2 + (pWidth / 2); 
+	cameraY = targetY - cameraHeight / 2 + 100;         
 }
 
 void CPlayLevel::Update()
@@ -76,21 +75,12 @@ void CPlayLevel::Update()
 	LeaveCriticalSection(&m_cs);
 
 	if (bPacketProcessed) {
-		//if (m_pPlayer1)
-		//	m_pPlayer1->pInfo = recvData.playerInfo[0]; // pInfo : 위치, 상태, 아이템, 목숨, 연결 여부 등
-		//if (m_pPlayer2)
-		//	m_pPlayer2->pInfo = recvData.playerInfo[1];
-
-		// 임시 - 위치 정보만 업데이트
-		if (m_pPlayer1) {
-			m_pPlayer1->x = (int)recvData.players[0].x;
-			m_pPlayer1->y = (int)recvData.players[0].y;
-			// m_pPlayer1->exist = recvData.players[0].isConnected; 
-		}
-		if (m_pPlayer2) {
-			m_pPlayer2->x = (int)recvData.players[1].x; // P2는 인덱스 1
-			m_pPlayer2->y = (int)recvData.players[1].y;
-			// m_pPlayer2->exist = recvData.players[1].isConnected;
+		// 수신된 데이터로 플레이어 상태 업데이트
+		for (int i = 0; i < 3; ++i) {
+			if (m_pPlayer[i] != nullptr) {
+				m_pPlayer[i]->pInfo.vPosition.x = recvData.players[i].x;
+				m_pPlayer[i]->pInfo.vPosition.y = recvData.players[i].y;
+			}
 		}
 	}
 
@@ -209,6 +199,26 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 		return 1;
 	}
 	OutputDebugString(L"[ClientThread] : connect 성공\n");
+
+	// =================================================
+	// 접속 직후 서버로부터 "내 ID"를 먼저 받는다.
+	// 서버는 접속되자마자 int형 데이터(0 또는 1)를 보내줘야 함
+	// =================================================
+
+	int myID = -1;
+	retval = recv(pThis->m_sock, (char*)&myID, sizeof(int), 0);
+
+	if (retval == SOCKET_ERROR || retval == 0) {
+		OutputDebugString(L"ID 수신 실패\n");
+		pThis->m_bIsRunning = false;
+	} else {
+		pThis->m_myPlayerID = myID; // 내 ID 저장!
+
+		// 디버그용 출력
+		wchar_t buf[100];
+		wsprintf(buf, L"내 ID 할당됨: %d\n", myID);
+		OutputDebugString(buf);
+	}
 
 	while (pThis->m_bIsRunning) {
 		// 서버로부터 데이터 수신

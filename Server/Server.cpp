@@ -169,6 +169,20 @@ DWORD WINAPI AcceptThread(LPVOID arg)
             Players[g_player_count].info.eItemType = ITEM_PISTOL;
             Players[g_player_count].info.eState = STATE_IDLE;
             Players[g_player_count].move(330, 70);
+
+
+            // 접속한 클라이언트에게 ID 부여
+            int idToSend = g_player_count; // 현재 할당할 ID
+            int retval = send(client_sock[g_player_count], (char*)&idToSend, sizeof(int), 0);
+
+            if (retval == SOCKET_ERROR) {
+                printf("[오류] 클라이언트에게 ID 전송 실패\n");
+                closesocket(client_sock[g_player_count]);
+                Players[g_player_count].info.isConnected = false; // 초기화 취소
+                continue; // 스레드 생성하지 않고 다음 접속 대기
+            }
+            printf("[접속] ID: %d번 플레이어 접속 성공\n", idToSend);
+
             
             // 스레드에 소켓과 ID를 넘겨주기 위해 구조체 사용
             ThreadParam* pArgs = new ThreadParam;
