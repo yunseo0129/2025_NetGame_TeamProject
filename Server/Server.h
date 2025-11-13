@@ -33,6 +33,8 @@ void err_quit(const char* msg)
 #define BUFSIZE 4096
 #define MAX_PLAYERS 3
 
+
+
 enum ITEMTYPE { ITEM_NONE, ITEM_PISTOL, ITEM_SNIPER };
 enum PLAYER_STATE { STATE_NONE, STATE_IDLE, STATE_WALK, STATE_JUMP };
 
@@ -70,7 +72,33 @@ struct Player {
 	SOCKET			socket;						// 소켓
 	PlayerInfo		info;						// 플레이어 정보
 	vec2			vDirPow;					// 현재 받고있는 가속도 벡터
-	//CollisionBox	rtBox;						// 충돌 박스
+	CollisionBox	rtBox;						// 충돌 박스
+
+	// 플레이어 이동 관련 변수
+
+	const float MAX_SPEED = 5.0f;      // 최대 속도
+	const float ACCELERATION = 0.2f;   // 가속도
+	const float FRICTION = 0.02f;      // 마찰력(감속)
+
+	// 낙하 및 점프 변수
+	int fstartY;
+	float downTime;
+	float downHeight;
+	BOOL falling;
+
+	int jstartY;		// 점프 시작 위치
+	float jumpTime;
+	float jumpHeight;
+	float jumpPower;
+	BOOL jumping;
+	int jumpCount = 0;	// 점프 횟수
+
+	// 속도, 가속도 변수
+	float acceleration;	// 현재 가속도
+	float speed;		// 현재 속도
+	bool isMoving;		// 이동 중인지 여부
+
+
 };
 
 struct Bullet {

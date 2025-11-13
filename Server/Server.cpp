@@ -79,12 +79,22 @@ int main(int argc, char* argv[])
                 // === 이동 로직 구현 ===
                 int id = next.iPlayerNum;
                 PLAYER_ACTION act = next.eAct;
-                float speed = 5.0f; // 임시 이동 속도
+                //float speed = 10.0f; // 임시 이동 속도
 
-                if (act.left)  Players[id].info.vPosition.x -= speed;
-                if (act.right) Players[id].info.vPosition.x += speed;
-                if (act.up)    Players[id].info.vPosition.y -= speed; // (Y좌표계에 따라 +)
-                if (act.down)  Players[id].info.vPosition.y += speed; // (Y좌표계에 따라 -)
+                //if (act.left)  Players[id].info.vPosition.x -= speed;
+                //if (act.right) Players[id].info.vPosition.x += speed;
+                //if (act.up)    Players[id].info.vPosition.y -= speed; // (Y좌표계에 따라 +)
+                //if (act.down)  Players[id].info.vPosition.y += speed; // (Y좌표계에 따라 -)
+                //
+
+                if (act.left)
+                {
+                    while (act.left = false)
+                    {
+						Players[id].info.vPosition.x -= ACCELERATION;
+                        if (Players[id].info.)
+                    }
+                }
             }
 
             // === 2. 월드 상태 업데이트 ===
@@ -265,14 +275,14 @@ bool Initializer()
     block[4].rtBox.top = 420 - 30;
     block[4].rtBox.bottom = 420 + 30;
 
-    //// 플레이어 충돌체 위치 초기화
-    //for (int i = 0; i < 3; ++i)
-    //{
-    //    Players[i].rtBox.rtBox.left = -45;
-    //    Players[i].rtBox.rtBox.right = 45;
-    //    Players[i].rtBox.rtBox.top = -67;
-    //    Players[i].rtBox.rtBox.bottom = 67;
-    //}
+    // 플레이어 충돌체 위치 초기화
+    for (int i = 0; i < 3; ++i)
+    {
+        Players[i].rtBox.rtBox.left = -45;
+        Players[i].rtBox.rtBox.right = 45;
+        Players[i].rtBox.rtBox.top = -67;
+        Players[i].rtBox.rtBox.bottom = 67;
+    }
 
     // 벡터 크기 예약
     vecBullets.reserve(100);

@@ -58,6 +58,8 @@ void CPlayLevel::update_camera()
 		cameraX = playerCenterX - cameraWidth / 2;
 		cameraY = playerCenterY - cameraHeight / 2 + 100;
 	}
+
+	
 }
 
 void CPlayLevel::Update()
@@ -189,6 +191,10 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 		OutputDebugString(L"[ClientThread] : err - socket()\n");
 		return 1;
 	}
+
+	// 소켓 옵션 설정 NODELAY
+	DWORD NODELAY = 1;
+	setsockopt(pThis->m_sock, IPPROTO_TCP, TCP_NODELAY, (const char*)&NODELAY, sizeof(DWORD));
 
 	// connect()
 	sockaddr_in serveraddr;
