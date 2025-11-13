@@ -85,7 +85,6 @@ struct Player {
 		colBox.top += _y;
 		colBox.bottom += _y;
 	}
-	CollisionBox	rtBox;						// 충돌 박스
 
 	// 플레이어 이동 관련 변수
 

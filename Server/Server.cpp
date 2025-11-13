@@ -81,7 +81,6 @@ int main(int argc, char* argv[])
                 // === 이동 로직 구현 ===
                 int id = next.iPlayerNum;
                 PLAYER_ACTION act = next.eAct;
-                //float speed = 10.0f; // 임시 이동 속도
 
                 if (act.left)  Players[id].move(-speed, 0.f);
                 if (act.right) Players[id].move(speed, 0.f);
