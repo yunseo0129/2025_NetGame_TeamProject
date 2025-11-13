@@ -8,6 +8,7 @@ std::queue<Player_input> ActionQue;
 RECT block[5];
 
 bool g_running = true;
+double timedelta = 0.0;
 
 DWORD WINAPI AcceptThread(LPVOID arg);
 DWORD WINAPI ProcessClient(LPVOID arg);
@@ -25,7 +26,6 @@ const float FRICTION = 0.02f;      // 마찰력(감속)
 int main(int argc, char* argv[])
 {
     auto pre = std::chrono::high_resolution_clock::now();
-    double timedelta = 0.0;
 
     if (Initializer())
     {
@@ -426,8 +426,6 @@ void Collision()
     {
         if (Players[i].info.isConnected)
         {
-            Players[i].isOnBlock = false;
-
             if (Players[i].Act.down > 0)
             {
                 Players[i].Act.down -= 1;
@@ -447,6 +445,8 @@ void Collision()
                             Players[i].fGravity = 0.f;
                             Players[i].iJump = 0;
                         }
+                        else
+                            Players[i].isOnBlock = false;
                     }
                 }
             }
@@ -488,7 +488,7 @@ void UpdatePlayer()
             // 중력 가속도 증가
             if (!Players[i].isOnBlock)
             {
-                Players[i].fGravity += 9.81f * 2.f * (1.f / 60.f);
+                Players[i].fGravity += 9.81f * 2.f * timedelta;
             }
 
             // 점프
@@ -503,17 +503,24 @@ void UpdatePlayer()
                 Players[i].Act.up = false;
             }
 
+            // 이동 가속도 연산
             if (Players[i].Act.left)
             {
-                Players[i].fAcc -= 2.f;
-                if (Players[i].fAcc < -50.f)
-                    Players[i].fAcc = -50.f;
+                if (Players[i].fAcc > -50.f)
+                {
+                    Players[i].fAcc -= 2.f;
+                    if (Players[i].fAcc < -50.f)
+                        Players[i].fAcc = -50.f;
+                }
             }
             if (Players[i].Act.right)
             {
-                Players[i].fAcc += 2.f;
-                if (Players[i].fAcc > 50.f)
-                    Players[i].fAcc = 50.f;
+                if (Players[i].fAcc < 50.f)
+                {
+                    Players[i].fAcc += 2.f;
+                    if (Players[i].fAcc > 50.f)
+                        Players[i].fAcc = 50.f;
+                }
             }
             if (Players[i].Act.space > 0)
             {
