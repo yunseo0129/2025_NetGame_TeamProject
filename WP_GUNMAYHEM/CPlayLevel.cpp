@@ -1,7 +1,7 @@
 ﻿#include "CPlayLevel.h"
 #include "KeyMgr.h"
 
-const char* SERVERIP = (char*)"127.0.0.1";
+const char* SERVERIP = (char*)"192.168.71.174";
 
 CPlayLevel::CPlayLevel()
 {
@@ -189,6 +189,9 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 		OutputDebugString(L"[ClientThread] : err - socket()\n");
 		return 1;
 	}
+
+	// 네이글 끄기
+	DWORD NODELAY = 1;
 
 	// connect()
 	sockaddr_in serveraddr;
