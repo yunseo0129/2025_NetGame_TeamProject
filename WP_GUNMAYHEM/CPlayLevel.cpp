@@ -80,6 +80,7 @@ void CPlayLevel::Update()
 			if (m_pPlayer[i] != nullptr) {
 				m_pPlayer[i]->pInfo.vPosition.x = recvData.players[i].x;
 				m_pPlayer[i]->pInfo.vPosition.y = recvData.players[i].y;
+				m_pPlayer[i]->pInfo.looking = recvData.players[i].looking;
 			}
 		}
 	}

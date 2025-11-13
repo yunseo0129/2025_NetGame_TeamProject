@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
                 default:
                     break;
                 }
-
+				Players[next.id].iLooking = (Players[next.id].Act.left) ? 0 : (Players[next.id].Act.right) ? 1 : Players[next.id].iLooking;
     //            // === 이동 로직 구현 ===
     //            int id = next.iPlayerNum;
     //            PLAYER_ACTION act = next.eAct;
@@ -200,6 +200,7 @@ int main(int argc, char* argv[])
             for (int i = 0; i < MAX_PLAYERS; i++)
             {
                 dataToSend.players[i].isConnected = Players[i].info.isConnected;
+				dataToSend.players[i].looking = Players[i].iLooking;
                 dataToSend.players[i].x = Players[i].info.vPosition.x;
                 dataToSend.players[i].y = Players[i].info.vPosition.y;
             }

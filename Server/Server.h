@@ -63,6 +63,8 @@ struct PlayerInfo {
 	ITEMTYPE		eItemType = ITEM_NONE;		// 현재 무기
 	int				iLife = 0;					// 체력
 	bool			isConnected = false;		// 연결 상태
+
+	int looking = 1; // 0: Left, 1: Right
 };
 
 struct BulletInfo {
@@ -89,6 +91,8 @@ struct Player {
 	int				iJump = 0;						// 점프 카운트
 	bool			isOnBlock = false;				// 지형위에 서있는지 체크
 	float			fGravity = 0.f;					// 중력 가속도
+
+	int				iLooking = 1;					// 바라보는 방향 (0: Left, 1: Right)
 
 	void move(float _x, float _y) {
 		_x = (int)_x;
@@ -176,6 +180,8 @@ struct PlayerState {
 	bool  isConnected = false;
 	float x = 0.f;
 	float y = 0.f;
+
+	int looking = 1; // 0: Left, 1: Right
 };
 
 // ==========================================================

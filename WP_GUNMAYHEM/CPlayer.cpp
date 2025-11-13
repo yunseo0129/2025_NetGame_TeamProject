@@ -176,7 +176,7 @@ bool CPlayer::Update()
 		x = pInfo.vPosition.x;
 		y = pInfo.vPosition.y;
 		gunType = pInfo.eItemType;
-		// looking = pInfo.looking;
+		looking = pInfo.looking;
 	}
 	//else
 	//{
@@ -257,13 +257,13 @@ bool CPlayer::Update()
 		isMoving = FALSE;
 	}
 
-	// x좌표 변화 방향으로 바라보는 방향(looking) 결정
-	if (x < prevX) {
-		looking = 0; // Left
-	}
-	else if (x > prevX) {
-		looking = 1; // Right
-	}
+	//// x좌표 변화 방향으로 바라보는 방향(looking) 결정
+	//if (x < prevX) {
+	//	looking = 0; // Left
+	//}
+	//else if (x > prevX) {
+	//	looking = 1; // Right
+	//}
 	// (좌표가 같으면 이전 방향 유지)
 
 	// 현재 x좌표를 다음 프레임을 위해 저장

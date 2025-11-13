@@ -106,6 +106,8 @@ struct PlayerInfo {
 	ITEMTYPE		eItemType = ITEM_NONE;		// 현재 무기
 	int				iLife = 0;					// 체력
 	bool			isConnected = false;		// 연결 상태
+
+	int looking = 1; // 0: Left, 1: Right
 };
 
 struct BulletInfo {
@@ -150,6 +152,8 @@ struct PlayerState {
 	bool  isConnected = false;
 	float x = 0.f;
 	float y = 0.f;
+
+	int looking = 1; // 0: Left, 1: Right
 };
 
 // ==========================================================
