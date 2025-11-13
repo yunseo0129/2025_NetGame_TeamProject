@@ -26,8 +26,8 @@ public:
 	void update_camera();
 
 private:
-	CPlayer* m_pPlayer1 = nullptr;
-	CPlayer* m_pPlayer2 = nullptr;
+	int m_myPlayerID = -1;
+	CPlayer* m_pPlayer[3] = { nullptr, }; // 최대 3명
 
 private:
 	// 네트워크 관련
