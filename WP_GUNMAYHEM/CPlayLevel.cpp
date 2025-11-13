@@ -86,11 +86,15 @@ void CPlayLevel::Update()
 
 	// 키 입력 처리
 	ProcessInput(); 
+	/*wsprintf(DebugText, L"ID: %d, KeyAct: %d, Key: %d, isDown: %d", 
+			 m_myPlayerID, b_keyAct, myAction.key, myAction.isDown);*/
 	if (b_keyAct && m_sock != INVALID_SOCKET) {
 		// 입력을 서버로 전송
-		int retval = send(m_sock, (const char*)&myAction, sizeof(myAction), 0);
-		if (retval == SOCKET_ERROR) {
-			OutputDebugString(L"[CPlayLevel] : err - send()\n");
+		for (const auto& myAction : m_vecInputActions) {
+			int retval = send(m_sock, (const char*)&myAction, sizeof(myAction), 0);
+			if (retval == SOCKET_ERROR) {
+				OutputDebugString(L"[CPlayLevel] : err - send()\n");
+			}
 		}
 	}
 
@@ -111,6 +115,13 @@ void CPlayLevel::Draw(HDC mDC)
 	// 2. 부모 클래스의 Draw 호출
 	// (이 코드가 m_ObjList의 모든 객체(CMap, CItem)의 Draw를 호출)
 	CLevel::Draw(mDC);
+
+	if (m_myPlayerID != -1) {
+		if (m_pPlayer[m_myPlayerID] != nullptr) {
+			wsprintf(DebugText, L"ID: %d, looking : %d", m_myPlayerID, m_pPlayer[m_myPlayerID]->looking);
+			TextOut(mDC, 10, 10, DebugText, lstrlen(DebugText));
+		}
+	}
 }
 
 void CPlayLevel::Free()
@@ -124,34 +135,44 @@ void CPlayLevel::Free()
 
 void CPlayLevel::ProcessInput()
 {
+	m_vecInputActions.clear();
 	b_keyAct = false;						// 키 입력이 있었는지 여부
-	// myAction = PLAYER_ACTION { false, };	// 보낼 액션 초기화
+	Player_input myAction; // 현재 키 이벤트를 저장할 임시 변수
+	myAction.id = m_myPlayerID;
 
 	// 키 다운 처리
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_LEFT)) {
 		b_keyAct = true;
 		myAction.isDown = true;
 		myAction.key = KEY_LEFT;
+		m_vecInputActions.push_back(myAction);
 	}
+
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_RIGHT)) {
 		b_keyAct = true;
 		myAction.isDown = true;
 		myAction.key = KEY_RIGHT;
+
+		m_vecInputActions.push_back(myAction);
 	}
+
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_UP)) {
 		b_keyAct = true;
 		myAction.isDown = true;
 		myAction.key = KEY_JUMP;
+		m_vecInputActions.push_back(myAction);
 	}
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_DOWN)) {
 		b_keyAct = true;
 		myAction.isDown = true;
 		myAction.key = KEY_DOWNJUMP;
+		m_vecInputActions.push_back(myAction);
 	}
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE)) {
 		b_keyAct = true;
 		myAction.isDown = true;
 		myAction.key = KEY_SHOOT;
+		m_vecInputActions.push_back(myAction);
 	}
 
 	// 키 업 처리
@@ -159,12 +180,16 @@ void CPlayLevel::ProcessInput()
 		b_keyAct = true;
 		myAction.isDown = false;
 		myAction.key = KEY_LEFT;
+		m_vecInputActions.push_back(myAction);
 	}
 	if (CKeyMgr::Get_Instance()->Key_Up(VK_RIGHT)) {
 		b_keyAct = true;
 		myAction.isDown = false;
 		myAction.key = KEY_RIGHT;
+		m_vecInputActions.push_back(myAction);
 	}
+	
+	
 	/*if (CKeyMgr::Get_Instance()->Key_Up(VK_UP)) {
 		b_keyAct = true;
 		myAction.key = KEY_JUMP;

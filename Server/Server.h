@@ -91,15 +91,16 @@ struct Player {
 	float			fGravity = 0.f;					// 중력 가속도
 
 	void move(float _x, float _y) {
+		_x = (int)_x;
+		_y = (int)_y;
+
 		info.vPosition.x += _x;
+		info.vPosition.y += _y;
+
 		colBox.left += _x;
 		colBox.right += _x;
-		info.vPosition.y += _y;
 		colBox.top += _y;
 		colBox.bottom += _y;
-
-		info.vPosition.x = (int)info.vPosition.x;
-		info.vPosition.y = (int)info.vPosition.y;
 	}
 
 	// int downCount;		// 10번의 타이머 동안 땅 부딪힘 검사 x

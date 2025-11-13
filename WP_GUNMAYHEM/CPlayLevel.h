@@ -25,6 +25,8 @@ public:
 	void ProcessInput();
 	void update_camera();
 
+	TCHAR DebugText[100];
+
 private:
 	int m_myPlayerID = -1;
 	CPlayer* m_pPlayer[3] = { nullptr, }; // 최대 3명
@@ -42,5 +44,5 @@ private:
 
 	// 키 입력 관련
 	bool b_keyAct = false;
-	Player_input myAction { false, };
+	std::vector<Player_input> m_vecInputActions;
 };

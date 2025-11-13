@@ -447,6 +447,9 @@ void Collision()
                     {
                         if (Pbox.bottom >= Mbox.top && Pbox.bottom <= Mbox.bottom)
                         {
+                            if (Players[i].fGravity < 0.f) 
+								continue; // 점프 중일 때는 무시
+
                             isCollided = false;
 							// printf("플레이어 %d가 블록 %d에 착지함. 블록의 left:%d, right:%d\n", i, j, Mbox.left, Mbox.right);
 
