@@ -29,44 +29,47 @@ CPlayer::CPlayer()
 
 void CPlayer::Draw(HDC mDC)
 {
-	// 1. 플레이어 그리기 
-	HBITMAP hBitmapToDraw = BMP_player_right_stand[playerType];
-	switch (looking) {
-	case 0: // Left
-		if (isMoving) hBitmapToDraw = BMP_player_left_walk[playerType][anim_frame];
-		else hBitmapToDraw = BMP_player_left_stand[playerType];
-		break;
-	case 1: // Right
-		if (isMoving) hBitmapToDraw = BMP_player_right_walk[playerType][anim_frame];
-		else hBitmapToDraw = BMP_player_right_stand[playerType];
-		break;
+	if( pInfo.isConnected ) 
+	{
+		// 1. 플레이어 그리기 
+		HBITMAP hBitmapToDraw = BMP_player_right_stand[playerType];
+		switch (looking) {
+		case 0: // Left
+			if (isMoving) hBitmapToDraw = BMP_player_left_walk[playerType][anim_frame];
+			else hBitmapToDraw = BMP_player_left_stand[playerType];
+			break;
+		case 1: // Right
+			if (isMoving) hBitmapToDraw = BMP_player_right_walk[playerType][anim_frame];
+			else hBitmapToDraw = BMP_player_right_stand[playerType];
+			break;
+		}
+
+		SelectObject(g_BMPmDC, hBitmapToDraw);
+		TransparentBlt(mDC, x - cameraX, y - cameraY, pWidth, pHeight, g_BMPmDC, 0, 0, pWidth, pHeight, RGB(127, 127, 127));
+
+		if (combo > 0) {
+			TCHAR ComboText[20];
+			wsprintf(ComboText, L"Hit %d", combo);
+			TextOut(mDC, x + pWidth - cameraX, y - 10 - cameraY, ComboText, lstrlen(ComboText));
+		}
+
+		// 2. 총 그리기 (기존 WM_PAINT 로직)
+		HBITMAP hGunBitmap = BMP_gun1_right; // 기본값
+		int gunPosX = x + pWidth / 2 - cameraX;
+		int gunPosY = y + pHeight / 2 - 6 - cameraY;
+
+		switch (looking) {
+		case 0: // Left
+			hGunBitmap = (gunType == GUN_TYPE_PISTOL) ? BMP_gun1_left : BMP_gun2_left;
+			gunPosX = x + pWidth / 2 - cameraX - gunWidth;
+			break;
+		case 1: // Right
+			hGunBitmap = (gunType == GUN_TYPE_PISTOL) ? BMP_gun1_right : BMP_gun2_right;
+			break;
+		}
+		SelectObject(g_BMPmDC, hGunBitmap);
+		TransparentBlt(mDC, gunPosX, gunPosY, gunWidth, gunHeight, g_BMPmDC, 0, 0, gunWidth, gunHeight, RGB(127, 127, 127));
 	}
-
-	SelectObject(g_BMPmDC, hBitmapToDraw);
-	TransparentBlt(mDC, x - cameraX, y - cameraY, pWidth, pHeight, g_BMPmDC, 0, 0, pWidth, pHeight, RGB(127, 127, 127));
-
-	if (combo > 0) {
-		TCHAR ComboText[20];
-		wsprintf(ComboText, L"Hit %d", combo);
-		TextOut(mDC, x + pWidth - cameraX, y - 10 - cameraY, ComboText, lstrlen(ComboText));
-	}
-
-	// 2. 총 그리기 (기존 WM_PAINT 로직)
-	HBITMAP hGunBitmap = BMP_gun1_right; // 기본값
-	int gunPosX = x + pWidth / 2 - cameraX;
-	int gunPosY = y + pHeight / 2 - 6 - cameraY;
-
-	switch (looking) {
-	case 0: // Left
-		hGunBitmap = (gunType == GUN_TYPE_PISTOL) ? BMP_gun1_left : BMP_gun2_left;
-		gunPosX = x + pWidth / 2 - cameraX - gunWidth;
-		break;
-	case 1: // Right
-		hGunBitmap = (gunType == GUN_TYPE_PISTOL) ? BMP_gun1_right : BMP_gun2_right;
-		break;
-	}
-	SelectObject(g_BMPmDC, hGunBitmap);
-	TransparentBlt(mDC, gunPosX, gunPosY, gunWidth, gunHeight, g_BMPmDC, 0, 0, gunWidth, gunHeight, RGB(127, 127, 127));
 
 
 	//// 3. 총알 그리기 (기존 WM_PAINT 로직)
@@ -170,52 +173,52 @@ void CPlayer::regen()
 bool CPlayer::Update()
 {
 	// 서버로 부터 받은 정보로 플레이어 상태 업데이트
-
-	if (true)
+	if (pInfo.isConnected)
 	{
-		x = pInfo.vPosition.x;
-		y = pInfo.vPosition.y;
-		gunType = pInfo.eItemType;
-		looking = pInfo.looking;
-	}
 
-	// 상태 추론 (애니메이션용)
-	// x좌표가 변했는지 감지하여 isMoving 상태 결정
-	if (x != prevX) {
-		isMoving = TRUE;
-	}
-	else {
-		isMoving = FALSE;
-	}
-	prevX = x;
-
-
-	// 다운카운트 (이 로직은 서버에서 처리해야 하지만, 일단 유지)
-	if (downCount > 0) {
-		downCount++;
-		if (downCount > 30) {
-			downCount = 0;
+		if (true) {
+			x = pInfo.vPosition.x;
+			y = pInfo.vPosition.y;
+			gunType = pInfo.eItemType;
+			looking = pInfo.looking;
 		}
-	}
 
-	// 애니메이션 프레임 (위에서 추론한 isMoving 사용)
-	anim_timer++;
-	if (anim_timer > 5) { // 5프레임마다 
-		anim_timer = 0;
-		if (isMoving) {
-			anim_frame = (anim_frame + 1) % 4;
+		// 상태 추론 (애니메이션용)
+		// x좌표가 변했는지 감지하여 isMoving 상태 결정
+		if (x != prevX) {
+			isMoving = TRUE;
+		} else {
+			isMoving = FALSE;
 		}
-		else {
-			anim_frame = 0; // 멈추면 0번 프레임
-		}
-	}
+		prevX = x;
 
-	// 콤보 타이머
-	if (combo > 0) {
-		comboTime++;
-		if (comboTime > 200) { // 200 프레임 (약 3.3초)
-			combo = 0;
-			comboTime = 0;
+
+		// 다운카운트 (이 로직은 서버에서 처리해야 하지만, 일단 유지)
+		if (downCount > 0) {
+			downCount++;
+			if (downCount > 30) {
+				downCount = 0;
+			}
+		}
+
+		// 애니메이션 프레임 (위에서 추론한 isMoving 사용)
+		anim_timer++;
+		if (anim_timer > 5) { // 5프레임마다 
+			anim_timer = 0;
+			if (isMoving) {
+				anim_frame = (anim_frame + 1) % 4;
+			} else {
+				anim_frame = 0; // 멈추면 0번 프레임
+			}
+		}
+
+		// 콤보 타이머
+		if (combo > 0) {
+			comboTime++;
+			if (comboTime > 200) { // 200 프레임 (약 3.3초)
+				combo = 0;
+				comboTime = 0;
+			}
 		}
 	}
 	return false;

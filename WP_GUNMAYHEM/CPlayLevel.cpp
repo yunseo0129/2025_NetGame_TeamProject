@@ -92,6 +92,11 @@ void CPlayLevel::Update()
 				m_pPlayer[i]->pInfo.vPosition.x = recvData.playerInfo[i].vPosition.x;
 				m_pPlayer[i]->pInfo.vPosition.y = recvData.playerInfo[i].vPosition.y;
 				m_pPlayer[i]->pInfo.looking = recvData.playerInfo[i].looking;
+
+				// m_pPlayer[i]->pInfo.eItemType = recvData.playerInfo[i].eItemType;
+				// m_pPlayer[i]->pInfo.iLife = recvData.playerInfo[i].iLife;
+				// m_pPlayer[i]->pInfo.eState = recvData.playerInfo[i].eState;
+				m_pPlayer[i]->pInfo.isConnected = recvData.playerInfo[i].isConnected;
 			}
 		}
 
