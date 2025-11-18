@@ -115,6 +115,7 @@ int main(int argc, char* argv[])
             // === 2. 월드 상태 업데이트 ===
             UpdatePlayer();
             UpdateItemBoxes();
+			UpdateBullets();
 
             // === 충돌 처리 ===
             Collision();
@@ -373,6 +374,24 @@ void Shooting(int id)
     for (int j = 0; j < Players[id].Act.space; ++j)
     {
         // 스페이스바 누른 만큼 총알 생성
+        for (int i = 0; i < arrBullets.size(); ++i)
+        {
+            if (!arrBullets[i].exist)
+            {
+                arrBullets[i].exist = TRUE;
+                arrBullets[i].eType = Players[id].info.eItemType;
+                arrBullets[i].vStarting.x = Players[id].info.vPosition.x + ((Players[id].iLooking == 1) ? 30.f : -10.f);
+                arrBullets[i].vStarting.y = Players[id].info.vPosition.y + 30.f;
+                arrBullets[i].vPosition = arrBullets[i].vStarting;
+                
+                // 총알 충돌박스 초기화
+                arrBullets[i].colBox.left = (int)arrBullets[i].vPosition.x;
+                arrBullets[i].colBox.right = (int)arrBullets[i].vPosition.x + 10;
+                arrBullets[i].colBox.top = (int)arrBullets[i].vPosition.y;
+                arrBullets[i].colBox.bottom = (int)arrBullets[i].vPosition.y + 5;
+                break; // 하나 생성했으면 다음 총알 생성 대기
+            }
+		}
     }
     Players[id].Act.space = 0;
 }
@@ -447,6 +466,22 @@ void UpdatePlayer()
 void MovePlayer(int id)
 {
     Players[id].move(Players[id].fAcc / 6.f, Players[id].fGravity);
+}
+
+void UpdateBullets()
+{
+    // 총알 위치 업데이트
+    for (int i = 0; i < arrBullets.size(); ++i)
+    {
+        if (arrBullets[i].exist)
+        {
+            // 총알 이동 로직 구현
+            // 예: arrBullets[i].vPosition.x += 속도 * 방향 * timedelta;
+			// 총알이 사거리 초과 또는 충돌 시 삭제 처리
+			arrBullets[i].vPosition.x += (arrBullets[i].eType == ITEM_PISTOL ? 10.f : 5.f) * ((arrBullets[i].vPosition.x >= arrBullets[i].vStarting.x) ? 1.f : -1.f);
+            
+        }
+    }
 }
 
 void UpdateItemBoxes()
