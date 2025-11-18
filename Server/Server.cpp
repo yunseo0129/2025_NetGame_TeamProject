@@ -2,8 +2,8 @@
 
 // 게임 레벨에 사용하는 변수
 Player Players[3]; // 최대 3명 접속 가능
-std::vector<Bullet> vecBullets; // 총알들
-std::vector<ItemBox> vecItemBoxes; // 아이템 박스들
+std::array<BulletInfo,100> arrBullets; // 총알들
+std::array<ItemBoxInfo,10> arrItemBoxes; // 아이템 박스들
 std::queue<Player_input> ActionQue;
 RECT block[5];
 
@@ -18,6 +18,9 @@ void Collision();
 void Shooting(int id);
 void UpdatePlayer();
 void MovePlayer(int id);
+
+void UpdateBullets();
+void UpdateItemBoxes();
 
 const float MAX_SPEED = 5.0f;      // 최대 속도
 const float ACCELERATION = 0.2f;   // 가속도
@@ -107,97 +110,17 @@ int main(int argc, char* argv[])
                     break;
                 }
 				Players[next.id].iLooking = (Players[next.id].Act.left) ? 0 : (Players[next.id].Act.right) ? 1 : Players[next.id].iLooking;
-    //            // === 이동 로직 구현 ===
-    //            int id = next.iPlayerNum;
-    //            PLAYER_ACTION act = next.eAct;
-
-    //            // 일단 가속도와 이동 상태를 초기화
-    //            Players[id].acceleration = 0.0f;
-    //            Players[id].isMoving = false;
-
-    //            // 왼쪽 입력 시
-    //            if (act.left) {
-    //                Players[id].acceleration = -ACCELERATION; // 왼쪽 가속도 적용
-    //                Players[id].isMoving = true;              // 이동 중 플래그 On
-    //            }
-    //            // 오른쪽 입력 시
-    //            if (act.right) {
-    //                Players[id].acceleration = ACCELERATION;  // 오른쪽 가속도 적용
-    //                Players[id].isMoving = true;              // 이동 중 플래그 On
-    //            }
-    //            if (act.left && act.right) {
-    //                Players[id].acceleration = 0.0f;          // 양쪽 다 누르면 가속도 0
-				//}
-
-    //            // 점프 입력 시 (땅에 있을 때만)
-    //            //if (act.space) {
-    //            //    if (!Players[id].jumping && !Players[id].falling) {
-    //            //        Players[id].jumping = true;
-    //            //        Players[id].jumpTime = 0.f;
-    //            //        Players[id].jstartY = Players[id].info.vPosition.y; // 현재 Y위치 저장
-    //            //        // Players[id].jumpCount = 0; // 필요하다면 초기화
-    //            //    }
-    //            //}
-
-    //            //if (act.left)  Players[id].move(-1, 0.f);
-    //            //if (act.right) Players[id].move(1, 0.f);
-    //            //if (act.up)    Players[id].move(0.f, -1); // (Y좌표계에 따라 +)
-    //            //if (act.down)  Players[id].move(0.f, 1); // (Y좌표계에 따라 -)
-
-    //            // 1. 항상 마찰력 적용.
-    //            if (!Players[id].jumping && !Players[id].falling)
-    //            {
-    //                if (Players[id].speed > 0.0f)
-    //                {
-    //                    Players[id].speed = max(0.0f, Players[id].speed - FRICTION);
-    //                }
-    //                else if (Players[id].speed < 0.0f)
-    //                {
-    //                    Players[id].speed = min(0.0f, Players[id].speed + FRICTION);
-    //                }
-    //            }
-
-    //            // 2. 가속도 적용
-    //            if (Players[id].isMoving) {
-    //                Players[id].speed += Players[id].acceleration;
-    //            }
-
-    //            // 3. 속도 제한
-    //            Players[id].speed = max(-MAX_SPEED, min(Players[id].speed, MAX_SPEED));
-
-    //            // 4. 최종 속도를 위치에 적용
-    //            Players[id].move(Players[id].speed, 0.f);
-
-    //            // jumping or falling
-    //            if (Players[id].jumping == TRUE) {
-    //                Players[id].jumpHeight = (Players[id].jumpTime * Players[id].jumpTime - Players[id].jumpPower * Players[id].jumpTime) * 4.f;
-    //                Players[id].jumpTime += 0.2f;
-    //                Players[id].move(0.f, (Players[id].jstartY + (int)Players[id].jumpHeight) - Players[id].info.vPosition.y);
-    //            }
-    //            else if(Players[id].falling == TRUE) { 
-    //                Players[id].downHeight = (Players[id].downTime * (Players[id].downTime / 2)) * 4.f;
-    //                Players[id].downTime += 0.2f;
-    //                Players[id].move(0.f, (Players[id].fstartY + (int)Players[id].downHeight) - Players[id].info.vPosition.y);
-				//}
-
-				//// 다운카운트 -> 0이면 증가 / 0이 아닐 때 증가 시작 / N 도달 시 0으로 초기화
-    //            if (Players[id].downCount > 0) {
-				//	Players[id].downCount++;
-    //                if (Players[id].downCount > 30) {
-    //                    Players[id].downCount = 0;
-				//	}
-    //            }
 
             }
             // === 2. 월드 상태 업데이트 ===
             UpdatePlayer();
-            
+            UpdateItemBoxes();
+
             // === 충돌 처리 ===
             Collision();
 
             // === 3. 모든 클라이언트에게 상태 브로드캐스트 ===
 			SendData dataToSend;
-            //MovementData dataToSend;
             for (int i = 0; i < MAX_PLAYERS; i++)
             {
                 dataToSend.playerInfo[i].isConnected = Players[i].info.isConnected;
@@ -277,23 +200,6 @@ DWORD WINAPI AcceptThread(LPVOID arg)
 			int pX = 100 + (g_player_count * 200);
             Players[g_player_count].move(pX, 70);
 
-			// 플레이어 이동 및 점프 상태 초기화
-            /*Players[g_player_count].acceleration = 0.0f;
-			Players[g_player_count].speed = 0.0f;
-			Players[g_player_count].isMoving = false;*/
-
-            // 뭐로 초기화해야하는지 모르겠음
-			//Players[g_player_count].jstartY = ?
-            //Players[g_player_count].fstartY = ?
-            //Players[g_player_count].downTime = ?
-            //Players[g_player_count].downHeight = ?
-
-			/*Players[g_player_count].downCount = 0;
-            Players[g_player_count].falling = 0;
-			Players[g_player_count].jumping = false;
-			Players[g_player_count].jumpCount = 0;
-			Players[g_player_count].jumpPower = 12.f;*/
-
             // 접속한 클라이언트에게 ID 부여
             int idToSend = g_player_count; // 현재 할당할 ID
             int retval = send(client_sock[g_player_count], (char*)&idToSend, sizeof(int), 0);
@@ -352,11 +258,7 @@ DWORD WINAPI ProcessClient(LPVOID arg)
 
     int retval;
     Player_input act;
-    // PLAYER_ACTION clientPlay;
-	// PLAYER_ACTION nullPlay = { false, false, false, false, false };
 
-    //Action act;
-    //act.iPlayerNum = my_id;
     while (true)
     {
         retval = recv(client_sock, (char*)&act, sizeof(act), 0);
@@ -371,12 +273,8 @@ DWORD WINAPI ProcessClient(LPVOID arg)
         }
 
         // === 데이터 수신 성공: 큐에 삽입 ===
-        //act.eAct = clientPlay;
         ActionQue.push(act);
 
-        // 데이터 출력 테스트
-       /* printf("[Player %d] Action - L:%d R:%d U:%d D:%d S:%d\n", my_id,
-			   clientPlay.left, clientPlay.right, clientPlay.up, clientPlay.down, clientPlay.space);*/
     }
 
     return 0;
@@ -549,4 +447,35 @@ void UpdatePlayer()
 void MovePlayer(int id)
 {
     Players[id].move(Players[id].fAcc / 6.f, Players[id].fGravity);
+}
+
+void UpdateItemBoxes()
+{
+    // 아이템 박스 생성
+    // 각 블록 중앙에 아이템 박스를 배치
+    
+    // 블록 0
+    arrItemBoxes[0].exist = TRUE;
+    arrItemBoxes[0].vPosition.x = (block[0].left + block[0].right) / 2.0f;
+    arrItemBoxes[0].vPosition.y = block[0].top + 40.f; // 아이템 박스 높이만큼 위로
+
+    // 블록 1
+    arrItemBoxes[1].exist = TRUE;
+    arrItemBoxes[1].vPosition.x = (block[1].left + block[1].right) / 2.0f;
+    arrItemBoxes[1].vPosition.y = block[1].top + 40.f;
+
+    // 블록 2
+    arrItemBoxes[2].exist = TRUE;
+    arrItemBoxes[2].vPosition.x = (block[2].left + block[2].right) / 2.0f;
+    arrItemBoxes[2].vPosition.y = block[2].top + 40.f;
+
+    // 블록 3
+    arrItemBoxes[3].exist = TRUE;
+    arrItemBoxes[3].vPosition.x = (block[3].left + block[3].right) / 2.0f;
+    arrItemBoxes[3].vPosition.y = block[3].top + 40.f;
+
+    // 블록 4
+    arrItemBoxes[4].exist = TRUE;
+    arrItemBoxes[4].vPosition.x = (block[4].left + block[4].right) / 2.0f;
+    arrItemBoxes[4].vPosition.y = block[4].top + 40.f;
 }

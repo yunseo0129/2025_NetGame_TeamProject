@@ -137,13 +137,6 @@ struct SendData {
 };
 // SERVER -> CLIENT ------------------------------------------------------------------
 
-// CLIENT -> SERVER ------------------------------------------------------------------
-//struct PlayerInput {
-//	PLAYER_ACTION eAction = ACTION_NONE; // 플레이어 액션
-//};
-// CLIENT -> SERVER ------------------------------------------------------------------
-
-
 // 동기화를 위한 전역 크리티컬 섹션
 CRITICAL_SECTION g_cs_Inputs;
 CRITICAL_SECTION g_World_CS;
@@ -152,23 +145,4 @@ CRITICAL_SECTION g_World_CS;
 struct ThreadParam {
 	SOCKET		hClientSock;
 	int			iPlayerID;
-};
-
-
-// ==========================================================
-// 1. (임시) PlayerState - 플레이어 상태
-// ==========================================================
-struct PlayerState {
-	bool  isConnected = false;
-	float x = 0.f;
-	float y = 0.f;
-
-	int looking = 1; // 0: Left, 1: Right
-};
-
-// ==========================================================
-// 2. (임시) MovementData - 서버가 클라이언트에 보낼 이동 데이터
-// ==========================================================
-struct MovementData {
-	PlayerState players[MAX_PLAYERS] = {};
 };
