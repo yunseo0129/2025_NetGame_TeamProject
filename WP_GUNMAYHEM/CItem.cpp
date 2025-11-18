@@ -2,15 +2,9 @@
 
 CItem::CItem()
 {
-	// 생성 시 초기화 - 낙하 시작	
-	m_exist = true;
-	m_x = 100 + (rand() % 70 * 10);
-	m_y = -200;
-	m_fstartY = 0;
-	m_downTime = 0.f;
-	m_downHeight = 0;
-	m_falling = true;			// 생성과 동시에 낙하 시작
-	m_type = rand() % 2 + 1;	// 0 or 1
+	m_x = 0;
+	m_y = 0;
+	m_exist = false;
 }
 
 CItem::~CItem()
@@ -27,6 +21,11 @@ void CItem::Draw(HDC mDC)
 
 bool CItem::Update()
 {
+	if (false) {
+		//m_exist = iInfo.exist;
+		m_x = iInfo.vPosition.x;
+		m_y = iInfo.vPosition.y;
+	}
 	return false;
 }
 

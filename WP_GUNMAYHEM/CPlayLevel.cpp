@@ -28,9 +28,10 @@ void CPlayLevel::Initialize()
 		m_pPlayer[i] = new CPlayer();
 		m_pPlayer[i]->x = 100 + i * 200; // 초기 위치
 		m_pPlayer[i]->playerType = i;
-		AddObject(m_pPlayer[i], (i == 0) ? OBJ_PLAYER1 : OBJ_PLAYER2); // 레벨에 등록
+		AddObject(m_pPlayer[i], OBJ_PLAYER); // 레벨에 등록
 	}
 
+	// === 맵 생성 ===
 	if (g_mapType == 0) {
 		AddObject(new CMap(330, 170), OBJ_MAP);  // 1단
 		AddObject(new CMap(160, 300), OBJ_MAP);  // 2단
@@ -43,6 +44,16 @@ void CPlayLevel::Initialize()
 		AddObject(new CMap(330, 300), OBJ_MAP);  // 2단
 		AddObject(new CMap(70, 420), OBJ_MAP);  // 3단
 		AddObject(new CMap(600, 420), OBJ_MAP);
+	}
+
+	// === 아이템 박스 생성 ===
+	for (int i = 0; i < 100; ++i) { 
+		AddObject(new CItem(), OBJ_ITEMBOX);
+	}
+	
+	// === 총알 생성 ===
+	for (int i = 0; i < 10; ++i) {
+		AddObject(new CBullet(), OBJ_BULLET);
 	}
 }
 
