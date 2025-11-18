@@ -62,8 +62,8 @@ void CPlayLevel::update_camera()
 void CPlayLevel::Update()
 {
 	// 네트워크 패킷 처리
-	//SendData recvData;
-	MovementData recvData;
+	SendData recvData;
+	//MovementData recvData;
 	bool bPacketProcessed = false;
 
 	EnterCriticalSection(&m_cs); 
@@ -78,9 +78,9 @@ void CPlayLevel::Update()
 		// 수신된 데이터로 플레이어 상태 업데이트
 		for (int i = 0; i < 3; ++i) {
 			if (m_pPlayer[i] != nullptr) {
-				m_pPlayer[i]->pInfo.vPosition.x = recvData.players[i].x;
-				m_pPlayer[i]->pInfo.vPosition.y = recvData.players[i].y;
-				m_pPlayer[i]->pInfo.looking = recvData.players[i].looking;
+				m_pPlayer[i]->pInfo.vPosition.x = recvData.playerInfo[i].vPosition.x;
+				m_pPlayer[i]->pInfo.vPosition.y = recvData.playerInfo[i].vPosition.y;
+				m_pPlayer[i]->pInfo.looking = recvData.playerInfo[i].looking;
 			}
 		}
 	}
@@ -257,7 +257,7 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 	while (pThis->m_bIsRunning) {
 		// 서버로부터 데이터 수신
 		// 정보를 받으면 각 객체(플레이어)들은 그 정보를 바탕으로 자신의 상태를 각각 업데이트
-		MovementData recvData;
+		SendData recvData;
 		retval = recv(pThis->m_sock, (char*)&recvData, sizeof(recvData), 0);
 		if (retval == SOCKET_ERROR || retval == 0) {
 			OutputDebugString(L"[ClientThread] : err - recv() or connection closed\n");

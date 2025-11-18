@@ -34,8 +34,8 @@ private:
 private:
 	// 네트워크 관련
 	SOCKET m_sock = INVALID_SOCKET;
-	//std::queue<SendData> m_recvQueue;
-	std::queue<MovementData> m_recvQueue; // SendData -> MovementData
+	std::queue<SendData> m_recvQueue;
+	//std::queue<MovementData> m_recvQueue; // SendData -> MovementData
 	CRITICAL_SECTION m_cs;
 
 	bool m_bIsRunning = false;		// 스레드 실행 플래그
