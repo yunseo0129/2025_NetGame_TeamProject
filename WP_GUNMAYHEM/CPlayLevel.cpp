@@ -101,24 +101,41 @@ void CPlayLevel::Update()
 		}
 
 		// 아이템 박스 상태 업데이트
+		auto& itemList = GetGroupObject(OBJ_ITEMBOX);
+		auto itemIter = itemList.begin();
+
 		for (int i = 0; i < 10; ++i) {
-			CItem* pItem = static_cast<CItem*>(GetGroupObject(OBJ_ITEMBOX).front());
+			if (itemIter == itemList.end()) break;
+
+			CItem* pItem = static_cast<CItem*>(*itemIter);
 			if (pItem != nullptr) {
 				pItem->iInfo.vPosition.x = recvData.arrItemBoxs[i].vPosition.x;
 				pItem->iInfo.vPosition.y = recvData.arrItemBoxs[i].vPosition.y;
 				pItem->iInfo.exist = recvData.arrItemBoxs[i].exist;
 			}
+
+			// 다음 아이템으로 이동
+			++itemIter;
 		}
 
 		// 총알 상태 업데이트
+		auto& bulletList = GetGroupObject(OBJ_BULLET);
+		auto bulletIter = bulletList.begin();
+
 		for (int i = 0; i < 10; ++i) {
-			CBullet* pBullet = static_cast<CBullet*>(GetGroupObject(OBJ_BULLET).front());
+			// 리스트 끝에 도달하면 중단
+			if (bulletIter == bulletList.end()) break;
+
+			CBullet* pBullet = static_cast<CBullet*>(*bulletIter);
 			if (pBullet != nullptr) {
 				pBullet->bInfo.vPosition.x = recvData.arrBullets[i].vPosition.x;
 				pBullet->bInfo.vPosition.y = recvData.arrBullets[i].vPosition.y;
 				pBullet->bInfo.exist = recvData.arrBullets[i].exist;
 				// pBullet->bInfo.direction = recvData.arrBullets[i].direction;
 			}
+
+			// [중요] 다음 총알로 이동
+			++bulletIter;
 		}
 	}
 
@@ -304,6 +321,17 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 
 		// 데이터 수신 성공 - 큐에 저장
 		EnterCriticalSection(&pThis->m_cs);
+
+		// 디버그용 출력
+		wchar_t buf[1000];
+		wsprintf(buf, L"PlayerInfo[0] Position: (%d, %d)\n "
+				 L"ItemBox[1] Position: (%d, %d), exist: %d\n "
+				 L"Bullet[0] Position: (%d, %d), exist: %d\n",
+				 (int)recvData.playerInfo[0].vPosition.x,  (int)recvData.playerInfo[0].vPosition.y,
+				 (int)recvData.arrItemBoxs[0].vPosition.x, (int)recvData.arrItemBoxs[0].vPosition.y, recvData.arrItemBoxs[0].exist,
+				 (int)recvData.arrBullets[0].vPosition.x,  (int)recvData.arrBullets[0].vPosition.y,  recvData.arrBullets[0].exist);
+		OutputDebugString(buf);
+
 		pThis->m_recvQueue.push(recvData); // 2. 큐에 데이터 삽입
 		LeaveCriticalSection(&pThis->m_cs);
 	}
