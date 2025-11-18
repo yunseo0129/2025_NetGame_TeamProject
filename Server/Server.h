@@ -8,7 +8,7 @@
 #include <stdio.h> 
 #include <stdlib.h>
 #include <string.h>
-#include <vector>
+#include <array>
 #include <Windows.h>
 #include <chrono>
 #include <queue>
@@ -107,26 +107,6 @@ struct Player {
 		colBox.bottom += _y;
 	}
 
-	// int downCount;		// 10번의 타이머 동안 땅 부딪힘 검사 x
-
-	// 낙하 및 점프 변수
-	//int fstartY;
-	//float downTime;
-	//float downHeight;
-	//BOOL falling;
-
-	//int jstartY;		// 점프 시작 위치
-	//float jumpTime;
-	//float jumpHeight;
-	//float jumpPower;
-	//BOOL jumping;
-	//int jumpCount = 0;	// 점프 횟수
-
-	//// 속도, 가속도 변수
-	//float acceleration;	// 현재 가속도
-	//float speed;		// 현재 속도
-	//bool isMoving;		// 이동 중인지 여부
-
 };
 
 struct Bullet {
@@ -146,13 +126,13 @@ struct Action {
 };
 
 // SERVER -> CLIENT ------------------------------------------------------------------
-//struct SendData {
-//	PlayerInfo				playerInfo[3];		// 플레이어 정보
-//	int						iBulletCount;		// 총알 개수
-//	int						iItemBoxCount;		// 아이템 박스 개수
-//	std::vector<BulletInfo>	vecBullets;			// 총알 정보
-//	std::vector<ItemBoxInfo> vecItemBoxs;		// 아이템 박스 정보
-//};
+struct SendData {
+	PlayerInfo				playerInfo[3];		// 플레이어 정보
+	int						iBulletCount;		// 총알 개수
+	int						iItemBoxCount;		// 아이템 박스 개수
+	std::array<BulletInfo, 100>	arrBullets;			// 총알 정보
+	std::array<ItemBoxInfo, 10> arrItemBoxs;		// 아이템 박스 정보
+};
 // SERVER -> CLIENT ------------------------------------------------------------------
 
 // CLIENT -> SERVER ------------------------------------------------------------------

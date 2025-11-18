@@ -417,10 +417,6 @@ bool Initializer()
         Players[i].colBox.top = 0.f;
         Players[i].colBox.bottom = 67.f;
     }
-
-    // 벡터 크기 예약
-    vecBullets.reserve(100);
-    vecItemBoxes.reserve(10);
    
     return false;
 }
