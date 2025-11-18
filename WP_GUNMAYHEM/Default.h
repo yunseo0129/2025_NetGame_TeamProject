@@ -30,7 +30,7 @@
 #include "fmod.hpp"
 #include "fmod_errors.h"
 #include <list>
-#include <vector>
+#include <array>
 
 #define         VK_MAX            0xff
 #include <map>
@@ -113,10 +113,15 @@ struct PlayerInfo {
 struct BulletInfo {
 	vec2			vStarting;					// 시작 위치
 	vec2			vPosition;					// 현재 위치
+	ITEMTYPE		eType;						// 총알 타입 (사거리 계산용)
+	RECT			colBox;						// 충돌 박스
+	BOOL			exist = FALSE;				// 삭제 플래그
 };
 
 struct ItemBoxInfo {
 	vec2			vPosition;					// 위치
+	RECT			colBox;						// 충돌 박스
+	BOOL			exist = FALSE;				// 삭제 플래그
 };
 
 enum PLAYER_INPUT_KEY { KEY_NONE, KEY_LEFT, KEY_RIGHT, KEY_JUMP, KEY_DOWNJUMP, KEY_SHOOT };
@@ -130,10 +135,10 @@ struct Player_input {
 // SERVER -> CLIENT ------------------------------------------------------------
 struct SendData {
 	PlayerInfo				playerInfo[3];		// 플레이어 정보
-	int						iBulletCount;		// 총알 개수
-	int						iItemBoxCount;		// 아이템 박스 개수
-	std::vector<BulletInfo>	vecBullets;			// 총알 정보
-	std::vector<ItemBoxInfo> vecItemBoxs;		// 아이템 박스 정보
+	//int						iBulletCount;		// 총알 개수
+	//int						iItemBoxCount;		// 아이템 박스 개수
+	std::array<BulletInfo, 100>	arrBullets;			// 총알 정보
+	std::array<ItemBoxInfo, 10> arrItemBoxs;		// 아이템 박스 정보
 };
 // SERVER -> CLIENT ------------------------------------------------------------
 

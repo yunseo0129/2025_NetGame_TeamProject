@@ -196,13 +196,14 @@ int main(int argc, char* argv[])
             Collision();
 
             // === 3. 모든 클라이언트에게 상태 브로드캐스트 ===
-            MovementData dataToSend;
+			SendData dataToSend;
+            //MovementData dataToSend;
             for (int i = 0; i < MAX_PLAYERS; i++)
             {
-                dataToSend.players[i].isConnected = Players[i].info.isConnected;
-				dataToSend.players[i].looking = Players[i].iLooking;
-                dataToSend.players[i].x = Players[i].info.vPosition.x;
-                dataToSend.players[i].y = Players[i].info.vPosition.y;
+                dataToSend.playerInfo[i].isConnected = Players[i].info.isConnected;
+				dataToSend.playerInfo[i].looking = Players[i].iLooking;
+                dataToSend.playerInfo[i].vPosition.x = Players[i].info.vPosition.x;
+                dataToSend.playerInfo[i].vPosition.y = Players[i].info.vPosition.y;
             }
 
             for (int i = 0; i < MAX_PLAYERS; i++)
