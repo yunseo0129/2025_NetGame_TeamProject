@@ -104,6 +104,17 @@ void CPlayLevel::Update()
 				pItem->iInfo.exist = recvData.arrItemBoxs[i].exist;
 			}
 		}
+
+		// 총알 상태 업데이트
+		for (int i = 0; i < 10; ++i) {
+			CBullet* pBullet = static_cast<CBullet*>(GetGroupObject(OBJ_BULLET).front());
+			if (pBullet != nullptr) {
+				pBullet->bInfo.vPosition.x = recvData.arrBullets[i].vPosition.x;
+				pBullet->bInfo.vPosition.y = recvData.arrBullets[i].vPosition.y;
+				pBullet->bInfo.exist = recvData.arrBullets[i].exist;
+				// pBullet->bInfo.direction = recvData.arrBullets[i].direction;
+			}
+		}
 	}
 
 	// 키 입력 처리
