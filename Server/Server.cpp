@@ -491,25 +491,25 @@ void UpdateItemBoxes()
     // 블록 0
     arrItemBoxes[0].exist = TRUE;
     arrItemBoxes[0].vPosition.x = (block[0].left + block[0].right) / 2.0f;
-    arrItemBoxes[0].vPosition.y = block[0].top + 40.f; // 아이템 박스 높이만큼 위로
+    arrItemBoxes[0].vPosition.y = block[0].top - 40.f; // 아이템 박스 높이만큼 위로
 
     // 블록 1
     arrItemBoxes[1].exist = TRUE;
     arrItemBoxes[1].vPosition.x = (block[1].left + block[1].right) / 2.0f;
-    arrItemBoxes[1].vPosition.y = block[1].top + 40.f;
+    arrItemBoxes[1].vPosition.y = block[1].top - 40.f;
 
     // 블록 2
     arrItemBoxes[2].exist = TRUE;
     arrItemBoxes[2].vPosition.x = (block[2].left + block[2].right) / 2.0f;
-    arrItemBoxes[2].vPosition.y = block[2].top + 40.f;
+    arrItemBoxes[2].vPosition.y = block[2].top - 40.f;
 
     // 블록 3
     arrItemBoxes[3].exist = TRUE;
     arrItemBoxes[3].vPosition.x = (block[3].left + block[3].right) / 2.0f;
-    arrItemBoxes[3].vPosition.y = block[3].top + 40.f;
+    arrItemBoxes[3].vPosition.y = block[3].top - 40.f;
 
     // 블록 4
     arrItemBoxes[4].exist = TRUE;
     arrItemBoxes[4].vPosition.x = (block[4].left + block[4].right) / 2.0f;
-    arrItemBoxes[4].vPosition.y = block[4].top + 40.f;
+    arrItemBoxes[4].vPosition.y = block[4].top - 40.f;
 }
