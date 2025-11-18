@@ -72,11 +72,13 @@ struct BulletInfo {
 	vec2			vPosition;					// 현재 위치
 	ITEMTYPE		eType;						// 총알 타입 (사거리 계산용)
 	RECT			colBox;						// 충돌 박스
+	BOOL			exist = FALSE;				// 삭제 플래그
 };
 
 struct ItemBoxInfo {
 	vec2			vPosition;					// 위치
 	RECT			colBox;						// 충돌 박스
+	BOOL			exist = FALSE;				// 삭제 플래그
 };
 
 // 관리용----------------------------------------------------------------------------
@@ -128,8 +130,8 @@ struct Action {
 // SERVER -> CLIENT ------------------------------------------------------------------
 struct SendData {
 	PlayerInfo				playerInfo[3];		// 플레이어 정보
-	int						iBulletCount;		// 총알 개수
-	int						iItemBoxCount;		// 아이템 박스 개수
+	//int						iBulletCount;		// 총알 개수
+	//int						iItemBoxCount;		// 아이템 박스 개수
 	std::array<BulletInfo, 100>	arrBullets;			// 총알 정보
 	std::array<ItemBoxInfo, 10> arrItemBoxs;		// 아이템 박스 정보
 };
