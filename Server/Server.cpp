@@ -204,6 +204,9 @@ int main(int argc, char* argv[])
 				dataToSend.playerInfo[i].looking = Players[i].iLooking;
                 dataToSend.playerInfo[i].vPosition.x = Players[i].info.vPosition.x;
                 dataToSend.playerInfo[i].vPosition.y = Players[i].info.vPosition.y;
+
+				dataToSend.arrItemBoxs = {};
+                dataToSend.arrItemBoxs[0].exist = TRUE;
             }
 
             for (int i = 0; i < MAX_PLAYERS; i++)

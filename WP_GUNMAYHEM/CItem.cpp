@@ -21,8 +21,8 @@ void CItem::Draw(HDC mDC)
 
 bool CItem::Update()
 {
-	if (false) {
-		//m_exist = iInfo.exist;
+	if (true) {
+		m_exist = iInfo.exist;
 		m_x = iInfo.vPosition.x;
 		m_y = iInfo.vPosition.y;
 	}

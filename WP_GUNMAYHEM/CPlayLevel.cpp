@@ -94,6 +94,16 @@ void CPlayLevel::Update()
 				m_pPlayer[i]->pInfo.looking = recvData.playerInfo[i].looking;
 			}
 		}
+
+		// 아이템 박스 상태 업데이트
+		for (int i = 0; i < 10; ++i) {
+			CItem* pItem = static_cast<CItem*>(GetGroupObject(OBJ_ITEMBOX).front());
+			if (pItem != nullptr) {
+				pItem->iInfo.vPosition.x = recvData.arrItemBoxs[i].vPosition.x;
+				pItem->iInfo.vPosition.y = recvData.arrItemBoxs[i].vPosition.y;
+				pItem->iInfo.exist = recvData.arrItemBoxs[i].exist;
+			}
+		}
 	}
 
 	// 키 입력 처리
