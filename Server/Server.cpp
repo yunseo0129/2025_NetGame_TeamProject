@@ -373,7 +373,7 @@ void Collision()
         RECT Pbox = Players[i].colBox;
         for (int j = 0; j < arrBullets.size(); ++j)
         {
-            if (arrBullets[j].exist)
+			if (arrBullets[j].exist && arrBullets[j].id != i) // 자신의 총알은 무시
             {
                 RECT Bbox = arrBullets[j].colBox;
                 if (Pbox.right >= Bbox.left && Pbox.left <= Bbox.right)
@@ -400,6 +400,7 @@ void Shooting(int id)
             if (!arrBullets[i].exist)
             {
                 arrBullets[i].exist = TRUE;
+				arrBullets[i].id = id;
                 arrBullets[i].eType = Players[id].info.eItemType;
                 arrBullets[i].vStarting.x = Players[id].info.vPosition.x + ((Players[id].iLooking == 1) ? 30.f : -10.f);
                 arrBullets[i].vStarting.y = Players[id].info.vPosition.y + 30.f;
@@ -505,7 +506,7 @@ void UpdateBullets()
             // 예: arrBullets[i].vPosition.x += 속도 * 방향 * timedelta;
 			// 총알이 사거리 초과 또는 충돌 시 삭제 처리
 			arrBullets[i].vPosition.x += (arrBullets[i].eType == ITEM_PISTOL ? 10.f : 5.f) * ((arrBullets[i].vPosition.x >= arrBullets[i].vStarting.x) ? 1.f : -1.f);
-            if (arrBullets[i].vPosition.x < -500 || arrBullets[i].vPosition.x > 1100)
+            if (abs(arrBullets[i].vPosition.x - arrBullets[i].vStarting.x) > 800.0f) 
             {
 				arrBullets[i].exist = FALSE;
             }

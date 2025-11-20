@@ -70,9 +70,10 @@ struct PlayerInfo {
 struct BulletInfo {
 	vec2			vStarting;					// 시작 위치
 	vec2			vPosition;					// 현재 위치
-	ITEMTYPE		eType = ITEM_NONE;		// 총알 타입 (사거리 계산용)
+	ITEMTYPE		eType = ITEM_NONE;			// 총알 타입 (사거리 계산용)
 	RECT			colBox;						// 충돌 박스
 	BOOL			exist = FALSE;				// 삭제 플래그
+	int				id = -1;                    // 소유자 ID	
 };
 
 struct ItemBoxInfo {

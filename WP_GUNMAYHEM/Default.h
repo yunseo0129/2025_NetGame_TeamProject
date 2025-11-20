@@ -116,6 +116,7 @@ struct BulletInfo {
 	ITEMTYPE		eType;						// 총알 타입 (사거리 계산용)
 	RECT			colBox;						// 충돌 박스
 	BOOL			exist = FALSE;				// 삭제 플래그
+	int				id = -1;                    // 소유자 ID
 };
 
 struct ItemBoxInfo {
