@@ -139,6 +139,7 @@ struct SendData {
 	//int						iItemBoxCount;		// 아이템 박스 개수
 	std::array<BulletInfo, 100>	arrBullets;			// 총알 정보
 	std::array<ItemBoxInfo, 10> arrItemBoxs;		// 아이템 박스 정보
+	bool isChanged = false;
 };
 // SERVER -> CLIENT ------------------------------------------------------------
 

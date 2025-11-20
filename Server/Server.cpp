@@ -130,6 +130,7 @@ int main(int argc, char* argv[])
                 dataToSend.playerInfo[i].vPosition.y = Players[i].info.vPosition.y;
 
 				dataToSend.arrItemBoxs = arrItemBoxes;
+                dataToSend.isChanged = true;
             }
 
             for (int i = 0; i < MAX_PLAYERS; i++)
