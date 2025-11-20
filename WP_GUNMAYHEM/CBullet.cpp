@@ -68,13 +68,19 @@ bool CBullet::Update()
 		if (bInfo.exist == true && m_exist == FALSE) {
 			m_gradationCount = 3; 
 			m_maxGradation = (bInfo.eType == ITEM_PISTOL) ? 15 : 25;
+
+			// 사운드 재생
+			FMOD::Sound* gun_sound = (bInfo.eType == ITEM_PISTOL) ? sound1 : sound2;
+			channel->stop();
+			gun_sound->setMode(FMOD_LOOP_OFF);
+			ssystem->playSound(gun_sound, 0, false, &channel);
 		}
 
 		m_exist = bInfo.exist;
 		m_x = bInfo.vPosition.x;
 		m_y = bInfo.vPosition.y;
 
-	
+		
 	}
 	return false;
 }
