@@ -403,7 +403,13 @@ void Shooting(int id)
                 arrBullets[i].eType = Players[id].info.eItemType;
                 arrBullets[i].vStarting.x = Players[id].info.vPosition.x + ((Players[id].iLooking == 1) ? 30.f : -10.f);
                 arrBullets[i].vStarting.y = Players[id].info.vPosition.y + 30.f;
-                arrBullets[i].vPosition = arrBullets[i].vStarting;
+                
+                // 왼쪽을 볼 때
+                arrBullets[i].vPosition.x = arrBullets[i].vStarting.x - 1.0f;       // 시작점보다 1픽셀 왼쪽
+                // 오른쪽을 볼 때
+                if (Players[id].iLooking == 1)
+                    arrBullets[i].vPosition.x = arrBullets[i].vStarting.x + 1.0f;   // 시작점보다 1픽셀 오른쪽
+				arrBullets[i].vPosition.y = arrBullets[i].vStarting.y;              // Y좌표는 동일
                 
                 // 총알 충돌박스 초기화
                 arrBullets[i].colBox.left = (int)arrBullets[i].vPosition.x;
