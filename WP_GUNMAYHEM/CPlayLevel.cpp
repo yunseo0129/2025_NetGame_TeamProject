@@ -319,21 +319,24 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 			break;
 		} 
 
-		// 데이터 수신 성공 - 큐에 저장
-		EnterCriticalSection(&pThis->m_cs);
+		if (recvData.isChanged)
+		{
+			// 데이터 수신 성공 - 큐에 저장
+			EnterCriticalSection(&pThis->m_cs);
 
-		// 디버그용 출력
-		wchar_t buf[1000];
-		wsprintf(buf, L"PlayerInfo[0] Position: (%d, %d)\n "
-				 L"ItemBox[1] Position: (%d, %d), exist: %d\n "
-				 L"Bullet[0] Position: (%d, %d), exist: %d\n",
-				 (int)recvData.playerInfo[0].vPosition.x,  (int)recvData.playerInfo[0].vPosition.y,
-				 (int)recvData.arrItemBoxs[0].vPosition.x, (int)recvData.arrItemBoxs[0].vPosition.y, recvData.arrItemBoxs[0].exist,
-				 (int)recvData.arrBullets[0].vPosition.x,  (int)recvData.arrBullets[0].vPosition.y,  recvData.arrBullets[0].exist);
-		OutputDebugString(buf);
+			// 디버그용 출력
+			wchar_t buf[1000];
+			wsprintf(buf, L"PlayerInfo[0] Position: (%d, %d)\n "
+				L"ItemBox[1] Position: (%d, %d), exist: %d\n "
+				L"Bullet[0] Position: (%d, %d), exist: %d\n",
+				(int)recvData.playerInfo[0].vPosition.x, (int)recvData.playerInfo[0].vPosition.y,
+				(int)recvData.arrItemBoxs[0].vPosition.x, (int)recvData.arrItemBoxs[0].vPosition.y, recvData.arrItemBoxs[0].exist,
+				(int)recvData.arrBullets[0].vPosition.x, (int)recvData.arrBullets[0].vPosition.y, recvData.arrBullets[0].exist);
+			OutputDebugString(buf);
 
-		pThis->m_recvQueue.push(recvData); // 2. 큐에 데이터 삽입
-		LeaveCriticalSection(&pThis->m_cs);
+			pThis->m_recvQueue.push(recvData); // 2. 큐에 데이터 삽입
+			LeaveCriticalSection(&pThis->m_cs);
+		}
 	}
 
 	// 스레드 종료
