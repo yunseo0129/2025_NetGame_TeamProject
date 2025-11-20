@@ -130,6 +130,7 @@ int main(int argc, char* argv[])
                 dataToSend.playerInfo[i].vPosition.y = Players[i].info.vPosition.y;
 
 				dataToSend.arrItemBoxs = arrItemBoxes;
+                dataToSend.arrBullets = arrBullets;
                 dataToSend.isChanged = true;
             }
 
@@ -138,6 +139,8 @@ int main(int argc, char* argv[])
                 if (Players[i].info.isConnected)
                 {
                     int retval = send(Players[i].socket, (char*)&dataToSend, sizeof(dataToSend), 0);
+                    if (dataToSend.arrBullets[0].exist)
+                        int k = 0;
                     if (retval == SOCKET_ERROR) {
 						err_quit("send()");
                         closesocket(Players[i].socket);

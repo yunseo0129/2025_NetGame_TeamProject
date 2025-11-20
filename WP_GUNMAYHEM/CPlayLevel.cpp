@@ -47,12 +47,12 @@ void CPlayLevel::Initialize()
 	}
 
 	// === 아이템 박스 생성 ===
-	for (int i = 0; i < 100; ++i) { 
+	for (int i = 0; i < 10; ++i) { 
 		AddObject(new CItem(), OBJ_ITEMBOX);
 	}
 	
 	// === 총알 생성 ===
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < 100; ++i) {
 		AddObject(new CBullet(), OBJ_BULLET);
 	}
 }
