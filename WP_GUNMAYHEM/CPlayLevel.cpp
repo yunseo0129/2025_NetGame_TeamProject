@@ -89,14 +89,7 @@ void CPlayLevel::Update()
 		// 수신된 데이터로 플레이어 상태 업데이트
 		for (int i = 0; i < 3; ++i) {
 			if (m_pPlayer[i] != nullptr) {
-				m_pPlayer[i]->pInfo.vPosition.x = recvData.playerInfo[i].vPosition.x;
-				m_pPlayer[i]->pInfo.vPosition.y = recvData.playerInfo[i].vPosition.y;
-				m_pPlayer[i]->pInfo.looking = recvData.playerInfo[i].looking;
-
-				// m_pPlayer[i]->pInfo.eItemType = recvData.playerInfo[i].eItemType;
-				// m_pPlayer[i]->pInfo.iLife = recvData.playerInfo[i].iLife;
-				// m_pPlayer[i]->pInfo.eState = recvData.playerInfo[i].eState;
-				m_pPlayer[i]->pInfo.isConnected = recvData.playerInfo[i].isConnected;
+				m_pPlayer[i]->pInfo = recvData.playerInfo[i];
 			}
 		}
 
@@ -109,9 +102,7 @@ void CPlayLevel::Update()
 
 			CItem* pItem = static_cast<CItem*>(*itemIter);
 			if (pItem != nullptr) {
-				pItem->iInfo.vPosition.x = recvData.arrItemBoxs[i].vPosition.x;
-				pItem->iInfo.vPosition.y = recvData.arrItemBoxs[i].vPosition.y;
-				pItem->iInfo.exist = recvData.arrItemBoxs[i].exist;
+				pItem->iInfo = recvData.arrItemBoxs[i];
 			}
 
 			// 다음 아이템으로 이동
@@ -128,10 +119,7 @@ void CPlayLevel::Update()
 
 			CBullet* pBullet = static_cast<CBullet*>(*bulletIter);
 			if (pBullet != nullptr) {
-				pBullet->bInfo.vPosition.x = recvData.arrBullets[i].vPosition.x;
-				pBullet->bInfo.vPosition.y = recvData.arrBullets[i].vPosition.y;
-				pBullet->bInfo.exist = recvData.arrBullets[i].exist;
-				// pBullet->bInfo.direction = recvData.arrBullets[i].direction;
+				pBullet->bInfo = recvData.arrBullets[i];
 			}
 
 			// [중요] 다음 총알로 이동
@@ -327,9 +315,11 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 			// 디버그용 출력
 			wchar_t buf[1000];
 			wsprintf(buf, L"PlayerInfo[0] Position: (%d, %d)\n "
+					 L"PlayerInfo[0].itemType: %d\n"
 				L"ItemBox[1] Position: (%d, %d), exist: %d\n "
 				L"Bullet[0] Position: (%d, %d), exist: %d\n",
 				(int)recvData.playerInfo[0].vPosition.x, (int)recvData.playerInfo[0].vPosition.y,
+				(int)recvData.playerInfo[0].eItemType,
 				(int)recvData.arrItemBoxs[0].vPosition.x, (int)recvData.arrItemBoxs[0].vPosition.y, recvData.arrItemBoxs[0].exist,
 				(int)recvData.arrBullets[0].vPosition.x, (int)recvData.arrBullets[0].vPosition.y, recvData.arrBullets[0].exist);
 			OutputDebugString(buf);

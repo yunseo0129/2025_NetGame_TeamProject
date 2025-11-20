@@ -110,7 +110,7 @@ int main(int argc, char* argv[])
                     break;
                 }
 				Players[next.id].iLooking = (Players[next.id].Act.left) ? 0 : (Players[next.id].Act.right) ? 1 : Players[next.id].iLooking;
-
+				Players[next.id].info.looking = Players[next.id].iLooking;
             }
             // === 2. 월드 상태 업데이트 ===
             UpdatePlayer();
@@ -124,10 +124,7 @@ int main(int argc, char* argv[])
 			SendData dataToSend;
             for (int i = 0; i < MAX_PLAYERS; i++)
             {
-                dataToSend.playerInfo[i].isConnected = Players[i].info.isConnected;
-				dataToSend.playerInfo[i].looking = Players[i].iLooking;
-                dataToSend.playerInfo[i].vPosition.x = Players[i].info.vPosition.x;
-                dataToSend.playerInfo[i].vPosition.y = Players[i].info.vPosition.y;
+				dataToSend.playerInfo[i] = Players[i].info;
 
 				dataToSend.arrItemBoxs = arrItemBoxes;
                 dataToSend.arrBullets = arrBullets;
