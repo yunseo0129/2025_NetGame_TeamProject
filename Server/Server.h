@@ -61,6 +61,7 @@ struct PlayerInfo {
 	vec2			vPosition;					// 위치
 	PLAYER_STATE	eState = STATE_NONE;		// 현재 상태
 	ITEMTYPE		eItemType = ITEM_NONE;		// 현재 무기
+	int				iBullet = 0;				// 현재 총알 개수
 	int				iLife = 0;					// 체력
 	bool			isConnected = false;		// 연결 상태
 

@@ -197,6 +197,7 @@ DWORD WINAPI AcceptThread(LPVOID arg)
             Players[g_player_count].info.iLife = 3;
             Players[g_player_count].info.eItemType = ITEM_PISTOL;
             Players[g_player_count].info.eState = STATE_IDLE;
+            Players[g_player_count].info.iBullet = 20;
 
 			int pX = 100 + (g_player_count * 200);
             Players[g_player_count].move(pX, 70);
@@ -385,39 +386,70 @@ void Collision()
         }
     }
     // 3. 플레이어 vs 아이템 박스
+    for (int i = 0; i < MAX_PLAYERS; i++)
+    {
+        if (Players[i].info.isConnected)
+        {
+            RECT Pbox = Players[i].colBox;
+            for (ItemBoxInfo itm : arrItemBoxes)
+            {
+                if (itm.exist)
+                {
+                    RECT Bbox = itm.colBox;
+                    if (Pbox.right >= Bbox.left && Pbox.left <= Bbox.right)
+                    {
+                        if (Pbox.bottom >= Bbox.top && Pbox.top <= Bbox.bottom)
+                        {
+                            ITEMTYPE type = ITEMTYPE((rand() % 2) + 1);
+                            Players[i].info.eItemType = type;
+                            if (type == ITEM_PISTOL)
+                                Players[i].info.iBullet = 20;
+                            else
+                                Players[i].info.iBullet = 10;
+
+                            itm.exist = FALSE;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 void Shooting(int id)
 {
     for (int j = 0; j < Players[id].Act.space; ++j)
     {
-        // 스페이스바 누른 만큼 총알 생성
-        for (int i = 0; i < arrBullets.size(); ++i)
+        Players[id].info.iBullet -= 1;
+        Players[id].Act.space -= 1;
+        if (Players[id].info.iBullet >= 0)
         {
-            if (!arrBullets[i].exist)
+            for (int i = 0; i < arrBullets.size(); ++i)
             {
-                arrBullets[i].exist = TRUE;
-				arrBullets[i].id = id;
-                arrBullets[i].eType = Players[id].info.eItemType;
-                arrBullets[i].vStarting.x = Players[id].info.vPosition.x + ((Players[id].iLooking == 1) ? 30.f : -10.f);
-                arrBullets[i].vStarting.y = Players[id].info.vPosition.y + 30.f;
-                
-                // 왼쪽을 볼 때
-                arrBullets[i].vPosition.x = arrBullets[i].vStarting.x - 1.0f;       // 시작점보다 1픽셀 왼쪽
-                // 오른쪽을 볼 때
-                if (Players[id].iLooking == 1)
-                    arrBullets[i].vPosition.x = arrBullets[i].vStarting.x + 1.0f;   // 시작점보다 1픽셀 오른쪽
-				arrBullets[i].vPosition.y = arrBullets[i].vStarting.y;              // Y좌표는 동일
-                
-                // 총알 충돌박스 초기화
-                arrBullets[i].colBox.left = (int)arrBullets[i].vPosition.x;
-                arrBullets[i].colBox.right = (int)arrBullets[i].vPosition.x + 5;
-                arrBullets[i].colBox.top = (int)arrBullets[i].vPosition.y;
-                arrBullets[i].colBox.bottom = (int)arrBullets[i].vPosition.y + 5;
-                Players[id].Act.space -= 1;
-                break; // 하나 생성했으면 다음 총알 생성 대기
+                if (!arrBullets[i].exist)
+                {
+                    arrBullets[i].exist = TRUE;
+                    arrBullets[i].id = id;
+                    arrBullets[i].eType = Players[id].info.eItemType;
+                    arrBullets[i].vStarting.x = Players[id].info.vPosition.x + ((Players[id].iLooking == 1) ? 30.f : -10.f);
+                    arrBullets[i].vStarting.y = Players[id].info.vPosition.y + 30.f;
+
+                    // 왼쪽을 볼 때
+                    arrBullets[i].vPosition.x = arrBullets[i].vStarting.x - 1.0f;       // 시작점보다 1픽셀 왼쪽
+                    // 오른쪽을 볼 때
+                    if (Players[id].iLooking == 1)
+                        arrBullets[i].vPosition.x = arrBullets[i].vStarting.x + 1.0f;   // 시작점보다 1픽셀 오른쪽
+                    arrBullets[i].vPosition.y = arrBullets[i].vStarting.y;              // Y좌표는 동일
+
+                    // 총알 충돌박스 초기화
+                    arrBullets[i].colBox.left = (int)arrBullets[i].vPosition.x;
+                    arrBullets[i].colBox.right = (int)arrBullets[i].vPosition.x + 5;
+                    arrBullets[i].colBox.top = (int)arrBullets[i].vPosition.y;
+                    arrBullets[i].colBox.bottom = (int)arrBullets[i].vPosition.y + 5;
+                    break; // 하나 생성했으면 다음 총알 생성 대기
+                }
             }
-		}
+        }
     }
 }
 
@@ -515,6 +547,11 @@ void UpdateItemBoxes()
 {
     // 아이템 박스 생성
     // 각 블록 중앙에 아이템 박스를 배치
+    // 도익씨 이거 랜덤스폰해서 하늘에서 떨어지게 바꿔주실때
+    // 충돌박스도 위치 같이 잡아주셔야하구
+    // move함수 만들어둘테니 그거 쓰시면 충돌박스도 같이 움직이게 해둘게요
+    // 초기위치도 0, 0에서 move함수로 옮긴다고 생각해주세요
+    // 는 생각해보니 얘는 통신용이라 못한당 ㅎㅎ 그냥 수동으로 해주셔야할듯 저 밑에 포문처럼 해주시면대용
     
     // 블록 0
     arrItemBoxes[0].exist = TRUE;
@@ -540,4 +577,12 @@ void UpdateItemBoxes()
     arrItemBoxes[4].exist = TRUE;
     arrItemBoxes[4].vPosition.x = (block[4].left + block[4].right) / 2.0f;
     arrItemBoxes[4].vPosition.y = block[4].top - 40.f;
+
+    for (int i = 0; i < 5; ++i)
+    {
+        arrItemBoxes[i].colBox.left = arrItemBoxes[i].vPosition.x;
+        arrItemBoxes[i].colBox.top = arrItemBoxes[i].vPosition.y;
+        arrItemBoxes[i].colBox.right = arrItemBoxes[i].colBox.left + 40;
+        arrItemBoxes[i].colBox.bottom = arrItemBoxes[i].colBox.top + 40;
+    }
 }
