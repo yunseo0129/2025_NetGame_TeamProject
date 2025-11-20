@@ -78,10 +78,11 @@ void CPlayLevel::Update()
 	bool bPacketProcessed = false;
 
 	EnterCriticalSection(&m_cs); 
-	if (!m_recvQueue.empty()) {
-		recvData = m_recvQueue.front();
-		m_recvQueue.pop();
-		bPacketProcessed = true;
+	// if -> while 로 변경하여 한 프레임에서 큐에 있는 모든 패킷 처리
+	while (!m_recvQueue.empty()) {
+		recvData = m_recvQueue.front(); // 데이터를 꺼내서 복사
+		m_recvQueue.pop();              // 큐에서 제거
+		bPacketProcessed = true;        // 데이터가 있었음을 표시
 	}
 	LeaveCriticalSection(&m_cs);
 
