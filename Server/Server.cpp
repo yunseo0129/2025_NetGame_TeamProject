@@ -364,7 +364,25 @@ void Collision()
         }
     }
     // 2. 플레이어 vs 총알
-
+    for (int i = 0; i < MAX_PLAYERS; i++)
+    {
+        RECT Pbox = Players[i].colBox;
+        for (int j = 0; j < arrBullets.size(); ++j)
+        {
+            if (arrBullets[j].exist)
+            {
+                RECT Bbox = arrBullets[j].colBox;
+                if (Pbox.right >= Bbox.left && Pbox.left <= Bbox.right)
+                {
+                    if (Pbox.bottom >= Bbox.top && Pbox.top <= Bbox.bottom)
+                    {
+                        Players[i].fAcc += (arrBullets[j].eType == ITEM_PISTOL) ? ((arrBullets[j].vPosition.x >= arrBullets[j].vStarting.x) ? 5.f : -5.f) : ((arrBullets[j].vPosition.x >= arrBullets[j].vStarting.x) ? 10.f : -10.f);
+                        arrBullets[j].exist = FALSE;
+                    }
+                }
+            }
+        }
+    }
     // 3. 플레이어 vs 아이템 박스
 }
 
@@ -385,14 +403,14 @@ void Shooting(int id)
                 
                 // 총알 충돌박스 초기화
                 arrBullets[i].colBox.left = (int)arrBullets[i].vPosition.x;
-                arrBullets[i].colBox.right = (int)arrBullets[i].vPosition.x + 10;
+                arrBullets[i].colBox.right = (int)arrBullets[i].vPosition.x + 5;
                 arrBullets[i].colBox.top = (int)arrBullets[i].vPosition.y;
                 arrBullets[i].colBox.bottom = (int)arrBullets[i].vPosition.y + 5;
+                Players[id].Act.space -= 1;
                 break; // 하나 생성했으면 다음 총알 생성 대기
             }
 		}
     }
-    Players[id].Act.space = 0;
 }
 
 void UpdatePlayer()
@@ -455,10 +473,9 @@ void UpdatePlayer()
             {
                 Shooting(i);
             }
-            
-            // 실제 이동
-            MovePlayer(i);
         }
+        // 실제 이동
+        MovePlayer(i);
     }
 }
 
@@ -478,7 +495,10 @@ void UpdateBullets()
             // 예: arrBullets[i].vPosition.x += 속도 * 방향 * timedelta;
 			// 총알이 사거리 초과 또는 충돌 시 삭제 처리
 			arrBullets[i].vPosition.x += (arrBullets[i].eType == ITEM_PISTOL ? 10.f : 5.f) * ((arrBullets[i].vPosition.x >= arrBullets[i].vStarting.x) ? 1.f : -1.f);
-            
+            if (arrBullets[i].vPosition.x < -500 || arrBullets[i].vPosition.x > 1100)
+            {
+				arrBullets[i].exist = FALSE;
+            }
         }
     }
 }
