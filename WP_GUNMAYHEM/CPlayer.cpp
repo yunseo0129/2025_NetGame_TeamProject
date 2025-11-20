@@ -29,8 +29,7 @@ CPlayer::CPlayer()
 
 void CPlayer::Draw(HDC mDC)
 {
-	if( pInfo.isConnected ) 
-	{
+	if (pInfo.isConnected) {
 		// 1. 플레이어 그리기 
 		HBITMAP hBitmapToDraw = BMP_player_right_stand[playerType];
 		switch (looking) {
@@ -69,82 +68,22 @@ void CPlayer::Draw(HDC mDC)
 		}
 		SelectObject(g_BMPmDC, hGunBitmap);
 		TransparentBlt(mDC, gunPosX, gunPosY, gunWidth, gunHeight, g_BMPmDC, 0, 0, gunWidth, gunHeight, RGB(127, 127, 127));
+
+		// 정보창 그리기
+		// 플레이어1 정보창 위치 : 100, 500, 200, 150 
+		int plusX = 250; // 0, 250, 500 ---> (plusX * playerType)으로 x값 조정
+		SelectObject(g_BMPmDC, BMP_inform);
+		BitBlt(mDC, 100 + plusX * playerType, 500, 200, 150, g_BMPmDC, 0, 0, SRCCOPY);
+		wsprintf(lpOut, L"player %d", playerType + 1);
+		TextOut(mDC, 112 + plusX * playerType, 512, lpOut, lstrlen(lpOut));
+		wsprintf(lpOut, L"LIFE : %d", pInfo.iLife);
+		TextOut(mDC, 112 + plusX * playerType, 532, lpOut, lstrlen(lpOut));
+		wsprintf(lpOut, L"bullet : %d", 999);
+		TextOut(mDC, 112 + plusX * playerType, 552, lpOut, lstrlen(lpOut));
+		// 초상화
+		SelectObject(g_BMPmDC, BMP_player_inform[playerType]);
+		BitBlt(mDC, 240 + plusX * playerType, 515, 45, 45, g_BMPmDC, 0, 0, SRCCOPY);
 	}
-
-
-	//// 3. 총알 그리기 (기존 WM_PAINT 로직)
-	//for (int i = 0; i < MAX_BULLET; i++) {
-	//	if (bullet[i].exist == TRUE) {
-	//		HPEN mPen = CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
-	//		HPEN oldPen = (HPEN)SelectObject(mDC, mPen);
-	//		HBRUSH mBrush = CreateSolidBrush(RGB(0, 0, 0));
-	//		HBRUSH oldBrush = (HBRUSH)SelectObject(mDC, mBrush);
-
-	//		Rectangle(mDC,
-	//				  bullet[i].x - BULLET_SIZE - cameraX,
-	//				  bullet[i].y - BULLET_SIZE - cameraY,
-	//				  bullet[i].x + BULLET_SIZE - cameraX,
-	//				  bullet[i].y + BULLET_SIZE - cameraY);
-
-	//		SelectObject(mDC, oldBrush);
-	//		DeleteObject(mBrush);
-	//		SelectObject(mDC, oldPen);
-	//		DeleteObject(mPen);
-
-	//		// 그라데이션 (꼬리)
-	//		for (int j = 0; j < bullet[i].c; j++) {
-	//			mPen = CreatePen(PS_SOLID, 0, RGB(7 * j, 7 * j, 7 * j));
-	//			oldPen = (HPEN)SelectObject(mDC, mPen);
-	//			mBrush = CreateSolidBrush(RGB(7 * j, 7 * j, 7 * j));
-	//			oldBrush = (HBRUSH)SelectObject(mDC, mBrush);
-
-	//			Rectangle(mDC,
-	//					  bullet[i].x - bullet[i].vx * BULLET_SIZE2 * (j + 1) - BULLET_SIZE - cameraX,
-	//					  bullet[i].y - bullet[i].vy * BULLET_SIZE2 * (j + 1) - BULLET_SIZE - cameraY,
-	//					  bullet[i].x - bullet[i].vx * BULLET_SIZE2 * (j + 1) + BULLET_SIZE - cameraX,
-	//					  bullet[i].y - bullet[i].vy * BULLET_SIZE2 * (j + 1) + BULLET_SIZE - cameraY);
-
-	//			SelectObject(mDC, oldBrush);
-	//			DeleteObject(mBrush);
-	//			SelectObject(mDC, oldPen);
-	//			DeleteObject(mPen);
-	//		}
-	//	}
-	//}
-
-	//// 4. 정보창 그리기
-	//switch (playerType) { 
-	//case 1: { 
-	//	// 플레이어1 정보창 100, 500, 200, 150 
-	//	SelectObject(g_BMPmDC, BMP_inform);
-	//	BitBlt(mDC, 100, 500, 200, 150, g_BMPmDC, 0, 0, SRCCOPY);
-	//	//Rectangle(mDC, 100 , 500 , 300 , 650);
-	//	wsprintf(lpOut, L"player1");
-	//	TextOut(mDC, 112, 512, lpOut, lstrlen(lpOut));
-	//	wsprintf(lpOut, L"LIFE : %d", life);
-	//	TextOut(mDC, 112, 532, lpOut, lstrlen(lpOut));
-	//	wsprintf(lpOut, L"bullet : %d", maxBullet - bullet_count);
-	//	TextOut(mDC, 112, 552, lpOut, lstrlen(lpOut));
-	//	SelectObject(g_BMPmDC, BMP_player1_inform);
-	//	BitBlt(mDC, 240, 515, 45, 45, g_BMPmDC, 0, 0, SRCCOPY);
-	//	break; 
-	//}
-	//case 2: { 
-	//	// 플레이어2 정보창 570 , 500, 200, 150 
-	//	SelectObject(g_BMPmDC, BMP_inform);
-	//	BitBlt(mDC, 570, 500, 200, 150, g_BMPmDC, 0, 0, SRCCOPY);
-	//	wsprintf(lpOut, L"player2");
-	//	TextOut(mDC, 582, 512, lpOut, lstrlen(lpOut));
-	//	wsprintf(lpOut, L"LIFE : %d", life);
-	//	TextOut(mDC, 582, 532, lpOut, lstrlen(lpOut));
-	//	wsprintf(lpOut, L"bullet : %d", maxBullet - bullet_count);
-	//	TextOut(mDC, 582, 552, lpOut, lstrlen(lpOut));
-	//	SelectObject(g_BMPmDC, BMP_player2_inform);
-	//	BitBlt(mDC, 710, 515, 45, 45, g_BMPmDC, 0, 0, SRCCOPY);
-	//	break; 
-	//}
-	//}
-
 }
 
 void CPlayer::Free()
