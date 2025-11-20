@@ -18,17 +18,20 @@ public:
 	virtual void Free() override;
 	virtual bool Update() override;
 
+	void Init() { 
+		m_exist = FALSE; 
+		m_x = 0; 
+		m_y = 0; 
+		m_gradationCount = 7;
+	}
+
 public:
 	int m_exist;	// 존재여부 (TRUE/FALSE)
 	int m_x;		// 현재 x좌표 (픽셀 상)
 	int m_y;		// 현재 y좌표 (픽셀 상)
 
-	// float vx;	// x좌표 이동방향
-	// float vy;	// y좌표 이동방향 // 0으로 고정
-	// 
-	// int c;		// 그라데이션을 위한 카운트
-	// 
-	// float travelDistance;   // 이동한 거리, 사거리 체크용
+	int m_gradationCount = 3;	// 그라데이션을 위한 카운트
+	int m_maxGradation = 15;	// 타입에 따른 최대 그라데이션 수 (권총 15, 저격총 25)
 
 public:
 	BulletInfo bInfo;
