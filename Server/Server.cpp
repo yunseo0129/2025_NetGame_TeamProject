@@ -391,7 +391,7 @@ void Collision()
         if (Players[i].info.isConnected)
         {
             RECT Pbox = Players[i].colBox;
-            for (ItemBoxInfo itm : arrItemBoxes)
+            for (ItemBoxInfo& itm : arrItemBoxes)
             {
                 if (itm.exist)
                 {
