@@ -64,18 +64,17 @@ void CBullet::Free()
 bool CBullet::Update()
 {
 	if (true) {
+		// 새로 생성될 때 그라데이션 초기화
+		if (bInfo.exist == true && m_exist == FALSE) {
+			m_gradationCount = 3; 
+			m_maxGradation = (bInfo.eType == ITEM_PISTOL) ? 15 : 25;
+		}
+
 		m_exist = bInfo.exist;
 		m_x = bInfo.vPosition.x;
 		m_y = bInfo.vPosition.y;
 
-		
-		// 초기화
-		if (!m_exist) {
-			m_gradationCount = 7; 
-
-			if (bInfo.eType == ITEM_SNIPER)
-				m_maxGradation = 25;
-		}
+	
 	}
 	return false;
 }
