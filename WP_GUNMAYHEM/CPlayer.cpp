@@ -78,7 +78,7 @@ void CPlayer::Draw(HDC mDC)
 		TextOut(mDC, 112 + plusX * playerType, 512, lpOut, lstrlen(lpOut));
 		wsprintf(lpOut, L"LIFE : %d", pInfo.iLife);
 		TextOut(mDC, 112 + plusX * playerType, 532, lpOut, lstrlen(lpOut));
-		wsprintf(lpOut, L"bullet : %d", 999);
+		wsprintf(lpOut, L"bullet : %d", pInfo.iBullet);
 		TextOut(mDC, 112 + plusX * playerType, 552, lpOut, lstrlen(lpOut));
 		// 초상화
 		SelectObject(g_BMPmDC, BMP_player_inform[playerType]);

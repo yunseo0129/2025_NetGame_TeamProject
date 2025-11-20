@@ -420,6 +420,9 @@ void Shooting(int id)
 {
     for (int j = 0; j < Players[id].Act.space; ++j)
     {
+        if (Players[id].info.iBullet <= 0)
+			break;
+
         Players[id].info.iBullet -= 1;
         Players[id].Act.space -= 1;
         if (Players[id].info.iBullet >= 0)
