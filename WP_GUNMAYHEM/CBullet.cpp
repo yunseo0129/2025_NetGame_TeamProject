@@ -22,14 +22,38 @@ void CBullet::Draw(HDC mDC)
 
 		Rectangle(mDC,
 				  m_x - BULLET_SIZE - cameraX,
-				  m_y - BULLET_SIZE - cameraY,
+				  m_y + 2 - BULLET_SIZE - cameraY,
 				  m_x + BULLET_SIZE - cameraX,
-				  m_y + BULLET_SIZE - cameraY);
+				  m_y + 2 + BULLET_SIZE - cameraY);
 
 		SelectObject(mDC, oldBrush);
 		DeleteObject(mBrush);
 		SelectObject(mDC, oldPen);
 		DeleteObject(mPen);
+
+		// 그라데이션 (꼬리)
+		int vx = (bInfo.vPosition.x - bInfo.vStarting.x < 0) ? -1 : 1; // 방향 벡터 x 성분
+		for (int j = 0; j < m_gradationCount; j++) {
+			mPen = CreatePen(PS_SOLID, 0, RGB(7 * j, 7 * j, 7 * j));
+			oldPen = (HPEN)SelectObject(mDC, mPen);
+			mBrush = CreateSolidBrush(RGB(7 * j, 7 * j, 7 * j));
+			oldBrush = (HBRUSH)SelectObject(mDC, mBrush);
+
+			Rectangle(mDC,
+					  m_x - vx * BULLET_SIZE2 * (j + 1) - BULLET_SIZE - cameraX,
+					  m_y + 2							- BULLET_SIZE - cameraY,
+					  m_x - vx * BULLET_SIZE2 * (j + 1) + BULLET_SIZE - cameraX,
+					  m_y + 2 							+ BULLET_SIZE - cameraY);
+
+			SelectObject(mDC, oldBrush);
+			DeleteObject(mBrush);
+			SelectObject(mDC, oldPen);
+			DeleteObject(mPen);
+
+		}
+
+		if (m_gradationCount < m_maxGradation)
+			++m_gradationCount;
 	}
 }
 
@@ -43,6 +67,15 @@ bool CBullet::Update()
 		m_exist = bInfo.exist;
 		m_x = bInfo.vPosition.x;
 		m_y = bInfo.vPosition.y;
+
+		
+		// 초기화
+		if (!m_exist) {
+			m_gradationCount = 7; 
+
+			if (bInfo.eType == ITEM_SNIPER)
+				m_maxGradation = 25;
+		}
 	}
 	return false;
 }
