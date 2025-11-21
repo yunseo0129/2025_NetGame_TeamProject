@@ -548,41 +548,41 @@ void UpdateBullets()
 
 void UpdateItemBoxes()
 {
-    // 아이템 박스 생성
-    // 각 블록 중앙에 아이템 박스를 배치
-    // 도익씨 이거 랜덤스폰해서 하늘에서 떨어지게 바꿔주실때
-    // 충돌박스도 위치 같이 잡아주셔야하구
-    // move함수 만들어둘테니 그거 쓰시면 충돌박스도 같이 움직이게 해둘게요
-    // 초기위치도 0, 0에서 move함수로 옮긴다고 생각해주세요
-    // 는 생각해보니 얘는 통신용이라 못한당 ㅎㅎ 그냥 수동으로 해주셔야할듯 저 밑에 포문처럼 해주시면대용
-    
-    // 블록 0
-    arrItemBoxes[0].exist = TRUE;
-    arrItemBoxes[0].vPosition.x = (block[0].left + block[0].right) / 2.0f;
-    arrItemBoxes[0].vPosition.y = block[0].top - 40.f; // 아이템 박스 높이만큼 위로
-
-    // 블록 1
-    arrItemBoxes[1].exist = TRUE;
-    arrItemBoxes[1].vPosition.x = (block[1].left + block[1].right) / 2.0f;
-    arrItemBoxes[1].vPosition.y = block[1].top - 40.f;
-
-    // 블록 2
-    arrItemBoxes[2].exist = TRUE;
-    arrItemBoxes[2].vPosition.x = (block[2].left + block[2].right) / 2.0f;
-    arrItemBoxes[2].vPosition.y = block[2].top - 40.f;
-
-    // 블록 3
-    arrItemBoxes[3].exist = TRUE;
-    arrItemBoxes[3].vPosition.x = (block[3].left + block[3].right) / 2.0f;
-    arrItemBoxes[3].vPosition.y = block[3].top - 40.f;
-
-    // 블록 4
-    arrItemBoxes[4].exist = TRUE;
-    arrItemBoxes[4].vPosition.x = (block[4].left + block[4].right) / 2.0f;
-    arrItemBoxes[4].vPosition.y = block[4].top - 40.f;
-
+    // 아이템 박스 생성 및 업데이트
     for (int i = 0; i < 5; ++i)
     {
+        // 아이템 박스가 존재하지 않으면 랜덤하게 생성
+        if (!arrItemBoxes[i].exist)
+        {
+            // 1% 확률로 아이템 박스 생성
+            if ((rand() % 100) < 1)
+            {
+                arrItemBoxes[i].exist = TRUE;
+                // 발판 중앙에 위치
+                arrItemBoxes[i].vPosition.x = (block[i].left + block[i].right) / 2.0f;
+                // 낙하 시작 지점
+                arrItemBoxes[i].vPosition.y = - 300.f;
+            }
+        }
+        else // 아이템 박스가 존재하면 아래로 떨어뜨림
+        {
+            // 목표 y 위치 블록 위 
+            float targetY = block[i].top - 42.f;
+
+            // 아이템 박스가 목표 위치보다 위에 있으면 중력 적용
+            if (arrItemBoxes[i].vPosition.y < targetY)
+            {
+                arrItemBoxes[i].vPosition.y += 9.81f * 100.f * timedelta; // 중력 적용
+
+                // 목표 위치를 넘어가면 위치 고정
+                if (arrItemBoxes[i].vPosition.y > targetY)
+                {
+                    arrItemBoxes[i].vPosition.y = targetY;
+                }
+            }
+        }
+
+        // 모든 아이템 박스의 충돌 박스 위치 업데이트
         arrItemBoxes[i].colBox.left = arrItemBoxes[i].vPosition.x;
         arrItemBoxes[i].colBox.top = arrItemBoxes[i].vPosition.y;
         arrItemBoxes[i].colBox.right = arrItemBoxes[i].colBox.left + 40;
