@@ -462,6 +462,33 @@ void UpdatePlayer()
     {
         if (Players[i].info.isConnected)
         {
+            // 낙사 처리
+            if (Players[i].info.vPosition.y > 1100)
+            {
+                Players[i].info.iLife--; // 생명력 감소
+                if (Players[i].info.iLife > 0)
+                {
+                    // 초기 위치로 리스폰
+                    int pX = 100 + (i * 200);
+                    Players[i].info.vPosition.x = pX;
+                    Players[i].info.vPosition.y = 70;
+                    Players[i].fGravity = 0.f; // 중력 초기화
+                    Players[i].fAcc = 0.f;     // 가속도 초기화
+
+					Players[i].colBox.left = Players[i].info.vPosition.x + 10.f;  // 충돌 박스 초기화
+                    Players[i].colBox.right = Players[i].info.vPosition.x + 35.f;
+                    Players[i].colBox.top = Players[i].info.vPosition.y;
+                    Players[i].colBox.bottom = Players[i].info.vPosition.y + 67.f;
+                }
+                else
+                {
+                    // 게임 오버 처리 (연결 끊김으로 처리)
+                    Players[i].info.isConnected = false;
+                    closesocket(Players[i].socket);
+                }
+                continue; // 아래 로직을 실행하지 않고 다음 플레이어로 넘어감
+            }
+
             // 가속도 감소
             if (Players[i].fAcc > 0.f)
             {
