@@ -166,6 +166,14 @@ void CPlayLevel::Draw(HDC mDC)
 			TextOut(mDC, 10, 10, DebugText, lstrlen(DebugText));
 		}
 	}
+
+	if (m_bIsRunning == false)
+	{
+		// 연결이 끊어졌거나 오류가 발생한 경우 "Game Over" 표시
+		TCHAR EndText[100];
+		wsprintf(EndText, L"Game Over");
+		TextOut(mDC, 420, 200, EndText, lstrlen(EndText));
+	}
 }
 
 void CPlayLevel::Free()
