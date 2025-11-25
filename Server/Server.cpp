@@ -564,7 +564,7 @@ void UpdateBullets()
             // 총알 이동 로직 구현
             // 예: arrBullets[i].vPosition.x += 속도 * 방향 * timedelta;
 			// 총알이 사거리 초과 또는 충돌 시 삭제 처리
-			arrBullets[i].vPosition.x += (arrBullets[i].eType == ITEM_PISTOL ? 10.f : 5.f) * ((arrBullets[i].vPosition.x >= arrBullets[i].vStarting.x) ? 1.f : -1.f);
+			arrBullets[i].vPosition.x += (arrBullets[i].eType == ITEM_PISTOL ? 10.f : 15.f) * ((arrBullets[i].vPosition.x >= arrBullets[i].vStarting.x) ? 1.f : -1.f);
             if (abs(arrBullets[i].vPosition.x - arrBullets[i].vStarting.x) > 800.0f) 
             {
 				arrBullets[i].exist = FALSE;
