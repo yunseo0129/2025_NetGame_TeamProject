@@ -26,25 +26,16 @@ void CPlayLevel::Initialize()
 	// === 플레이어 생성 ===
 	for (int i = 0; i < 3; ++i) {
 		m_pPlayer[i] = new CPlayer();
-		m_pPlayer[i]->x = 100 + i * 200; // 초기 위치
 		m_pPlayer[i]->playerType = i;
 		AddObject(m_pPlayer[i], OBJ_PLAYER); // 레벨에 등록
 	}
 
 	// === 맵 생성 ===
-	if (g_mapType == 0) {
-		AddObject(new CMap(330, 170), OBJ_MAP);  // 1단
-		AddObject(new CMap(160, 300), OBJ_MAP);  // 2단
-		AddObject(new CMap(510, 300), OBJ_MAP);
-		AddObject(new CMap(70, 420), OBJ_MAP);  // 3단
-		AddObject(new CMap(600, 420), OBJ_MAP);
-	} else { // mapType == 1
-		AddObject(new CMap(160, 170), OBJ_MAP);  // 1단
-		AddObject(new CMap(510, 170), OBJ_MAP);
-		AddObject(new CMap(330, 300), OBJ_MAP);  // 2단
-		AddObject(new CMap(70, 420), OBJ_MAP);  // 3단
-		AddObject(new CMap(600, 420), OBJ_MAP);
-	}
+	AddObject(new CMap(330, 170), OBJ_MAP);  // 1단
+	AddObject(new CMap(160, 300), OBJ_MAP);  // 2단
+	AddObject(new CMap(510, 300), OBJ_MAP);
+	AddObject(new CMap(70, 420), OBJ_MAP);  // 3단
+	AddObject(new CMap(600, 420), OBJ_MAP);
 
 	// === 아이템 박스 생성 ===
 	for (int i = 0; i < 10; ++i) { 
@@ -56,7 +47,6 @@ void CPlayLevel::Initialize()
 		AddObject(new CBullet(), OBJ_BULLET);
 	}
 }
-
 
 void CPlayLevel::update_camera()
 {
@@ -101,11 +91,11 @@ void CPlayLevel::Update()
 {
 	// 네트워크 패킷 처리
 	SendData recvData;
-	//MovementData recvData;
 	bool bPacketProcessed = false;
 
 	EnterCriticalSection(&m_cs); 
-	// if -> while 로 변경하여 한 프레임에서 큐에 있는 모든 패킷 처리
+	// if -> while 로 변경
+	// 즉, 한 프레임에 해당 큐에 있는 데이터 중 가장 마지막 데이터만 처리
 	while (!m_recvQueue.empty()) {
 		recvData = m_recvQueue.front(); // 데이터를 꺼내서 복사
 		m_recvQueue.pop();              // 큐에서 제거
@@ -124,7 +114,6 @@ void CPlayLevel::Update()
 		// 아이템 박스 상태 업데이트
 		auto& itemList = GetGroupObject(OBJ_ITEMBOX);
 		auto itemIter = itemList.begin();
-
 		for (int i = 0; i < 10; ++i) {
 			if (itemIter == itemList.end()) break;
 
@@ -140,7 +129,6 @@ void CPlayLevel::Update()
 		// 총알 상태 업데이트
 		auto& bulletList = GetGroupObject(OBJ_BULLET);
 		auto bulletIter = bulletList.begin();
-
 		for (int i = 0; i < 10; ++i) {
 			// 리스트 끝에 도달하면 중단
 			if (bulletIter == bulletList.end()) break;
@@ -150,15 +138,13 @@ void CPlayLevel::Update()
 				pBullet->bInfo = recvData.arrBullets[i];
 			}
 
-			// [중요] 다음 총알로 이동
+			// 다음 총알로 이동
 			++bulletIter;
 		}
 	}
 
 	// 키 입력 처리
 	ProcessInput(); 
-	/*wsprintf(DebugText, L"ID: %d, KeyAct: %d, Key: %d, isDown: %d", 
-			 m_myPlayerID, b_keyAct, myAction.key, myAction.isDown);*/
 	if (b_keyAct && m_sock != INVALID_SOCKET) {
 		// 입력을 서버로 전송
 		for (const auto& myAction : m_vecInputActions) {
@@ -169,50 +155,34 @@ void CPlayLevel::Update()
 		}
 	}
 
-	// === 부모 클래스의 Update 호출 ===
+	// 부모 클래스의 Update 호출 
 	CLevel::Update();
 
-	// === 카메라 업데이트 ===
+	// 카메라 업데이트 
 	update_camera();
 }
 
 void CPlayLevel::Draw(HDC mDC)
 {
-	// 1. 배경 그리기 
-	// 맵 하나만 사용
+	// 배경 그리기 - 맵 하나만 사용
 	SelectObject(g_BMPmDC, BMP_map1);
 	BitBlt(mDC, 0, 0, 900, 650, g_BMPmDC, 900 - cameraX / 5, 650 - cameraY / 5, SRCCOPY);
 
-	// 2. 부모 클래스의 Draw 호출
-	// (이 코드가 m_ObjList의 모든 객체(CMap, CItem)의 Draw를 호출)
+	// 부모 클래스의 Draw 호출
 	CLevel::Draw(mDC);
-
-	if (m_myPlayerID != -1) {
-		if (m_pPlayer[m_myPlayerID] != nullptr) {
-			wsprintf(DebugText, L"ID: %d, looking : %d", m_myPlayerID, m_pPlayer[m_myPlayerID]->looking);
-			TextOut(mDC, 10, 10, DebugText, lstrlen(DebugText));
-		}
-	}
 
 	// 종료 검사 및 게임 결과 텍스트 출력
 	if (m_bGameStarted) {
-		// ==========================================
-		// [수정] 게임 결과 텍스트 (폰트 크기 키우기)
-		// ==========================================
-
-		// 1. 큰 폰트 생성 (높이 60, 굵게)
-		// CreateFont(높이, 너비, 기울기, 방향, 굵기(FW_BOLD), 이탤릭, 밑줄, 취소선, 문자셋, ...)
-		HFONT hFont = CreateFont(60, 0, 0, 0, FW_BOLD, 0, 0, 0, DEFAULT_CHARSET,
+		
+		// 큰 폰트 생성
+		HFONT hFont = CreateFont(60, 0, 0, 0, FW_BOLD, 0, 0, 0, DEFAULT_CHARSET, 
 								 0, 0, 0, 0, L"Arial");
 
-		// 2. 생성한 폰트를 DC에 선택(Select)하고, 이전 폰트를 저장해둠
+		// 생성한 폰트를 DC에 선택(Select), 이전 폰트 저장
 		HFONT hOldFont = (HFONT)SelectObject(mDC, hFont);
 
-		// (옵션) 텍스트 배경을 투명하게 설정 (글자 뒤에 흰색 박스가 생기지 않게 함)
+		// 텍스트 배경을 투명하게 설정
 		int nOldBkMode = SetBkMode(mDC, TRANSPARENT);
-
-		// (옵션) 텍스트 색상 변경 (예: 빨간색)
-		// COLORREF oldColor = SetTextColor(mDC, RGB(255, 0, 0));
 
 		// 종료 검사	및 텍스트 출력
 		if (m_pPlayer[m_myPlayerID]->pInfo.iLife <= 0) {
@@ -220,39 +190,37 @@ void CPlayLevel::Draw(HDC mDC)
 			wsprintf(EndText, L"Game Over");
 			TextOut(mDC, 320, 150, EndText, lstrlen(EndText));
 		}
-		// 승리 판정
-		bool bWin = false;
-		switch (m_myPlayerID) {
-		case 0:
-			if (m_pPlayer[1]->pInfo.iLife <= 0 && m_pPlayer[2]->pInfo.iLife <= 0) {
-				bWin = true;
+		else {
+			// 승리 판정 및 텍스트 출력
+			bool bWin = false;
+			switch (m_myPlayerID) {
+			case 0:
+				if (m_pPlayer[1]->pInfo.iLife <= 0 && m_pPlayer[2]->pInfo.iLife <= 0) {
+					bWin = true;
+				}
+				break;
+			case 1:
+				if (m_pPlayer[0]->pInfo.iLife <= 0 && m_pPlayer[2]->pInfo.iLife <= 0) {
+					bWin = true;
+				}
+				break;
+			case 2:
+				if (m_pPlayer[0]->pInfo.iLife <= 0 && m_pPlayer[1]->pInfo.iLife <= 0) {
+					bWin = true;
+				}
+				break;
 			}
-			break;
-		case 1:
-			if (m_pPlayer[0]->pInfo.iLife <= 0 && m_pPlayer[2]->pInfo.iLife <= 0) {
-				bWin = true;
+			if (bWin) {
+				TCHAR WinText[100];
+				wsprintf(WinText, L"You Win!");
+				TextOut(mDC, 320, 150, WinText, lstrlen(WinText));
 			}
-			break;
-		case 2:
-			if (m_pPlayer[0]->pInfo.iLife <= 0 && m_pPlayer[1]->pInfo.iLife <= 0) {
-				bWin = true;
-			}
-			break;
-		}
-		if (bWin) {
-			TCHAR WinText[100];
-			wsprintf(WinText, L"You Win!");
-			TextOut(mDC, 320, 150, WinText, lstrlen(WinText));
 		}
 
-		// 3. 뒷정리 (매우 중요)
-		// 원래 폰트와 배경 모드로 되돌림
+		// 뒷정리 
 		SelectObject(mDC, hOldFont);
-		SetBkMode(mDC, nOldBkMode);
-		// SetTextColor(mDC, oldColor); // 색상을 바꿨다면 복구
-
-		// 다 쓴 폰트 객체 삭제 (삭제 안 하면 메모리 누수 발생)
-		DeleteObject(hFont);
+		SetBkMode(mDC, nOldBkMode);		// 원래 폰트와 배경 모드로 되돌림
+		DeleteObject(hFont);			// 다 쓴 폰트 객체 삭제
 	}
 }
 
@@ -268,8 +236,8 @@ void CPlayLevel::Free()
 void CPlayLevel::ProcessInput()
 {
 	m_vecInputActions.clear();
-	b_keyAct = false;						// 키 입력이 있었는지 여부
-	Player_input myAction; // 현재 키 이벤트를 저장할 임시 변수
+	b_keyAct = false;			// 키 입력이 있었는지 여부
+	Player_input myAction;		// 현재 키 이벤트를 저장할 임시 변수
 	myAction.id = m_myPlayerID;
 
 	// 키 다운 처리
@@ -279,15 +247,12 @@ void CPlayLevel::ProcessInput()
 		myAction.key = KEY_LEFT;
 		m_vecInputActions.push_back(myAction);
 	}
-
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_RIGHT)) {
 		b_keyAct = true;
 		myAction.isDown = true;
 		myAction.key = KEY_RIGHT;
-
 		m_vecInputActions.push_back(myAction);
 	}
-
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_UP)) {
 		b_keyAct = true;
 		myAction.isDown = true;
@@ -320,17 +285,6 @@ void CPlayLevel::ProcessInput()
 		myAction.key = KEY_RIGHT;
 		m_vecInputActions.push_back(myAction);
 	}
-	
-	
-	/*if (CKeyMgr::Get_Instance()->Key_Up(VK_UP)) {
-		b_keyAct = true;
-		myAction.key = KEY_JUMP;
-	}
-	if (CKeyMgr::Get_Instance()->Key_Up(VK_DOWN)) {
-		b_keyAct = true;
-		myAction.isDown = false;
-		myAction.key = KEY_DOWNJUMP;
-	}*/
 }
 
 DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
@@ -344,7 +298,7 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 		OutputDebugString(L"[ClientThread] : err - socket()\n");
 		return 1;
 	}
-
+	
 	// 소켓 옵션 설정 NODELAY
 	DWORD NODELAY = 1;
 	setsockopt(pThis->m_sock, IPPROTO_TCP, TCP_NODELAY, (const char*)&NODELAY, sizeof(DWORD));
@@ -365,19 +319,14 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 	}
 	OutputDebugString(L"[ClientThread] : connect 성공\n");
 
-	// =================================================
 	// 접속 직후 서버로부터 "내 ID"를 먼저 받는다.
-	// 서버는 접속되자마자 int형 데이터(0 또는 1)를 보내줘야 함
-	// =================================================
-
 	int myID = -1;
 	retval = recv(pThis->m_sock, (char*)&myID, sizeof(int), 0);
-
 	if (retval == SOCKET_ERROR || retval == 0) {
 		OutputDebugString(L"ID 수신 실패\n");
 		pThis->m_bIsRunning = false;
 	} else {
-		pThis->m_myPlayerID = myID; // 내 ID 저장!
+		pThis->m_myPlayerID = myID; // 내 ID 저장
 
 		// 디버그용 출력
 		wchar_t buf[100];
@@ -397,34 +346,25 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 		} 
 
 		// 게임 시작 검사 (플레이어 세명 연결 성공)
-		int connectedCount = 0;
-		for (int i = 0; i < 3; ++i) {
-			if (recvData.playerInfo[i].isConnected == true) {
-				connectedCount++;
-			} 
-		}
-		if (connectedCount == 3) {
-			pThis->m_bGameStarted = true;
+		if (!pThis->m_bGameStarted)
+		{
+			int connectedCount = 0;
+			for (int i = 0; i < 3; ++i) {
+				if (recvData.playerInfo[i].isConnected == true) {
+					connectedCount++;
+				}
+			}
+			if (connectedCount == 3) {
+				pThis->m_bGameStarted = true;
+			}
 		}
 
 		if (recvData.isChanged)
 		{
 			// 데이터 수신 성공 - 큐에 저장
 			EnterCriticalSection(&pThis->m_cs);
-
-			// 디버그용 출력
-			wchar_t buf[1000];
-			wsprintf(buf, L"PlayerInfo[0] Position: (%d, %d)\n "
-					 L"PlayerInfo[0].itemType: %d\n"
-				L"ItemBox[1] Position: (%d, %d), exist: %d\n "
-				L"Bullet[0] Position: (%d, %d), exist: %d\n",
-				(int)recvData.playerInfo[0].vPosition.x, (int)recvData.playerInfo[0].vPosition.y,
-				(int)recvData.playerInfo[0].eItemType,
-				(int)recvData.arrItemBoxs[0].vPosition.x, (int)recvData.arrItemBoxs[0].vPosition.y, recvData.arrItemBoxs[0].exist,
-				(int)recvData.arrBullets[0].vPosition.x, (int)recvData.arrBullets[0].vPosition.y, recvData.arrBullets[0].exist);
-			OutputDebugString(buf);
-
-			pThis->m_recvQueue.push(recvData); // 2. 큐에 데이터 삽입
+			OutputDebugString(L"[ClientThread] : 데이터 수신 성공 - 큐에 삽입\n");
+			pThis->m_recvQueue.push(recvData); 
 			LeaveCriticalSection(&pThis->m_cs);
 		}
 	}

@@ -11,7 +11,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 {
 	WSADATA wsa;
 	// === 윈속 초기화 ===
-	OutputDebugString(L"CPlayLevel::Initialize()\n");
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 		exit(1);
 
@@ -32,8 +31,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	WndClass.hIconSm = LoadIcon(NULL, IDI_QUESTION);
 	RegisterClassEx(&WndClass);
 	g_hWnd = CreateWindow(lpszClass, lpszWindowName, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU, 0, 0, 900, 650, NULL, (HMENU)NULL, hInstance, NULL);
-	//hWnd = CreateWindow(lpszClass, lpszWindowName, WS_OVERLAPPED | WS_CAPTION , 0, 0, 900, 650, NULL, (HMENU)NULL, hInstance, NULL);
-
+	
 	CLevelManager::GetInstance()->Initialize();
 
 	ShowWindow(g_hWnd, nCmdShow);
@@ -144,15 +142,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 
-	// 입력 처리는 CLevel::Update 에서 처리하도록 하기
-	// case WM_CHAR:
-	// case WM_KEYDOWN:
-	// case WM_KEYUP:
-	// case WM_LBUTTONDOWN:
 	case WM_TIMER:
 	{
 		// === 게임 로직 업데이트 및 화면 갱신 요청 ===
-		// 메인 게임 루프 타이머
 		CLevelManager::GetInstance()->UpdateLevel();
 		InvalidateRect(g_hWnd, NULL, FALSE);
 		break;
@@ -200,7 +192,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		}
 
 		KillTimer(hWnd, 1);
-		// KillTimer(hWnd, 2);
 
 		PlaySound(NULL, NULL, NULL);
 		channel->stop();

@@ -6,11 +6,6 @@
 #include "CMap.h"
 #include "CItem.h"
 
-// 플레이 레벨 ====
-// 캐릭터, 아이템, 맵, 총알 오브젝트들
-// Draw - 맵, 캐릭터, 캐릭터 정보, 총알은 그라데이션 신경쓰기
-// Update - 입력처리, 충돌처리, 아이템 생성, 캐릭터 이동, 총알 이동
-
 class CPlayLevel final : public CLevel {
 public:
 	CPlayLevel();
@@ -25,19 +20,17 @@ public:
 	void ProcessInput();
 	void update_camera();
 
-	TCHAR DebugText[100];
-
 private:
-	int m_myPlayerID = -1;
-	CPlayer* m_pPlayer[3] = { nullptr, }; // 최대 3명
+	// 플레이어 
+	int m_myPlayerID = -1;					// 내 플레이어 ID
+	CPlayer* m_pPlayer[3] = { nullptr, };	// 플레이어 객체 배열 (최대 3명 고정)
 
-private:
 	// 네트워크 관련
 	SOCKET m_sock = INVALID_SOCKET;
 	std::queue<SendData> m_recvQueue;
-	//std::queue<MovementData> m_recvQueue; // SendData -> MovementData
 	CRITICAL_SECTION m_cs;
 
+	// 스레드 관련
 	bool m_bIsRunning = false;		// 스레드 실행 플래그
 	HANDLE m_hThread = NULL;        // 스레드 핸들
 	static DWORD WINAPI ClientThread(LPVOID);
@@ -46,8 +39,9 @@ private:
 	bool b_keyAct = false;
 	std::vector<Player_input> m_vecInputActions;
 
-	// 게임이 시작 되었었는가
-	bool m_bGameStarted = false;
+	// 게임 시작 여부
+	bool m_bGameStarted = false;	
 
-	int camId;
+	// 카메라 추적 플레이어 ID
+	int camId;						
 };
