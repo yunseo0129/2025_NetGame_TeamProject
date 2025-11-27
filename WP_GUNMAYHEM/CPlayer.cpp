@@ -11,6 +11,24 @@ CPlayer::CPlayer()
 void CPlayer::Draw(HDC mDC)
 {
 	if (exist && pInfo.isConnected) {
+		// 내 플레이어 표시
+		if (isMyPlayer) {
+			// 텍스트 배경을 투명하게 설정 (기존 설정 저장)
+			int nOldBkMode = SetBkMode(mDC, TRANSPARENT);
+
+			// 출력할 문자열 (역삼각형)
+			const WCHAR* marker = L"▼";
+
+			// 위치 계산 (플레이어 머리 위 중앙)
+			int markX = (x - cameraX) + (pWidth / 2) - 8;
+			int markY = (y - cameraY) - 20; // 머리 위로 20픽셀 띄움
+
+			// 출력
+			TextOut(mDC, markX, markY, marker, lstrlen(marker));
+
+			// DC 설정 복구 (다른 그리기에 영향 주지 않도록)
+			SetBkMode(mDC, nOldBkMode);
+		}
 
 		// 1. 플레이어 그리기 
 		HBITMAP hBitmapToDraw = BMP_player_right_stand[playerType];

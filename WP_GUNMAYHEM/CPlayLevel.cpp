@@ -50,13 +50,15 @@ void CPlayLevel::Initialize()
 
 void CPlayLevel::update_camera()
 {
+	// 한 플레이어 추적 버전
+	/*
 	// 아직 ID를 못 받았거나, 플레이어가 생성되지 않았으면 리턴
 	if (m_myPlayerID == -1) return;
 	camId = m_myPlayerID;
 
-	if (!m_pPlayer[camId]->pInfo.iLife)
+	if (!m_pPlayer[camId]->pInfo.iLife) 
 	{
-		switch (camId)
+		switch (camId) 
 		{
 		case 0:
 			if (m_pPlayer[1]->pInfo.iLife)
@@ -85,6 +87,37 @@ void CPlayLevel::update_camera()
 
 	cameraX = targetX - cameraWidth / 2 + (pWidth / 2);
 	cameraY = targetY - cameraHeight / 2 + 100;
+	*/
+	
+	// 모든 플레이어 중심점 추적 버전
+	if (m_myPlayerID == -1) return;
+
+	// 살아있는 플레이어들의 좌표 평균 구하기
+	int playerCenterX = 0;
+	int playerCenterY = 0;
+	int aliveCount = 0;
+
+	for (int i = 0; i < 3; ++i) {
+		if (m_pPlayer[i] && m_pPlayer[i]->pInfo.isConnected && m_pPlayer[i]->pInfo.iLife > 0) {
+			playerCenterX += m_pPlayer[i]->Get_X();
+			playerCenterY += m_pPlayer[i]->Get_Y();
+			aliveCount++;
+		}
+	}
+
+	// 중심점 계산
+	playerCenterX /= aliveCount;
+	playerCenterY /= aliveCount;
+
+	// 카메라 위치 설정 (화면 중앙에 중심점이 오도록)
+	// targetX - (화면가로/2) + (플레이어가로/2)
+	cameraX = playerCenterX - cameraWidth / 2 + (pWidth / 2);
+	cameraY = playerCenterY - cameraHeight / 2 + 100;
+
+	// Clamping
+	cameraX = max(0 - cameraWidth / 2, min(cameraX, 1200 - cameraWidth));
+	cameraY = max(0 - cameraHeight / 2, min(cameraY, 800 - cameraHeight));
+	
 }
 
 void CPlayLevel::Update()
@@ -327,6 +360,7 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 		pThis->m_bIsRunning = false;
 	} else {
 		pThis->m_myPlayerID = myID; // 내 ID 저장
+		pThis->m_pPlayer[myID]->isMyPlayer = true; // 내 플레이어 객체 표시
 
 		// 디버그용 출력
 		wchar_t buf[100];

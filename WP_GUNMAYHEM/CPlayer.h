@@ -36,6 +36,7 @@ private:
 	int anim_timer = 0;
 
 public:
+	bool isMyPlayer = false;
 	int playerType = -1;
 	PlayerInfo pInfo;
 };
