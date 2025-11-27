@@ -500,8 +500,8 @@ void UpdatePlayer()
                 else
                 {
                     // 게임 오버 처리 (연결 끊김으로 처리)
-                    Players[i].info.isConnected = false;
-                    closesocket(Players[i].socket);
+                    //Players[i].info.isConnected = false;
+                    //closesocket(Players[i].socket);
                 }
                 continue; // 아래 로직을 실행하지 않고 다음 플레이어로 넘어감
             }
