@@ -105,6 +105,8 @@ void CPlayLevel::update_camera()
 		}
 	}
 
+	if (aliveCount == 0) return; // 예외 처리 (0으로 나누기 방지)
+
 	// 중심점 계산
 	playerCenterX /= aliveCount;
 	playerCenterY /= aliveCount;
@@ -114,10 +116,16 @@ void CPlayLevel::update_camera()
 	cameraX = playerCenterX - cameraWidth / 2 + (pWidth / 2);
 	cameraY = playerCenterY - cameraHeight / 2 + 100;
 
-	// Clamping
-	cameraX = max(0 - cameraWidth / 2, min(cameraX, 1200 - cameraWidth));
-	cameraY = max(0 - cameraHeight / 2, min(cameraY, 800 - cameraHeight));
-	
+	// ---------------------------------------------------------
+	// 맵 경계 기준 Clamping 및 Centering
+	const int mapMinX = 70;
+	const int mapMaxX = 800;
+	const int mapMinY = 170;
+	const int mapMaxY = 450;
+
+	const int offset = 400; // 여유 공간
+	cameraX = max(mapMinX - offset, min(cameraX, mapMaxX + offset - cameraWidth));
+	cameraY = max(mapMinY - offset, min(cameraY, mapMaxY + offset - cameraHeight));
 }
 
 void CPlayLevel::Update()
