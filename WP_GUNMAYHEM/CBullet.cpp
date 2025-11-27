@@ -1,4 +1,4 @@
-﻿#include "CBullet.h"
+﻿ #include "CBullet.h"
 
 CBullet::CBullet()
 {
@@ -79,8 +79,6 @@ bool CBullet::Update()
 		m_exist = bInfo.exist;
 		m_x = bInfo.vPosition.x;
 		m_y = bInfo.vPosition.y;
-
-		
 	}
 	return false;
 }

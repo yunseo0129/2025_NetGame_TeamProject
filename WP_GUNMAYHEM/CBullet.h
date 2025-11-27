@@ -4,9 +4,8 @@
 //총 길이(이미지)
 const int gunWidth = 80;
 const int gunHeight = 30;
-const int BULLET_SIZE = 2;		// 권총		가로 및 세로의 길이
-const int BULLET_SIZE2 = 4;		// 저격총	가로길이 - 세로는 권총과 동일
-const int MAX_BULLET = 20;		// 총알 최대 개수
+const int BULLET_SIZE = 2;		
+const int BULLET_SIZE2 = 4;		// 그라데이션 길이
 
 class CBullet final : public CObject {
 public:
@@ -17,13 +16,6 @@ public:
 	virtual void Draw(HDC mDC) override;
 	virtual void Free() override;
 	virtual bool Update() override;
-
-	void Init() { 
-		m_exist = FALSE; 
-		m_x = 0; 
-		m_y = 0; 
-		m_gradationCount = 7;
-	}
 
 public:
 	int m_exist;	// 존재여부 (TRUE/FALSE)

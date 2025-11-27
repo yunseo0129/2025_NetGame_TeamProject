@@ -23,5 +23,4 @@ bool CMap::Update()
 
 void CMap::Free()
 {
-	//m_vMaps.clear();
 }

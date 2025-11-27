@@ -2,13 +2,10 @@
 #include "CLevel.h"
 #include "CMainLevel.h"
 #include "CPlayLevel.h"
-// #include "CPauseLevel.h"
 
 enum LEVEL_ID
 {
 	LEVEL_MAIN, 
-	LEVEL_LOBBY,
-	LEVEL_PAUSE,
 	LEVEL_PLAY,
 	LEVEL_END
 };
