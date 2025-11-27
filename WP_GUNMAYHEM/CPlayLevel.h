@@ -48,4 +48,6 @@ private:
 
 	// 게임이 시작 되었었는가
 	bool m_bGameStarted = false;
+
+	int camId;
 };
