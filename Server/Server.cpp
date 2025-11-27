@@ -378,7 +378,7 @@ void Collision()
                 {
                     if (Pbox.bottom >= Bbox.top && Pbox.top <= Bbox.bottom)
                     {
-                        Players[i].fAcc += (arrBullets[j].eType == ITEM_PISTOL) ? ((arrBullets[j].vPosition.x >= arrBullets[j].vStarting.x) ? 5.f : -5.f) : ((arrBullets[j].vPosition.x >= arrBullets[j].vStarting.x) ? 10.f : -10.f);
+                        Players[i].fAcc += (arrBullets[j].eType == ITEM_PISTOL) ? ((arrBullets[j].vPosition.x >= arrBullets[j].vStarting.x) ? 50.f : -50.f) : ((arrBullets[j].vPosition.x >= arrBullets[j].vStarting.x) ? 60.f : -60.f);
                         arrBullets[j].exist = FALSE;
                     }
                 }
@@ -465,6 +465,23 @@ void UpdatePlayer()
             // 낙사 처리
             if (Players[i].info.vPosition.y > 1100)
             {
+                if (Players[i].info.iLife <= 0)
+                    continue; // 이미 생명력이 0이면 무시
+                if (!Players[0].info.isConnected || !Players[1].info.isConnected || !Players[2].info.isConnected)
+                {
+                    int pX = 100 + (i * 200);
+                    Players[i].info.vPosition.x = pX;
+                    Players[i].info.vPosition.y = 70;
+                    Players[i].fGravity = 0.f; // 중력 초기화
+                    Players[i].fAcc = 0.f;     // 가속도 초기화
+
+                    Players[i].colBox.left = Players[i].info.vPosition.x + 10.f;  // 충돌 박스 초기화
+                    Players[i].colBox.right = Players[i].info.vPosition.x + 35.f;
+                    Players[i].colBox.top = Players[i].info.vPosition.y;
+                    Players[i].colBox.bottom = Players[i].info.vPosition.y + 67.f;
+                    continue; // 이미 생명력이 0이면 무시
+                }
+
                 Players[i].info.iLife--; // 생명력 감소
                 if (Players[i].info.iLife > 0)
                 {
@@ -565,6 +582,8 @@ void UpdateBullets()
             // 예: arrBullets[i].vPosition.x += 속도 * 방향 * timedelta;
 			// 총알이 사거리 초과 또는 충돌 시 삭제 처리
 			arrBullets[i].vPosition.x += (arrBullets[i].eType == ITEM_PISTOL ? 10.f : 15.f) * ((arrBullets[i].vPosition.x >= arrBullets[i].vStarting.x) ? 1.f : -1.f);
+			arrBullets[i].colBox.left = (int)arrBullets[i].vPosition.x;
+			arrBullets[i].colBox.right = (int)arrBullets[i].vPosition.x + 5;
             if (abs(arrBullets[i].vPosition.x - arrBullets[i].vStarting.x) > 800.0f) 
             {
 				arrBullets[i].exist = FALSE;
@@ -581,8 +600,8 @@ void UpdateItemBoxes()
         // 아이템 박스가 존재하지 않으면 랜덤하게 생성
         if (!arrItemBoxes[i].exist)
         {
-            // 1% 확률로 아이템 박스 생성
-            if ((rand() % 100) < 1)
+            // .3% 확률로 아이템 박스 생성
+            if ((rand() % 300) < 1)
             {
                 arrItemBoxes[i].exist = TRUE;
                 // 발판 중앙에 위치
