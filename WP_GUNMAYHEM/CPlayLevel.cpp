@@ -63,7 +63,7 @@ void CPlayLevel::update_camera()
 	// 아직 ID를 못 받았거나, 플레이어가 생성되지 않았으면 리턴
 	if (m_myPlayerID == -1) return;
 
-	if (m_pPlayer[m_myPlayerID]->life)
+	if (m_pPlayer[m_myPlayerID]->pInfo.iLife)
 	{
 		int targetX = m_pPlayer[m_myPlayerID]->x;
 		int targetY = m_pPlayer[m_myPlayerID]->y;
@@ -77,19 +77,19 @@ void CPlayLevel::update_camera()
 		switch (m_myPlayerID)
 		{
 		case 0:
-			if (m_pPlayer[1]->life)
+			if (m_pPlayer[1]->pInfo.iLife)
 				id = 1;
 			else
 				id = 2;
 			break;
 		case 1:
-			if (m_pPlayer[2]->life)
+			if (m_pPlayer[2]->pInfo.iLife)
 				id = 2;
 			else
 				id = 0;
 			break;
 		case 2:
-			if (m_pPlayer[0]->life)
+			if (m_pPlayer[0]->pInfo.iLife)
 				id = 0;
 			else
 				id = 1;
