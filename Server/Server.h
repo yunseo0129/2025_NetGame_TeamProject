@@ -30,20 +30,13 @@ void err_quit(const char* msg)
 }
 
 #define SERVERPORT 9000
-#define BUFSIZE 4096
+// #define BUFSIZE 4096
 #define MAX_PLAYERS 3
 
 
 
 enum ITEMTYPE { ITEM_NONE, ITEM_PISTOL, ITEM_SNIPER };
 enum PLAYER_STATE { STATE_NONE, STATE_IDLE, STATE_WALK, STATE_JUMP };
-enum PLAYER_INPUT_KEY { KEY_NONE, KEY_LEFT, KEY_RIGHT, KEY_JUMP, KEY_DOWNJUMP, KEY_SHOOT };
-
-struct Player_input {
-	bool isDown;
-	PLAYER_INPUT_KEY key = KEY_NONE;
-	int id;
-};
 
 struct PLAYER_ACTION {
 	bool left = false;
@@ -52,7 +45,6 @@ struct PLAYER_ACTION {
 	int down = 0;
 	int space = 0;
 };
-
 
 struct vec2 { float x = 0.f; float y = 0.f; };
 
@@ -129,17 +121,6 @@ struct Action {
 	int				iPlayerNum;
 };
 
-// SERVER -> CLIENT ------------------------------------------------------------------
-struct SendData {
-	PlayerInfo				playerInfo[3];		// 플레이어 정보
-	//int						iBulletCount;		// 총알 개수
-	//int						iItemBoxCount;		// 아이템 박스 개수
-	std::array<BulletInfo, 100>	arrBullets;			// 총알 정보
-	std::array<ItemBoxInfo, 10> arrItemBoxs;		// 아이템 박스 정보
-	bool isChanged = false;
-};
-// SERVER -> CLIENT ------------------------------------------------------------------
-
 // 동기화를 위한 전역 크리티컬 섹션
 CRITICAL_SECTION g_cs_Inputs;
 CRITICAL_SECTION g_World_CS;
@@ -148,4 +129,20 @@ CRITICAL_SECTION g_World_CS;
 struct ThreadParam {
 	SOCKET		hClientSock;
 	int			iPlayerID;
+};
+
+// CLIENT -> SERVER ------------------------------------------------------------
+enum PLAYER_INPUT_KEY { KEY_NONE, KEY_LEFT, KEY_RIGHT, KEY_JUMP, KEY_DOWNJUMP, KEY_SHOOT };
+struct Player_input {
+	bool isDown;
+	PLAYER_INPUT_KEY key = KEY_NONE;
+	int id;
+};
+
+// SERVER -> CLIENT ------------------------------------------------------------------
+struct SendData {
+	PlayerInfo				playerInfo[3];		// 플레이어 정보
+	std::array<BulletInfo, 100>	arrBullets;			// 총알 정보
+	std::array<ItemBoxInfo, 10> arrItemBoxs;		// 아이템 박스 정보
+	bool isChanged = false;
 };

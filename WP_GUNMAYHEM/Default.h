@@ -83,14 +83,6 @@ extern void* extradriverdata;
 enum ITEMTYPE { ITEM_NONE, ITEM_PISTOL, ITEM_SNIPER };
 enum PLAYER_STATE { STATE_NONE, STATE_IDLE, STATE_WALK, STATE_JUMP };
 
-struct PLAYER_ACTION {
-	bool left = false;
-	bool right = false;
-	bool up = false;
-	bool down = false;
-	bool space = false;
-};
-
 struct vec2 { float x = 0.f; float y = 0.f; };
 
 struct PlayerInfo {
@@ -119,8 +111,8 @@ struct ItemBoxInfo {
 	BOOL			exist = FALSE;				// 삭제 플래그
 };
 
+// CLIENT -> SERVER ------------------------------------------------------------
 enum PLAYER_INPUT_KEY { KEY_NONE, KEY_LEFT, KEY_RIGHT, KEY_JUMP, KEY_DOWNJUMP, KEY_SHOOT };
-
 struct Player_input {
 	bool isDown;
 	PLAYER_INPUT_KEY key = KEY_NONE;
@@ -130,36 +122,7 @@ struct Player_input {
 // SERVER -> CLIENT ------------------------------------------------------------
 struct SendData {
 	PlayerInfo				playerInfo[3];		// 플레이어 정보
-	//int						iBulletCount;		// 총알 개수
-	//int						iItemBoxCount;		// 아이템 박스 개수
 	std::array<BulletInfo, 100>	arrBullets;			// 총알 정보
 	std::array<ItemBoxInfo, 10> arrItemBoxs;		// 아이템 박스 정보
 	bool isChanged = false;
-};
-// SERVER -> CLIENT ------------------------------------------------------------
-
-// CLIENT -> SERVER ------------------------------------------------------------
-//struct PlayerInput {
-//	PLAYER_ACTION myAction; // 플레이어 액션
-//};
-// CLIENT -> SERVER ------------------------------------------------------------
-
-constexpr int MAX_PLAYERS = 3;
-
-// ==========================================================
-// 1. (임시) PlayerState - 플레이어 한 명의 핵심 상태
-// ==========================================================
-struct PlayerState {
-	bool  isConnected = false;
-	float x = 0.f;
-	float y = 0.f;
-
-	int looking = 1; // 0: Left, 1: Right
-};
-
-// ==========================================================
-// 2. (임시) MovementData - 서버가 클라이언트에 보낼 이동 데이터 묶음
-// ==========================================================
-struct MovementData {
-	PlayerState players[MAX_PLAYERS];
 };
