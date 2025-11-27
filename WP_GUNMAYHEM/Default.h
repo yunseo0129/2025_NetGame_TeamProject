@@ -83,7 +83,7 @@ extern void* extradriverdata;
 enum ITEMTYPE { ITEM_NONE, ITEM_PISTOL, ITEM_SNIPER };
 enum PLAYER_STATE { STATE_NONE, STATE_IDLE, STATE_WALK, STATE_JUMP };
 
-struct vec2 { float x = 0.f; float y = 0.f; };
+struct vec2 { int x = 0; int y = 0; };
 
 struct PlayerInfo {
 	vec2			vPosition;					// 위치
@@ -101,14 +101,14 @@ struct BulletInfo {
 	vec2			vPosition;					// 현재 위치
 	ITEMTYPE		eType;						// 총알 타입 (사거리 계산용)
 	RECT			colBox;						// 충돌 박스
-	BOOL			exist = FALSE;				// 삭제 플래그
+	bool			exist = false;				// 삭제 플래그
 	int				id = -1;                    // 소유자 ID
 };
 
 struct ItemBoxInfo {
 	vec2			vPosition;					// 위치
 	RECT			colBox;						// 충돌 박스
-	BOOL			exist = FALSE;				// 삭제 플래그
+	bool			exist = false;				// 삭제 플래그
 };
 
 // CLIENT -> SERVER ------------------------------------------------------------

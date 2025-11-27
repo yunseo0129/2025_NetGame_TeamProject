@@ -18,7 +18,7 @@ public:
 	virtual bool Update() override;
 
 private:
-	int m_exist;	// 존재여부 (TRUE/FALSE)
+	bool m_exist;	// 존재여부 (TRUE/FALSE)
 	int m_x;		// 현재 x좌표 (픽셀 상)
 	int m_y;		// 현재 y좌표 (픽셀 상)
 

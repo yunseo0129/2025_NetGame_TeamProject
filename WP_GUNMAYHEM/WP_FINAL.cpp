@@ -14,7 +14,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 		exit(1);
 
-	srand(time(0));
 	WNDCLASSEX WndClass;
 	g_hInst = hInstance;
 	WndClass.cbSize = sizeof(WndClass);

@@ -46,7 +46,13 @@ struct PLAYER_ACTION {
 	int space = 0;
 };
 
-struct vec2 { float x = 0.f; float y = 0.f; };
+struct Rect {
+	int left = 0;
+	int top = 0;
+	int right = 0;
+	int bottom = 0;
+};
+struct vec2 { int x = 0; int y = 0; };
 
 // 통신용----------------------------------------------------------------------------
 struct PlayerInfo {
@@ -64,15 +70,15 @@ struct BulletInfo {
 	vec2			vStarting;					// 시작 위치
 	vec2			vPosition;					// 현재 위치
 	ITEMTYPE		eType = ITEM_NONE;			// 총알 타입 (사거리 계산용)
-	RECT			colBox;						// 충돌 박스
-	BOOL			exist = FALSE;				// 삭제 플래그
+	Rect			colBox;						// 충돌 박스
+	bool			exist = false;				// 삭제 플래그
 	int				id = -1;                    // 소유자 ID	
 };
 
 struct ItemBoxInfo {
 	vec2			vPosition;					// 위치
-	RECT			colBox;						// 충돌 박스
-	BOOL			exist = FALSE;				// 삭제 플래그
+	Rect			colBox;						// 충돌 박스
+	bool			exist = false;				// 삭제 플래그
 };
 
 // 관리용----------------------------------------------------------------------------
@@ -80,7 +86,7 @@ struct Player {
 	SOCKET			socket;						// 소켓
 	PlayerInfo		info;						// 플레이어 정보
 	vec2			vDirPow;					// 현재 받고있는 가속도 벡터
-	RECT			colBox;						// 충돌 박스
+	Rect			colBox;						// 충돌 박스
 	PLAYER_ACTION	Act;						// 현재 키인풋
 
 	float			fAcc = 0.f;						// 가속도
@@ -90,10 +96,7 @@ struct Player {
 
 	int				iLooking = 1;					// 바라보는 방향 (0: Left, 1: Right)
 
-	void move(float _x, float _y) {
-		_x = (int)_x;
-		_y = (int)_y;
-
+	void move(int _x, int _y) {
 		info.vPosition.x += _x;
 		info.vPosition.y += _y;
 

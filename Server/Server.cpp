@@ -5,7 +5,7 @@ Player Players[3]; // 최대 3명 접속 가능
 std::array<BulletInfo,100> arrBullets; // 총알들
 std::array<ItemBoxInfo,10> arrItemBoxes; // 아이템 박스들
 std::queue<Player_input> ActionQue;
-RECT block[5];
+Rect block[5];
 
 bool g_running = true;
 double timedelta = 0.0;
@@ -298,8 +298,8 @@ DWORD WINAPI ProcessClient(LPVOID arg)
 bool Initializer()
 {
     // 맵 충돌체 위치 초기화
-    float blockx = 200.f;
-    float blocky = 30.f;
+    int blockx = 200;
+    int blocky = 30;
 
     block[0].left = 330;
     block[0].right = 330 + blockx;
@@ -329,10 +329,10 @@ bool Initializer()
     // 플레이어 충돌체 위치 초기화
     for (int i = 0; i < 3; ++i)
     {
-        Players[i].colBox.left = 10.f;
-        Players[i].colBox.right = 35.f;
-        Players[i].colBox.top = 0.f;
-        Players[i].colBox.bottom = 67.f;
+        Players[i].colBox.left = 10;
+        Players[i].colBox.right = 35;
+        Players[i].colBox.top = 0;
+        Players[i].colBox.bottom = 67;
     }
    
     return false;
@@ -353,10 +353,10 @@ void Collision()
             }
             else
             {
-                RECT Pbox = Players[i].colBox;
+                Rect Pbox = Players[i].colBox;
                 for (int j = 0; j < 5; ++j)
                 {
-                    RECT Mbox = block[j];
+                    Rect Mbox = block[j];
                     if (Pbox.right >= Mbox.left && Pbox.left <= Mbox.right)
                     {
                         if (Pbox.bottom >= Mbox.top && Pbox.bottom <= Mbox.bottom)
@@ -367,7 +367,7 @@ void Collision()
                             isCollided = false;
 							// printf("플레이어 %d가 블록 %d에 착지함. 블록의 left:%d, right:%d\n", i, j, Mbox.left, Mbox.right);
 
-                            Players[i].move(0.f, -(Pbox.bottom - Mbox.top));
+                            Players[i].move(0, -(Pbox.bottom - Mbox.top));
                             Players[i].isOnBlock = true;
                             Players[i].fGravity = 0.f;
                             Players[i].iJump = 0;
@@ -381,12 +381,12 @@ void Collision()
     // 2. 플레이어 vs 총알
     for (int i = 0; i < MAX_PLAYERS; i++)
     {
-        RECT Pbox = Players[i].colBox;
+        Rect Pbox = Players[i].colBox;
         for (int j = 0; j < arrBullets.size(); ++j)
         {
 			if (arrBullets[j].exist && arrBullets[j].id != i) // 자신의 총알은 무시
             {
-                RECT Bbox = arrBullets[j].colBox;
+                Rect Bbox = arrBullets[j].colBox;
                 if (Pbox.right >= Bbox.left && Pbox.left <= Bbox.right)
                 {
                     if (Pbox.bottom >= Bbox.top && Pbox.top <= Bbox.bottom)
@@ -403,12 +403,12 @@ void Collision()
     {
         if (Players[i].info.isConnected)
         {
-            RECT Pbox = Players[i].colBox;
+            Rect Pbox = Players[i].colBox;
             for (ItemBoxInfo& itm : arrItemBoxes)
             {
                 if (itm.exist)
                 {
-                    RECT Bbox = itm.colBox;
+                    Rect Bbox = itm.colBox;
                     if (Pbox.right >= Bbox.left && Pbox.left <= Bbox.right)
                     {
                         if (Pbox.bottom >= Bbox.top && Pbox.top <= Bbox.bottom)
@@ -447,21 +447,24 @@ void Shooting(int id)
                     arrBullets[i].exist = TRUE;
                     arrBullets[i].id = id;
                     arrBullets[i].eType = Players[id].info.eItemType;
-                    arrBullets[i].vStarting.x = Players[id].info.vPosition.x + ((Players[id].iLooking == 1) ? 30.f : -10.f);
-                    arrBullets[i].vStarting.y = Players[id].info.vPosition.y + 30.f;
+
+                    // 총구 위치 계산
+					int muzzleOffsetX = (Players[id].info.eItemType == ITEM_PISTOL) ? 20 : 60; 
+                    arrBullets[i].vStarting.x = Players[id].info.vPosition.x + ((Players[id].iLooking == 1) ? (45 + muzzleOffsetX) : -muzzleOffsetX); // pWidth = 45
+                    arrBullets[i].vStarting.y = Players[id].info.vPosition.y + 30;
 
                     // 왼쪽을 볼 때
-                    arrBullets[i].vPosition.x = arrBullets[i].vStarting.x - 1.0f;       // 시작점보다 1픽셀 왼쪽
+                    arrBullets[i].vPosition.x = arrBullets[i].vStarting.x - 1;       // 시작점보다 1픽셀 왼쪽
                     // 오른쪽을 볼 때
                     if (Players[id].iLooking == 1)
-                        arrBullets[i].vPosition.x = arrBullets[i].vStarting.x + 1.0f;   // 시작점보다 1픽셀 오른쪽
+                        arrBullets[i].vPosition.x = arrBullets[i].vStarting.x + 1;   // 시작점보다 1픽셀 오른쪽
                     arrBullets[i].vPosition.y = arrBullets[i].vStarting.y;              // Y좌표는 동일
 
                     // 총알 충돌박스 초기화
-                    arrBullets[i].colBox.left = (int)arrBullets[i].vPosition.x;
-                    arrBullets[i].colBox.right = (int)arrBullets[i].vPosition.x + 5;
-                    arrBullets[i].colBox.top = (int)arrBullets[i].vPosition.y;
-                    arrBullets[i].colBox.bottom = (int)arrBullets[i].vPosition.y + 5;
+                    arrBullets[i].colBox.left = arrBullets[i].vPosition.x;
+                    arrBullets[i].colBox.right = arrBullets[i].vPosition.x + 5;
+                    arrBullets[i].colBox.top = arrBullets[i].vPosition.y;
+                    arrBullets[i].colBox.bottom = arrBullets[i].vPosition.y + 5;
                     break; // 하나 생성했으면 다음 총알 생성 대기
                 }
             }
@@ -488,10 +491,10 @@ void UpdatePlayer()
                     Players[i].fGravity = 0.f; // 중력 초기화
                     Players[i].fAcc = 0.f;     // 가속도 초기화
 
-                    Players[i].colBox.left = Players[i].info.vPosition.x + 10.f;  // 충돌 박스 초기화
-                    Players[i].colBox.right = Players[i].info.vPosition.x + 35.f;
+                    Players[i].colBox.left = Players[i].info.vPosition.x + 10;  // 충돌 박스 초기화
+                    Players[i].colBox.right = Players[i].info.vPosition.x + 35;
                     Players[i].colBox.top = Players[i].info.vPosition.y;
-                    Players[i].colBox.bottom = Players[i].info.vPosition.y + 67.f;
+                    Players[i].colBox.bottom = Players[i].info.vPosition.y + 67;
                     continue; // 이미 생명력이 0이면 무시
                 }
 
@@ -505,10 +508,10 @@ void UpdatePlayer()
                     Players[i].fGravity = 0.f; // 중력 초기화
                     Players[i].fAcc = 0.f;     // 가속도 초기화
 
-					Players[i].colBox.left = Players[i].info.vPosition.x + 10.f;  // 충돌 박스 초기화
-                    Players[i].colBox.right = Players[i].info.vPosition.x + 35.f;
+					Players[i].colBox.left = Players[i].info.vPosition.x + 10;  // 충돌 박스 초기화
+                    Players[i].colBox.right = Players[i].info.vPosition.x + 35;
                     Players[i].colBox.top = Players[i].info.vPosition.y;
-                    Players[i].colBox.bottom = Players[i].info.vPosition.y + 67.f;
+                    Players[i].colBox.bottom = Players[i].info.vPosition.y + 67;
                 }
                 else
                 {
@@ -581,7 +584,7 @@ void UpdatePlayer()
 
 void MovePlayer(int id)
 {
-    Players[id].move(Players[id].fAcc / 6.f, Players[id].fGravity);
+    Players[id].move((int)(Players[id].fAcc / 6.f), (int)Players[id].fGravity);
 }
 
 void UpdateBullets()
@@ -594,10 +597,10 @@ void UpdateBullets()
             // 총알 이동 로직 구현
             // 예: arrBullets[i].vPosition.x += 속도 * 방향 * timedelta;
 			// 총알이 사거리 초과 또는 충돌 시 삭제 처리
-			arrBullets[i].vPosition.x += (arrBullets[i].eType == ITEM_PISTOL ? 10.f : 15.f) * ((arrBullets[i].vPosition.x >= arrBullets[i].vStarting.x) ? 1.f : -1.f);
-			arrBullets[i].colBox.left = (int)arrBullets[i].vPosition.x;
-			arrBullets[i].colBox.right = (int)arrBullets[i].vPosition.x + 5;
-            if (abs(arrBullets[i].vPosition.x - arrBullets[i].vStarting.x) > 800.0f) 
+			arrBullets[i].vPosition.x += (arrBullets[i].eType == ITEM_PISTOL ? 10 : 15) * ((arrBullets[i].vPosition.x >= arrBullets[i].vStarting.x) ? 1 : -1);
+			arrBullets[i].colBox.left = arrBullets[i].vPosition.x;
+			arrBullets[i].colBox.right = arrBullets[i].vPosition.x + 5;
+            if (abs(arrBullets[i].vPosition.x - arrBullets[i].vStarting.x) > (arrBullets[i].eType == ITEM_PISTOL ? 400 : 800))
             {
 				arrBullets[i].exist = FALSE;
             }
@@ -618,20 +621,20 @@ void UpdateItemBoxes()
             {
                 arrItemBoxes[i].exist = TRUE;
                 // 발판 중앙에 위치
-                arrItemBoxes[i].vPosition.x = (block[i].left + block[i].right) / 2.0f;
+                arrItemBoxes[i].vPosition.x = (block[i].left + block[i].right) / 2;
                 // 낙하 시작 지점
-                arrItemBoxes[i].vPosition.y = - 300.f;
+                arrItemBoxes[i].vPosition.y = -300;
             }
         }
         else // 아이템 박스가 존재하면 아래로 떨어뜨림
         {
             // 목표 y 위치 블록 위 
-            float targetY = block[i].top - 42.f;
+            int targetY = block[i].top - 42;
 
             // 아이템 박스가 목표 위치보다 위에 있으면 중력 적용
             if (arrItemBoxes[i].vPosition.y < targetY)
             {
-                arrItemBoxes[i].vPosition.y += 9.81f * 100.f * timedelta; // 중력 적용
+                arrItemBoxes[i].vPosition.y += (int)(9.81f * 100.f * timedelta); // 중력 적용
 
                 // 목표 위치를 넘어가면 위치 고정
                 if (arrItemBoxes[i].vPosition.y > targetY)

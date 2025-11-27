@@ -2,7 +2,7 @@
 
 CBullet::CBullet()
 {
-	m_exist = FALSE;
+	m_exist = false;
 	m_x = 0;
 	m_y = 0;
 }
@@ -65,7 +65,7 @@ bool CBullet::Update()
 {
 	if (true) {
 		// 새로 생성될 때 그라데이션 초기화
-		if (bInfo.exist == true && m_exist == FALSE) {
+		if (bInfo.exist == true && m_exist == false) {
 			m_gradationCount = 3; 
 			m_maxGradation = (bInfo.eType == ITEM_PISTOL) ? 15 : 25;
 
