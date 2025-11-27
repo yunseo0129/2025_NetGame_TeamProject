@@ -151,7 +151,6 @@
     <ClCompile Include="CMainLevel.cpp" />
     <ClCompile Include="CMap.cpp" />
     <ClCompile Include="CObject.cpp" />
-    <ClCompile Include="CPauseLevel.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPlayLevel.cpp" />
     <ClCompile Include="Default.cpp" />
@@ -170,7 +169,6 @@
     <ClInclude Include="CMainLevel.h" />
     <ClInclude Include="CMap.h" />
     <ClInclude Include="CObject.h" />
-    <ClInclude Include="CPauseLevel.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPlayLevel.h" />
     <ClInclude Include="Default.h" />

@@ -75,9 +75,6 @@
     <ClCompile Include="CMainLevel.cpp">
       <Filter>소스 파일\Engine\Level_Inherited</Filter>
     </ClCompile>
-    <ClCompile Include="CPauseLevel.cpp">
-      <Filter>소스 파일\Engine\Level_Inherited</Filter>
-    </ClCompile>
     <ClCompile Include="CPlayLevel.cpp">
       <Filter>소스 파일\Engine\Level_Inherited</Filter>
     </ClCompile>
@@ -117,9 +114,6 @@
       <Filter>소스 파일\Engine\Level</Filter>
     </ClInclude>
     <ClInclude Include="CMainLevel.h">
-      <Filter>소스 파일\Engine\Level_Inherited</Filter>
-    </ClInclude>
-    <ClInclude Include="CPauseLevel.h">
       <Filter>소스 파일\Engine\Level_Inherited</Filter>
     </ClInclude>
     <ClInclude Include="CPlayLevel.h">
