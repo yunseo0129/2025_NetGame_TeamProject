@@ -26,6 +26,7 @@ void CPlayLevel::Initialize()
 	// === 플레이어 생성 ===
 	for (int i = 0; i < 3; ++i) {
 		m_pPlayer[i] = new CPlayer();
+		m_pPlayer[i]->playerType = i; // 플레이어 타입 설정
 		AddObject(m_pPlayer[i], OBJ_PLAYER); // 레벨에 등록
 	}
 

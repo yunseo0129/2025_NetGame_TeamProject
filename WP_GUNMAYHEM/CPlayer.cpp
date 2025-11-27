@@ -11,6 +11,7 @@ CPlayer::CPlayer()
 void CPlayer::Draw(HDC mDC)
 {
 	if (exist && pInfo.isConnected) {
+
 		// 1. 플레이어 그리기 
 		HBITMAP hBitmapToDraw = BMP_player_right_stand[playerType];
 		switch (looking) {

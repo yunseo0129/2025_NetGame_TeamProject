@@ -20,8 +20,6 @@ public:
 	int Get_Y() const { return y; }
 	
 private:
-	int playerType = 1;
-
 	int exist;				// dead or alive
 	int x;				   
 	int y;				   
@@ -38,5 +36,6 @@ private:
 	int anim_timer = 0;
 
 public:
+	int playerType = -1;
 	PlayerInfo pInfo;
 };
