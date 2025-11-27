@@ -81,14 +81,15 @@ int main(int argc, char* argv[])
         if (timedelta >= (1.0 / 60.0))
         {
             // === 1. 입력 처리 (큐에 쌓인 모든 액션 처리) ===
-            // (주의: 락을 걸지 않았으므로, 100% 스레드 세이프하지는 않으나 
-            //  간단한 이동 구현을 위해 임시로 사용)
+            EnterCriticalSection(&g_cs_Inputs);
             while (!ActionQue.empty())
             {
                 Player_input next = ActionQue.front();
                 ActionQue.pop();
+                LeaveCriticalSection(&g_cs_Inputs); // 큐에서 하나 꺼낸 후 락 해제
 
                 // 키입력 처리
+                EnterCriticalSection(&g_World_CS);
                 switch (next.key)
                 {
                 case KEY_LEFT:
@@ -111,8 +112,14 @@ int main(int argc, char* argv[])
                 }
 				Players[next.id].iLooking = (Players[next.id].Act.left) ? 0 : (Players[next.id].Act.right) ? 1 : Players[next.id].iLooking;
 				Players[next.id].info.looking = Players[next.id].iLooking;
+                LeaveCriticalSection(&g_World_CS);
+
+                EnterCriticalSection(&g_cs_Inputs); // 다음 루프를 위해 다시 락
             }
+            LeaveCriticalSection(&g_cs_Inputs);
+
             // === 2. 월드 상태 업데이트 ===
+            EnterCriticalSection(&g_World_CS);
             UpdatePlayer();
             UpdateItemBoxes();
 			UpdateBullets();
@@ -130,6 +137,7 @@ int main(int argc, char* argv[])
                 dataToSend.arrBullets = arrBullets;
                 dataToSend.isChanged = true;
             }
+            LeaveCriticalSection(&g_World_CS);
 
             for (int i = 0; i < MAX_PLAYERS; i++)
             {
@@ -192,6 +200,7 @@ DWORD WINAPI AcceptThread(LPVOID arg)
         if (g_player_count < MAX_PLAYERS)
         {
             // 플레이어 초기화
+            EnterCriticalSection(&g_World_CS);
             Players[g_player_count].socket = client_sock[g_player_count];
             Players[g_player_count].info.isConnected = true;
             Players[g_player_count].info.iLife = 3;
@@ -201,6 +210,7 @@ DWORD WINAPI AcceptThread(LPVOID arg)
 
 			int pX = 100 + (g_player_count * 200);
             Players[g_player_count].move(pX, 70);
+            LeaveCriticalSection(&g_World_CS);
 
             // 접속한 클라이언트에게 ID 부여
             int idToSend = g_player_count; // 현재 할당할 ID
@@ -209,7 +219,9 @@ DWORD WINAPI AcceptThread(LPVOID arg)
             if (retval == SOCKET_ERROR) {
                 printf("[오류] 클라이언트에게 ID 전송 실패\n");
                 closesocket(client_sock[g_player_count]);
+                EnterCriticalSection(&g_World_CS);
                 Players[g_player_count].info.isConnected = false; // 초기화 취소
+                LeaveCriticalSection(&g_World_CS);
                 continue; // 스레드 생성하지 않고 다음 접속 대기
             }
             printf("[접속] ID: %d번 플레이어 접속 성공\n", idToSend);
@@ -225,7 +237,9 @@ DWORD WINAPI AcceptThread(LPVOID arg)
                 closesocket(client_sock[g_player_count - 1]);
                 delete pArgs; // 스레드 생성 실패 시 메모리 해제
                 g_player_count--; // 카운트 복구
+                EnterCriticalSection(&g_World_CS);
                 Players[g_player_count].info.isConnected = false;
+                LeaveCriticalSection(&g_World_CS);
             }
             else {
                 CloseHandle(hThread); // 스레드 핸들 정리
@@ -269,13 +283,17 @@ DWORD WINAPI ProcessClient(LPVOID arg)
         if (retval == SOCKET_ERROR || retval == 0)
         {
             printf("[Player %d] 클라이언트 접속 종료.\n", my_id);
+            EnterCriticalSection(&g_World_CS);
             Players[my_id].info.isConnected = false; // 플래그 설정
+            LeaveCriticalSection(&g_World_CS);
             closesocket(client_sock);
             break; // 스레드 종료
         }
 
         // === 데이터 수신 성공: 큐에 삽입 ===
+        EnterCriticalSection(&g_cs_Inputs);
         ActionQue.push(act);
+        LeaveCriticalSection(&g_cs_Inputs);
 
     }
 

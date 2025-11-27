@@ -1,8 +1,8 @@
 ﻿#include "CPlayLevel.h"
 #include "KeyMgr.h"
 
-const char* SERVERIP = (char*)"192.168.72.31";
-//const char* SERVERIP = (char*)"127.0.0.1";
+//const char* SERVERIP = (char*)"192.168.72.31";
+const char* SERVERIP = (char*)"127.0.0.1";
 
 CPlayLevel::CPlayLevel()
 {
