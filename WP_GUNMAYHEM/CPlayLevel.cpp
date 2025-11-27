@@ -1,8 +1,8 @@
 ﻿#include "CPlayLevel.h"
 #include "KeyMgr.h"
 
-//const char* SERVERIP = (char*)"192.168.72.31";
-const char* SERVERIP = (char*)"127.0.0.1";
+const char* SERVERIP = (char*)"192.168.72.31";
+//const char* SERVERIP = (char*)"127.0.0.1";
 
 CPlayLevel::CPlayLevel()
 {
@@ -63,11 +63,47 @@ void CPlayLevel::update_camera()
 	// 아직 ID를 못 받았거나, 플레이어가 생성되지 않았으면 리턴
 	if (m_myPlayerID == -1) return;
 
-	int targetX = m_pPlayer[m_myPlayerID]->x;
-	int targetY = m_pPlayer[m_myPlayerID]->y;
+	if (m_pPlayer[m_myPlayerID]->life)
+	{
+		int targetX = m_pPlayer[m_myPlayerID]->x;
+		int targetY = m_pPlayer[m_myPlayerID]->y;
 
-	cameraX = targetX - cameraWidth / 2 + (pWidth / 2); 
-	cameraY = targetY - cameraHeight / 2 + 100;         
+		cameraX = targetX - cameraWidth / 2 + (pWidth / 2);
+		cameraY = targetY - cameraHeight / 2 + 100;
+	}
+	else
+	{
+		int id;
+		switch (m_myPlayerID)
+		{
+		case 0:
+			if (m_pPlayer[1]->life)
+				id = 1;
+			else
+				id = 2;
+			break;
+		case 1:
+			if (m_pPlayer[2]->life)
+				id = 2;
+			else
+				id = 0;
+			break;
+		case 2:
+			if (m_pPlayer[0]->life)
+				id = 0;
+			else
+				id = 1;
+			break;
+		default:
+			break;
+		}
+
+		int targetX = m_pPlayer[m_myPlayerID]->x;
+		int targetY = m_pPlayer[m_myPlayerID]->y;
+
+		cameraX = targetX - cameraWidth / 2 + (pWidth / 2);
+		cameraY = targetY - cameraHeight / 2 + 100;
+	}
 }
 
 void CPlayLevel::Update()
