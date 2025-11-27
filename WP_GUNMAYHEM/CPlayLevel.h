@@ -45,4 +45,7 @@ private:
 	// 키 입력 관련
 	bool b_keyAct = false;
 	std::vector<Player_input> m_vecInputActions;
+
+	// 게임이 시작 되었었는가
+	bool m_bGameStarted = false;
 };

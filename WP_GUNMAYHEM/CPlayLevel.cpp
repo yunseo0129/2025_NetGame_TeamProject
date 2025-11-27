@@ -1,7 +1,7 @@
 ﻿#include "CPlayLevel.h"
 #include "KeyMgr.h"
 
-//const char* SERVERIP = (char*)"192.168.71.174";
+//const char* SERVERIP = (char*)"192.168.72.31";
 const char* SERVERIP = (char*)"127.0.0.1";
 
 CPlayLevel::CPlayLevel()
@@ -167,12 +167,56 @@ void CPlayLevel::Draw(HDC mDC)
 		}
 	}
 
-	if (m_bIsRunning == false)
-	{
-		// 연결이 끊어졌거나 오류가 발생한 경우 "Game Over" 표시
-		TCHAR EndText[100];
-		wsprintf(EndText, L"Game Over");
-		TextOut(mDC, 420, 200, EndText, lstrlen(EndText));
+	// 종료 검사 및 게임 결과 텍스트 출력
+	if (m_bGameStarted) {
+		// ==========================================
+		// [수정] 게임 결과 텍스트 (폰트 크기 키우기)
+		// ==========================================
+
+		// 1. 큰 폰트 생성 (높이 60, 굵게)
+		// CreateFont(높이, 너비, 기울기, 방향, 굵기(FW_BOLD), 이탤릭, 밑줄, 취소선, 문자셋, ...)
+		HFONT hFont = CreateFont(60, 0, 0, 0, FW_BOLD, 0, 0, 0, DEFAULT_CHARSET,
+								 0, 0, 0, 0, L"Arial");
+
+		// 2. 생성한 폰트를 DC에 선택(Select)하고, 이전 폰트를 저장해둠
+		HFONT hOldFont = (HFONT)SelectObject(mDC, hFont);
+
+		// (옵션) 텍스트 배경을 투명하게 설정 (글자 뒤에 흰색 박스가 생기지 않게 함)
+		int nOldBkMode = SetBkMode(mDC, TRANSPARENT);
+
+		// (옵션) 텍스트 색상 변경 (예: 빨간색)
+		// COLORREF oldColor = SetTextColor(mDC, RGB(255, 0, 0));
+
+		// 종료 검사	및 텍스트 출력
+		if (m_bIsRunning == false) {
+			// 연결이 끊어졌거나 오류가 발생한 경우 "Game Over" 표시
+			TCHAR EndText[100];
+			wsprintf(EndText, L"Game Over");
+			TextOut(mDC, 320, 150, EndText, lstrlen(EndText));
+		}
+		// 다른 플레이어들이 연결이 끊긴 상황이면 "You win!" 표시
+		int disconnectedCount = 0;
+		for (int i = 0; i < 3; ++i) {
+			if (i != m_myPlayerID) {
+				if (m_pPlayer[i] != nullptr && m_pPlayer[i]->pInfo.isConnected == false) {
+					disconnectedCount++;
+				}
+			}
+		}
+		if (disconnectedCount == 2) {
+			TCHAR WinText[100];
+			wsprintf(WinText, L"You Win!");
+			TextOut(mDC, 350, 150, WinText, lstrlen(WinText));
+		}
+
+		// 3. 뒷정리 (매우 중요)
+		// 원래 폰트와 배경 모드로 되돌림
+		SelectObject(mDC, hOldFont);
+		SetBkMode(mDC, nOldBkMode);
+		// SetTextColor(mDC, oldColor); // 색상을 바꿨다면 복구
+
+		// 다 쓴 폰트 객체 삭제 (삭제 안 하면 메모리 누수 발생)
+		DeleteObject(hFont);
 	}
 }
 
@@ -315,6 +359,17 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 			pThis->m_bIsRunning = false; // 루프 탈출
 			break;
 		} 
+
+		// 게임 시작 검사 (플레이어 세명 연결 성공)
+		int connectedCount = 0;
+		for (int i = 0; i < 3; ++i) {
+			if (recvData.playerInfo[i].isConnected == true) {
+				connectedCount++;
+			} 
+		}
+		if (connectedCount == 3) {
+			pThis->m_bGameStarted = true;
+		}
 
 		if (recvData.isChanged)
 		{
