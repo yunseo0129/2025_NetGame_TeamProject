@@ -600,8 +600,8 @@ void UpdateItemBoxes()
         // 아이템 박스가 존재하지 않으면 랜덤하게 생성
         if (!arrItemBoxes[i].exist)
         {
-            // 1% 확률로 아이템 박스 생성
-            if ((rand() % 100) < 1)
+            // .3% 확률로 아이템 박스 생성
+            if ((rand() % 300) < 1)
             {
                 arrItemBoxes[i].exist = TRUE;
                 // 발판 중앙에 위치
