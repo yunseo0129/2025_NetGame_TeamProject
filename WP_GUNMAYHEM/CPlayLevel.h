@@ -40,8 +40,5 @@ private:
 	std::vector<Player_input> m_vecInputActions;
 
 	// 게임 시작 여부
-	bool m_bGameStarted = false;	
-
-	// 카메라 추적 플레이어 ID
-	int camId;						
+	bool m_bGameStarted = false;		
 };

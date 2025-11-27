@@ -50,46 +50,6 @@ void CPlayLevel::Initialize()
 
 void CPlayLevel::update_camera()
 {
-	// 한 플레이어 추적 버전
-	/*
-	// 아직 ID를 못 받았거나, 플레이어가 생성되지 않았으면 리턴
-	if (m_myPlayerID == -1) return;
-	camId = m_myPlayerID;
-
-	if (!m_pPlayer[camId]->pInfo.iLife) 
-	{
-		switch (camId) 
-		{
-		case 0:
-			if (m_pPlayer[1]->pInfo.iLife)
-				camId = 1;
-			else
-				camId = 2;
-			break;
-		case 1:
-			if (m_pPlayer[2]->pInfo.iLife)
-				camId = 2;
-			else
-				camId = 0;
-			break;
-		case 2:
-			if (m_pPlayer[0]->pInfo.iLife)
-				camId = 0;
-			else
-				camId = 1;
-			break;
-		default:
-			break;
-		}
-	}
-	int targetX = m_pPlayer[camId]->Get_X();
-	int targetY = m_pPlayer[camId]->Get_Y();
-
-	cameraX = targetX - cameraWidth / 2 + (pWidth / 2);
-	cameraY = targetY - cameraHeight / 2 + 100;
-	*/
-	
-	// 모든 플레이어 중심점 추적 버전
 	if (m_myPlayerID == -1) return;
 
 	// 살아있는 플레이어들의 좌표 평균 구하기
