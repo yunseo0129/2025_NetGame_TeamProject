@@ -26,7 +26,6 @@ void CPlayLevel::Initialize()
 	// === 플레이어 생성 ===
 	for (int i = 0; i < 3; ++i) {
 		m_pPlayer[i] = new CPlayer();
-		m_pPlayer[i]->playerType = i;
 		AddObject(m_pPlayer[i], OBJ_PLAYER); // 레벨에 등록
 	}
 
@@ -80,8 +79,8 @@ void CPlayLevel::update_camera()
 			break;
 		}
 	}
-	int targetX = m_pPlayer[camId]->x;
-	int targetY = m_pPlayer[camId]->y;
+	int targetX = m_pPlayer[camId]->Get_X();
+	int targetY = m_pPlayer[camId]->Get_Y();
 
 	cameraX = targetX - cameraWidth / 2 + (pWidth / 2);
 	cameraY = targetY - cameraHeight / 2 + 100;
