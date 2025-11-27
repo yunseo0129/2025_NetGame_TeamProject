@@ -468,7 +468,19 @@ void UpdatePlayer()
                 if (Players[i].info.iLife <= 0)
                     continue; // 이미 생명력이 0이면 무시
                 if (!Players[0].info.isConnected || !Players[1].info.isConnected || !Players[2].info.isConnected)
+                {
+                    int pX = 100 + (i * 200);
+                    Players[i].info.vPosition.x = pX;
+                    Players[i].info.vPosition.y = 70;
+                    Players[i].fGravity = 0.f; // 중력 초기화
+                    Players[i].fAcc = 0.f;     // 가속도 초기화
+
+                    Players[i].colBox.left = Players[i].info.vPosition.x + 10.f;  // 충돌 박스 초기화
+                    Players[i].colBox.right = Players[i].info.vPosition.x + 35.f;
+                    Players[i].colBox.top = Players[i].info.vPosition.y;
+                    Players[i].colBox.bottom = Players[i].info.vPosition.y + 67.f;
                     continue; // 이미 생명력이 0이면 무시
+                }
 
                 Players[i].info.iLife--; // 생명력 감소
                 if (Players[i].info.iLife > 0)
