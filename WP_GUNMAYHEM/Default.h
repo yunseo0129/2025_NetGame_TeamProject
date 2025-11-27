@@ -8,11 +8,6 @@
 #pragma comment(lib, "ws2_32") // ws2_32.lib 링크
 
 #define SERVERPORT 9000
-#define BUFSIZE     4096
-//#define FILE_NAME_MAX 256
-
-//char* SERVERIP = (char*)"127.0.0.1";
-//==============================================================================
 
 #pragma comment(lib, "Msimg32.lib")
 #pragma comment(lib, "winmm.lib")
@@ -35,8 +30,6 @@
 #define         VK_MAX            0xff
 #include <map>
 #include <algorithm>
-
-bool CheckRectCollision(const RECT& rect1, const RECT& rect2);
 
 extern HWND g_hWnd;
 extern int g_mapType;
