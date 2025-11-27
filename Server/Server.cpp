@@ -467,7 +467,7 @@ void UpdatePlayer()
             {
                 if (Players[i].info.iLife <= 0)
                     continue; // 이미 생명력이 0이면 무시
-                if (Players[0].info.isConnected && Players[1].info.isConnected && Players[2].info.isConnected)
+                if (!Players[0].info.isConnected || !Players[1].info.isConnected || !Players[2].info.isConnected)
                     continue; // 이미 생명력이 0이면 무시
 
                 Players[i].info.iLife--; // 생명력 감소
