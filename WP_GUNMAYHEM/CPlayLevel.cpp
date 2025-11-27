@@ -1,8 +1,8 @@
 ﻿#include "CPlayLevel.h"
 #include "KeyMgr.h"
 
-//const char* SERVERIP = (char*)"192.168.72.31";
-const char* SERVERIP = (char*)"127.0.0.1";
+const char* SERVERIP = (char*)"192.168.72.31";
+//const char* SERVERIP = (char*)"127.0.0.1";
 
 CPlayLevel::CPlayLevel()
 {
@@ -188,25 +188,34 @@ void CPlayLevel::Draw(HDC mDC)
 		// COLORREF oldColor = SetTextColor(mDC, RGB(255, 0, 0));
 
 		// 종료 검사	및 텍스트 출력
-		if (m_bIsRunning == false) {
-			// 연결이 끊어졌거나 오류가 발생한 경우 "Game Over" 표시
+		if (m_pPlayer[m_myPlayerID]->pInfo.iLife <= 0) {
 			TCHAR EndText[100];
 			wsprintf(EndText, L"Game Over");
 			TextOut(mDC, 320, 150, EndText, lstrlen(EndText));
 		}
-		// 다른 플레이어들이 연결이 끊긴 상황이면 "You win!" 표시
-		int disconnectedCount = 0;
-		for (int i = 0; i < 3; ++i) {
-			if (i != m_myPlayerID) {
-				if (m_pPlayer[i] != nullptr && m_pPlayer[i]->pInfo.isConnected == false) {
-					disconnectedCount++;
-				}
+		// 승리 판정
+		bool bWin = false;
+		switch (m_myPlayerID) {
+		case 0:
+			if (m_pPlayer[1]->pInfo.iLife <= 0 && m_pPlayer[2]->pInfo.iLife <= 0) {
+				bWin = true;
 			}
+			break;
+		case 1:
+			if (m_pPlayer[0]->pInfo.iLife <= 0 && m_pPlayer[2]->pInfo.iLife <= 0) {
+				bWin = true;
+			}
+			break;
+		case 2:
+			if (m_pPlayer[0]->pInfo.iLife <= 0 && m_pPlayer[1]->pInfo.iLife <= 0) {
+				bWin = true;
+			}
+			break;
 		}
-		if (disconnectedCount == 2) {
+		if (bWin) {
 			TCHAR WinText[100];
 			wsprintf(WinText, L"You Win!");
-			TextOut(mDC, 350, 150, WinText, lstrlen(WinText));
+			TextOut(mDC, 320, 150, WinText, lstrlen(WinText));
 		}
 
 		// 3. 뒷정리 (매우 중요)
