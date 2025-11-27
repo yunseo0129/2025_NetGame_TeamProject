@@ -163,11 +163,6 @@ int main(int argc, char* argv[])
         }
     }
 
-    // 모든 생성한 소켓과 스레드를 종료 해야함
-    // 근데 그 방법 좀 어려움
-    // 각자 스레드가 특정 루프에 묶여있고
-    // 특히 accept스레드는 accept에서 못빠져나옴
-
     DeleteCriticalSection(&g_cs_Inputs);
     DeleteCriticalSection(&g_World_CS);
     WSACleanup();
@@ -258,7 +253,7 @@ DWORD WINAPI AcceptThread(LPVOID arg)
 
 DWORD WINAPI ProcessClient(LPVOID arg)
 {
-    // 인자(소켓, ID) 받기 (헤더의 ThreadParam 구조체 사용)
+    // 인자(소켓, ID) 받기
     ThreadParam* pArgs = (ThreadParam*)arg;
     SOCKET client_sock = pArgs->hClientSock;
     int my_id = pArgs->iPlayerID;
