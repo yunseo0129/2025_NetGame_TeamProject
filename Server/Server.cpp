@@ -378,7 +378,7 @@ void Collision()
                 {
                     if (Pbox.bottom >= Bbox.top && Pbox.top <= Bbox.bottom)
                     {
-                        Players[i].fAcc += (arrBullets[j].eType == ITEM_PISTOL) ? ((arrBullets[j].vPosition.x >= arrBullets[j].vStarting.x) ? 5.f : -5.f) : ((arrBullets[j].vPosition.x >= arrBullets[j].vStarting.x) ? 10.f : -10.f);
+                        Players[i].fAcc += (arrBullets[j].eType == ITEM_PISTOL) ? ((arrBullets[j].vPosition.x >= arrBullets[j].vStarting.x) ? 50.f : -50.f) : ((arrBullets[j].vPosition.x >= arrBullets[j].vStarting.x) ? 60.f : -60.f);
                         arrBullets[j].exist = FALSE;
                     }
                 }
