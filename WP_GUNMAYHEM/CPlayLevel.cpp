@@ -98,8 +98,8 @@ void CPlayLevel::update_camera()
 			break;
 		}
 
-		int targetX = m_pPlayer[m_myPlayerID]->x;
-		int targetY = m_pPlayer[m_myPlayerID]->y;
+		int targetX = m_pPlayer[id]->x;
+		int targetY = m_pPlayer[id]->y;
 
 		cameraX = targetX - cameraWidth / 2 + (pWidth / 2);
 		cameraY = targetY - cameraHeight / 2 + 100;
