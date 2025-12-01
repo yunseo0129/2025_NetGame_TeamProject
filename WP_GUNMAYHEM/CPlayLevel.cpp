@@ -116,7 +116,7 @@ void CPlayLevel::Update()
 		}
 
 		// 총알 상태 업데이트
-		const auto& bulletList = GetGroupObject(OBJ_BULLET);
+		const std::list<CObject*>& bulletList = GetGroupObject(OBJ_BULLET);
 		int i = 0;
 		for (CObject* pObj : bulletList) {
 			if (i >= 100) break;
@@ -129,7 +129,7 @@ void CPlayLevel::Update()
 		}
 
 		// 아이템 박스 상태 업데이트
-		const auto& itemBoxList = GetGroupObject(OBJ_ITEMBOX);
+		const std::list<CObject*>& itemBoxList = GetGroupObject(OBJ_ITEMBOX);
 		int j = 0; 
 		for (CObject* pObj : itemBoxList) {
 			if (j >= 10) break;
