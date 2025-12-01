@@ -15,6 +15,9 @@ void CPlayLevel::Initialize()
 
 	m_bIsRunning = true; // 스레드 실행 플래그 설정
 
+	// 큰 폰트 초기화
+	m_hFont = CreateFont(60, 0, 0, 0, FW_BOLD, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"Arial");
+
 	// === 소켓 생성 및 서버 연결 ===
 	m_hThread = CreateThread(NULL, 0, ClientThread, this, 0, NULL);
 	if (m_hThread == NULL)
@@ -112,52 +115,47 @@ void CPlayLevel::Update()
 			}
 		}
 
-		// 아이템 박스 상태 업데이트
-		auto& itemList = GetGroupObject(OBJ_ITEMBOX);
-		auto itemIter = itemList.begin();
-		for (int i = 0; i < 10; ++i) {
-			if (itemIter == itemList.end()) break;
-
-			CItem* pItem = static_cast<CItem*>(*itemIter);
-			if (pItem != nullptr) {
-				pItem->iInfo = recvData.arrItemBoxs[i];
-			}
-
-			// 다음 아이템으로 이동
-			++itemIter;
-		}
-
 		// 총알 상태 업데이트
-		auto& bulletList = GetGroupObject(OBJ_BULLET);
-		auto bulletIter = bulletList.begin();
-		for (int i = 0; i < 10; ++i) {
-			// 리스트 끝에 도달하면 중단
-			if (bulletIter == bulletList.end()) break;
+		const auto& bulletList = GetGroupObject(OBJ_BULLET);
+		int i = 0;
+		for (CObject* pObj : bulletList) {
+			if (i >= 100) break;
 
-			CBullet* pBullet = static_cast<CBullet*>(*bulletIter);
-			if (pBullet != nullptr) {
+			CBullet* pBullet = static_cast<CBullet*>(pObj);
+			if (pBullet) {
 				pBullet->bInfo = recvData.arrBullets[i];
 			}
+			++i;
+		}
 
-			// 다음 총알로 이동
-			++bulletIter;
+		// 아이템 박스 상태 업데이트
+		const auto& itemBoxList = GetGroupObject(OBJ_ITEMBOX);
+		int j = 0; 
+		for (CObject* pObj : itemBoxList) {
+			if (j >= 10) break;
+			CItem* pItemBox = static_cast<CItem*>(pObj);
+			if (pItemBox) {
+				pItemBox->iInfo = recvData.arrItemBoxs[j];
+			}
+			++j;
 		}
 	}
 
 	// 키 입력 처리
-	ProcessInput(); 
-	if (b_keyAct && m_sock != INVALID_SOCKET) {
-		// 입력을 서버로 전송
-		for (const auto& myAction : m_vecInputActions) {
-			int retval = send(m_sock, (const char*)&myAction, sizeof(myAction), 0);
-			if (retval == SOCKET_ERROR) {
-				OutputDebugString(L"[CPlayLevel] : err - send()\n");
+	if (m_myPlayerID != -1 && m_pPlayer[m_myPlayerID]->pInfo.iLife > 0) {
+		ProcessInput();
+		if (b_keyAct && m_sock != INVALID_SOCKET) {
+			// 입력을 서버로 전송
+			for (const Player_input& myAction : m_vecInputActions) {
+				int retval = send(m_sock, (const char*)&myAction, sizeof(myAction), 0);
+				if (retval == SOCKET_ERROR) {
+					OutputDebugString(L"[CPlayLevel] : err - send()\n");
+				}
 			}
 		}
 	}
 
-	// 부모 클래스의 Update 호출 
-	CLevel::Update();
+	CLevel::Update();	// __super::Update();
 
 	// 카메라 업데이트 
 	update_camera();
@@ -174,13 +172,8 @@ void CPlayLevel::Draw(HDC mDC)
 
 	// 종료 검사 및 게임 결과 텍스트 출력
 	if (m_bGameStarted) {
-		
-		// 큰 폰트 생성
-		HFONT hFont = CreateFont(60, 0, 0, 0, FW_BOLD, 0, 0, 0, DEFAULT_CHARSET, 
-								 0, 0, 0, 0, L"Arial");
-
-		// 생성한 폰트를 DC에 선택(Select), 이전 폰트 저장
-		HFONT hOldFont = (HFONT)SelectObject(mDC, hFont);
+		// 큰 폰트를 DC에 선택(Select), 이전 폰트 저장
+		HFONT hOldFont = (HFONT)SelectObject(mDC, m_hFont);
 
 		// 텍스트 배경을 투명하게 설정
 		int nOldBkMode = SetBkMode(mDC, TRANSPARENT);
@@ -221,12 +214,12 @@ void CPlayLevel::Draw(HDC mDC)
 		// 뒷정리 
 		SelectObject(mDC, hOldFont);
 		SetBkMode(mDC, nOldBkMode);		// 원래 폰트와 배경 모드로 되돌림
-		DeleteObject(hFont);			// 다 쓴 폰트 객체 삭제
 	}
 }
 
 void CPlayLevel::Free()
 {
+	DeleteObject(m_hFont);
 	closesocket(m_sock);
 	CloseHandle(m_hThread);
 	DeleteCriticalSection(&m_cs);
@@ -302,7 +295,7 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 	
 	// 소켓 옵션 설정 NODELAY
 	DWORD NODELAY = 1;
-	setsockopt(pThis->m_sock, IPPROTO_TCP, TCP_NODELAY, (const char*)&NODELAY, sizeof(DWORD));
+	setsockopt(pThis->m_sock, IPPROTO_TCP, TCP_NODELAY, (const char*)&NODELAY, sizeof(NODELAY));
 
 	// connect()
 	sockaddr_in serveraddr;
@@ -322,7 +315,7 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 
 	// 접속 직후 서버로부터 "내 ID"를 먼저 받는다.
 	int myID = -1;
-	retval = recv(pThis->m_sock, (char*)&myID, sizeof(int), 0);
+	retval = recv(pThis->m_sock, (char*)&myID, sizeof(myID), 0);
 	if (retval == SOCKET_ERROR || retval == 0) {
 		OutputDebugString(L"ID 수신 실패\n");
 		pThis->m_bIsRunning = false;
@@ -354,7 +347,7 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 			for (int i = 0; i < 3; ++i) {
 				if (recvData.playerInfo[i].isConnected == true) {
 					connectedCount++;
-				}
+				} else break;
 			}
 			if (connectedCount == 3) {
 				pThis->m_bGameStarted = true;

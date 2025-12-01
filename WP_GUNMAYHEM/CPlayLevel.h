@@ -41,4 +41,7 @@ private:
 
 	// 게임 시작 여부
 	bool m_bGameStarted = false;		
+
+	// 폰트 저장
+	HFONT m_hFont;
 };
