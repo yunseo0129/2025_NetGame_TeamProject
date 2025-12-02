@@ -116,29 +116,16 @@ void CPlayLevel::Update()
 		}
 
 		// 총알 상태 업데이트
-		const std::list<CObject*>& bulletList = GetGroupObject(OBJ_BULLET);
 		int i = 0;
-		for (CObject* pObj : bulletList) {
-			if (i >= 100) break;
-
-			CBullet* pBullet = static_cast<CBullet*>(pObj);
-			if (pBullet) {
-				pBullet->bInfo = recvData.arrBullets[i];
-			}
-			++i;
+		for (CObject* pObj : m_ObjList[OBJ_BULLET])
+		{
+			static_cast<CBullet*>(pObj)->bInfo = recvData.arrBullets[i++];
 		}
 
 		// 아이템 박스 상태 업데이트
-		const std::list<CObject*>& itemBoxList = GetGroupObject(OBJ_ITEMBOX);
-		int j = 0; 
-		for (CObject* pObj : itemBoxList) {
-			if (j >= 10) break;
-			CItem* pItemBox = static_cast<CItem*>(pObj);
-			if (pItemBox) {
-				pItemBox->iInfo = recvData.arrItemBoxs[j];
-			}
-			++j;
-		}
+		i = 0;
+		for (CObject* pObj : m_ObjList[OBJ_ITEMBOX])
+			static_cast<CItem*>(pObj)->iInfo = recvData.arrItemBoxs[i++];
 	}
 
 	// 키 입력 처리
@@ -343,13 +330,15 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 		// 게임 시작 검사 (플레이어 세명 연결 성공)
 		if (!pThis->m_bGameStarted)
 		{
-			int connectedCount = 0;
+			bool Start = true;
 			for (int i = 0; i < 3; ++i) {
-				if (recvData.playerInfo[i].isConnected == true) {
-					connectedCount++;
-				} else break;
+				if (!recvData.playerInfo[i].isConnected)
+				{
+					Start = false;
+					break;
+				}
 			}
-			if (connectedCount == 3) {
+			if (Start) {
 				pThis->m_bGameStarted = true;
 			}
 		}
