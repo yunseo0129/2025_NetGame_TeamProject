@@ -31,6 +31,8 @@
 #include <map>
 #include <algorithm>
 
+extern bool g_isExit;
+
 extern HWND g_hWnd;
 extern int g_mapType;
 extern HDC g_BMPmDC; // 더블버퍼링을 위한 mDC
