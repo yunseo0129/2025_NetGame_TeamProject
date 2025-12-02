@@ -358,7 +358,7 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 		{
 			// 데이터 수신 성공 - 큐에 저장
 			EnterCriticalSection(&pThis->m_cs);
-			OutputDebugString(L"[ClientThread] : 데이터 수신 성공 - 큐에 삽입\n");
+			//OutputDebugString(L"[ClientThread] : 데이터 수신 성공 - 큐에 삽입\n");
 			pThis->m_recvQueue.push(recvData); 
 			LeaveCriticalSection(&pThis->m_cs);
 		}
