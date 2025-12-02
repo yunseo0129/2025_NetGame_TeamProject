@@ -14,6 +14,7 @@ void CPlayLevel::Initialize()
 	InitializeCriticalSection(&m_cs);
 
 	m_bIsRunning = true; // 스레드 실행 플래그 설정
+	g_isExit = false;
 
 	// 큰 폰트 초기화
 	m_hFont = CreateFont(60, 0, 0, 0, FW_BOLD, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"Arial");
@@ -231,8 +232,10 @@ void CPlayLevel::Draw(HDC mDC)
 void CPlayLevel::Free()
 {
 	DeleteObject(m_hFont);
+
 	closesocket(m_sock);
 	CloseHandle(m_hThread);
+
 	DeleteCriticalSection(&m_cs);
 
 	CLevel::Free();
@@ -333,11 +336,6 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 	} else {
 		pThis->m_myPlayerID = myID; // 내 ID 저장
 		pThis->m_pPlayer[myID]->isMyPlayer = true; // 내 플레이어 객체 표시
-
-		// 디버그용 출력
-		wchar_t buf[100];
-		wsprintf(buf, L"내 ID 할당됨: %d\n", myID);
-		OutputDebugString(buf);
 	}
 
 	while (pThis->m_bIsRunning) {

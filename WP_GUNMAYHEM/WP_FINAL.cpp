@@ -17,7 +17,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	WNDCLASSEX WndClass;
 	g_hInst = hInstance;
 	WndClass.cbSize = sizeof(WndClass);
-	WndClass.style = CS_HREDRAW | CS_VREDRAW; // 더블 클릭을 사용할 수 있게 스타일 설정
+	WndClass.style = CS_HREDRAW | CS_VREDRAW;
 	WndClass.lpfnWndProc = (WNDPROC)WndProc;
 	WndClass.cbClsExtra = 0;
 	WndClass.cbWndExtra = 0;
@@ -63,6 +63,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	case WM_CREATE:
 	{
 		GetClientRect(hWnd, &rt);
+
 		// p1
 		BMP_player_left_stand[0] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P1LEFT_STAND));
 		BMP_player_left_walk[0][0] = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_P1LEFT_WALK1));
@@ -185,6 +186,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		DeleteDC(g_BMPmDC);
 
 		for (int i = 0; i < 3; i++) {
+			DeleteObject(BMP_player_inform[i]);
 			DeleteObject(BMP_player_left_stand[i]);
 			DeleteObject(BMP_player_right_stand[i]);
 			for (int j = 0; j < 4; j++) {
@@ -192,12 +194,32 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				DeleteObject(BMP_player_right_walk[i][j]);
 			}
 		}
+		DeleteObject(BMP_gun1_left);
+		DeleteObject(BMP_gun1_right);
+		DeleteObject(BMP_gun2_left);
+		DeleteObject(BMP_gun2_right);
+		DeleteObject(BMP_itemBox);
+		DeleteObject(BMP_startMenu);
+		DeleteObject(BMP_pauseMenu);
+		DeleteObject(BMP_map1);
+		DeleteObject(BMP_map2);
+		DeleteObject(BMP_ground1);
+		DeleteObject(BMP_inform);
 
+		// 타이머 정리
 		KillTimer(hWnd, 1);
 
+		// 사운드 정리
 		PlaySound(NULL, NULL, NULL);
 		channel->stop();
+		if (ssystem) {
+			ssystem->close();
+			ssystem->release();
+		}
+		
 		PostQuitMessage(0);
+
+		OutputDebugString(L"[WNDPROC] : WM_DESTROY\n");
 		break;
 	}
 	}
