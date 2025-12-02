@@ -21,18 +21,17 @@ void CItem::Draw(HDC mDC)
 
 bool CItem::Update()
 {
-	if (true) {
-		// 아이템 사라질 때 사운드 재생
-		if (iInfo.exist == false && m_exist == true) {
-			channel->stop();
-			itemSound->setMode(FMOD_LOOP_OFF);
-			ssystem->playSound(itemSound, 0, false, &channel);
-		}
-
-		m_exist = iInfo.exist;
-		m_x = iInfo.vPosition.x;
-		m_y = iInfo.vPosition.y;
+	// 아이템 사라질 때 사운드 재생
+	if (iInfo.exist == false && m_exist == true) {
+		channel->stop();
+		itemSound->setMode(FMOD_LOOP_OFF);
+		ssystem->playSound(itemSound, 0, false, &channel);
 	}
+
+	m_exist = iInfo.exist;
+	m_x = iInfo.vPosition.x;
+	m_y = iInfo.vPosition.y;
+	
 	return false;
 }
 
