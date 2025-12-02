@@ -147,16 +147,10 @@ int main(int argc, char* argv[])
                     if (dataToSend.arrBullets[0].exist)
                         int k = 0;
                     if (retval == SOCKET_ERROR) {
-						err_quit("send()");
+                        err_quit("send()");
                         closesocket(Players[i].socket);
                     }
                 }
-            }
-
-            // === 4. 루프 탈출 ===
-            if (GetAsyncKeyState(VK_ESCAPE))
-            {
-                break;
             }
             
             timedelta = 0.0;
