@@ -146,6 +146,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		// === 게임 로직 업데이트 및 화면 갱신 요청 ===
 		CLevelManager::GetInstance()->UpdateLevel();
 		InvalidateRect(g_hWnd, NULL, FALSE);
+
+		if (g_isExit)
+			DestroyWindow(g_hWnd);
 		break;
 	}
 	case WM_PAINT:

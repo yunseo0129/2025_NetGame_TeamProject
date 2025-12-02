@@ -1,8 +1,8 @@
 ﻿#include "CPlayLevel.h"
 #include "KeyMgr.h"
 
-//const char* SERVERIP = (char*)"192.168.72.31";
-const char* SERVERIP = (char*)"127.0.0.1";
+const char* SERVERIP = (char*)"192.168.69.9";
+//const char* SERVERIP = (char*)"127.0.0.1";
 
 CPlayLevel::CPlayLevel()
 {
@@ -146,6 +146,10 @@ void CPlayLevel::Update()
 
 	// 카메라 업데이트 
 	update_camera();
+
+	if (!m_bIsRunning) {
+		g_isExit = true;
+	}
 }
 
 void CPlayLevel::Draw(HDC mDC)
@@ -280,7 +284,7 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 		return 1;
 	}
 	
-	// 소켓 옵션 설정 NODELAY
+	// 소켓 옵션 설정 NODELAY ---> 송신 버퍼에 데이터가 가득 차지 않아도 바로 전송
 	DWORD NODELAY = 1;
 	setsockopt(pThis->m_sock, IPPROTO_TCP, TCP_NODELAY, (const char*)&NODELAY, sizeof(NODELAY));
 
@@ -347,7 +351,6 @@ DWORD WINAPI CPlayLevel::ClientThread(LPVOID pArg)
 		{
 			// 데이터 수신 성공 - 큐에 저장
 			EnterCriticalSection(&pThis->m_cs);
-			OutputDebugString(L"[ClientThread] : 데이터 수신 성공 - 큐에 삽입\n");
 			pThis->m_recvQueue.push(recvData); 
 			LeaveCriticalSection(&pThis->m_cs);
 		}
