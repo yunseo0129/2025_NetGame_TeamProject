@@ -174,7 +174,7 @@ DWORD WINAPI AcceptThread(LPVOID arg)
 {
     // 데이터 통신에 사용할 변수
     SOCKET listen_sock = (SOCKET)arg;
-    SOCKET client_sock[4];
+    SOCKET client_sock[3];
     struct sockaddr_in clientaddr;
     int addrlen;
     HANDLE hThread;
@@ -240,15 +240,14 @@ DWORD WINAPI AcceptThread(LPVOID arg)
                 CloseHandle(hThread); // 스레드 핸들 정리
             }
         }
-        else
+        if (g_player_count == MAX_PLAYERS)
         {
-            // 서버가 꽉 찼을 때
-            printf("[알림] 서버가 가득 찼습니다. (Full)\n");
-            closesocket(client_sock[g_player_count]);
+			g_running = false;
         }
     }
-
-    return 0;
+    
+	closesocket(listen_sock);
+	return 0;
 }
 
 DWORD WINAPI ProcessClient(LPVOID arg)
