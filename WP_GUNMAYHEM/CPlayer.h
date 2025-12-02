@@ -27,8 +27,6 @@ private:
 	
 	int gunType = 1;		// 가진 총 타입 ( 1:pistol / 2:snipe )
 
-	TCHAR info_text[20];	// 정보창 출력용 텍스트
-
 	// 애니메이션
 	bool isMoving = false;	// 이동 중인지 여부
 	int prevX = 0;			// 애니메이션 추론용

@@ -1,8 +1,8 @@
 ﻿#include "CPlayLevel.h"
 #include "KeyMgr.h"
 
-const char* SERVERIP = (char*)"192.168.69.9";
-//const char* SERVERIP = (char*)"127.0.0.1";
+//const char* SERVERIP = (char*)"192.168.69.9";
+const char* SERVERIP = (char*)"127.0.0.1";
 
 CPlayLevel::CPlayLevel()
 {
@@ -160,6 +160,26 @@ void CPlayLevel::Draw(HDC mDC)
 
 	// 부모 클래스의 Draw 호출
 	CLevel::Draw(mDC);
+
+	// 정보창 그리기
+	for (int i = 0; i < 3; ++i) {
+		if (m_pPlayer[i] != nullptr && m_pPlayer[i]->pInfo.isConnected == true && m_pPlayer[i]->pInfo.iLife > 0) 
+		{
+			// 플레이어1 정보창 위치 : 100, 500, 200, 150 
+			int plusX = 250; // 0, 250, 500 ---> (plusX * playerType)으로 x값 조정
+			SelectObject(g_BMPmDC, BMP_inform);
+			BitBlt(mDC, 100 + plusX * i, 500, 200, 150, g_BMPmDC, 0, 0, SRCCOPY);
+			wsprintf(info_text, L"player %d", i + 1);
+			TextOut(mDC, 112 + plusX * i, 512, info_text, lstrlen(info_text));
+			wsprintf(info_text, L"LIFE : %d", m_pPlayer[i]->pInfo.iLife);
+			TextOut(mDC, 112 + plusX * i, 532, info_text, lstrlen(info_text));
+			wsprintf(info_text, L"bullet : %d", m_pPlayer[i]->pInfo.iBullet);
+			TextOut(mDC, 112 + plusX * i, 552, info_text, lstrlen(info_text));
+			// 초상화
+			SelectObject(g_BMPmDC, BMP_player_inform[i]);
+			BitBlt(mDC, 240 + plusX * i, 515, 45, 45, g_BMPmDC, 0, 0, SRCCOPY);
+		}
+	}
 
 	// 종료 검사 및 게임 결과 텍스트 출력
 	if (m_bGameStarted) {

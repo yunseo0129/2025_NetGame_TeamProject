@@ -62,21 +62,6 @@ void CPlayer::Draw(HDC mDC)
 		}
 		SelectObject(g_BMPmDC, hGunBitmap);
 		TransparentBlt(mDC, gunPosX, gunPosY, gunWidth, gunHeight, g_BMPmDC, 0, 0, gunWidth, gunHeight, RGB(127, 127, 127));
-
-		// 정보창 그리기
-		// 플레이어1 정보창 위치 : 100, 500, 200, 150 
-		int plusX = 250; // 0, 250, 500 ---> (plusX * playerType)으로 x값 조정
-		SelectObject(g_BMPmDC, BMP_inform);
-		BitBlt(mDC, 100 + plusX * playerType, 500, 200, 150, g_BMPmDC, 0, 0, SRCCOPY);
-		wsprintf(info_text, L"player %d", playerType + 1);
-		TextOut(mDC, 112 + plusX * playerType, 512, info_text, lstrlen(info_text));
-		wsprintf(info_text, L"LIFE : %d", pInfo.iLife);
-		TextOut(mDC, 112 + plusX * playerType, 532, info_text, lstrlen(info_text));
-		wsprintf(info_text, L"bullet : %d", pInfo.iBullet);
-		TextOut(mDC, 112 + plusX * playerType, 552, info_text, lstrlen(info_text));
-		// 초상화
-		SelectObject(g_BMPmDC, BMP_player_inform[playerType]);
-		BitBlt(mDC, 240 + plusX * playerType, 515, 45, 45, g_BMPmDC, 0, 0, SRCCOPY);
 	}
 }
 

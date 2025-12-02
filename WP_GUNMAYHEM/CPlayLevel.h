@@ -44,4 +44,6 @@ private:
 
 	// 폰트 저장
 	HFONT m_hFont;
+
+	TCHAR info_text[20];	// 정보창 출력용 텍스트
 };
